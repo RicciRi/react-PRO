@@ -12,6 +12,7 @@
     "lang.name": "Ім’я",
     "lang.surname": "Прізвище",
     "lang.email": "Електронна адреса",
+    "lang.password": "Пароль",
     "lang.save": "Зберегти",
     "lang.loggedInAs": "Ви увійшли як",
     "lang.alredyLogin": "Ви вже увійшли!",

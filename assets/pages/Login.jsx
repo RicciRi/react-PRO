@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from '../components/TranslateContext';
 
 const Login = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const { trans } = useTranslation();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -28,26 +30,31 @@ const Login = () => {
     };
 
     return (
-        <div className="homepage-container container-fluid p-5">
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>First Name:</label>
-                    <input
-                        type="text"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Last Name:</label>
-                    <input
-                        type="text"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                    />
-                </div>
-                <button type="submit">Submit</button>
-            </form>
+        <div className="p-5">
+            <div className="form-section">
+                <form onSubmit={handleSubmit}>
+                    <h1>{trans('lang.signIn')}</h1>
+                    <div>
+                        <input
+                            type="text"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                        />
+                        <label>{trans('lang.name')}</label>
+                    </div>
+                    <div>
+                        <input
+                            type="text"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                        />
+                        <label>{trans('lang.surname')}</label>
+                    </div>
+                    <button className="button" type="submit">
+                        {trans('lang.login')}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };
