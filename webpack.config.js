@@ -38,6 +38,7 @@ Encore
      */
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
+    .enableSassLoader() // включить поддержку Sass/SCSS
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
@@ -54,7 +55,7 @@ Encore
     });
 
 // enables Sass/SCSS support
-//.enableSassLoader()
+// .enableSassLoader()
 
 // uncomment if you use TypeScript
 //.enableTypeScriptLoader()

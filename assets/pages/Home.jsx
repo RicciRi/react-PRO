@@ -1,13 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useTranslation } from '../components/TranslateContext';
 
 const Home = () => {
+    const { trans } = useTranslation();
+
     return (
         <div className="homepage-container container-fluid p-5">
-            <h1>HELLO HOME PAGE</h1>
-            <Link to="/login">
-                <h1 className="logo">Login</h1>
-            </Link>
+            <div className="container">
+                <div className="title-wrap">
+                    <h1>{trans('lang.getDreamCar')}</h1>
+                    <div className="title-container">
+                        <div className="title-section">
+                            <h2>100+</h2>
+                            <p>{trans('lang.newModel')}</p>
+                        </div>
+                        <div className="title-section">
+                            <h2>1M+</h2>
+                            <p>{trans('lang.customers')}</p>{' '}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="search-block">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder={trans('lang.WhatLooking')}
+                        aria-label="search"
+                    />
+                    <button type="button" className="input-button">
+                        <i className="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };

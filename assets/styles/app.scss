@@ -1,0 +1,268 @@
+@import '~bootstrap/scss/bootstrap';
+
+:root {
+    --text-color: white;
+    --hover-color: #808080;
+    --background: #080808;
+    --navbar-background: rgba(32, 32, 32, 1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    color: var(--text-color);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: var(--background);
+}
+
+.site-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+// BASE SETTINGS
+
+a {
+    color: var(--text-color);
+    text-decoration: none !important;
+
+    &:hover {
+        color: var(--hover-color);
+    }
+}
+
+.button {
+    width: 100%;
+    padding: 10px 18px;
+    color: var(--text-color);
+    text-decoration: none;
+    border: 1px solid var(--text-color);
+    border-radius: 30px;
+    font-size: 16px;
+
+    &:hover {
+        color: var(--hover-color);
+    }
+}
+
+// HEADER
+
+header {
+    color: var(--text-color);
+    background: var(--navbar-background);
+
+    .navbar-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 80px;
+
+        .logo {
+            margin: 0;
+            color: var(--text-color) !important;
+            text-decoration: none !important;
+        }
+
+        ul {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            list-style: none;
+            color: var(--text-color);
+        }
+        a {
+            color: var(--text-color);
+            &:hover {
+                color: #808080;
+            }
+        }
+
+        i {
+            font-size: 22px;
+            margin-left: 10px !important;
+        }
+
+        .navbar-link-wrap {
+            justify-content: start;
+            a {
+                font-size: 27px;
+                font-weight: 100;
+                padding: 20px;
+                margin-left: 20px;
+            }
+        }
+
+        .navbar-button-wrap {
+            justify-content: end;
+
+            a {
+                margin-left: 20px;
+            }
+        }
+    }
+}
+
+// Main
+main {
+    flex: 1;
+}
+
+// FORM PAGE
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 40px;
+    width: 360px;
+    border: 1px solid var(--text-color);
+    border-radius: 30px;
+    color: var(--text-color);
+    background: var(--navbar-background);
+
+    h1 {
+        color: var(--text-color);
+    }
+
+    input {
+        width: 100%;
+        padding-left: 0;
+        border: none;
+        border-bottom: 1px solid var(--text-color);
+        background: var(--navbar-background);
+        color: var(--text-color);
+    }
+
+    label {
+        color: var(--hover-color);
+    }
+
+    button {
+        margin: 20px 0;
+        background: #00243f;
+
+        &:hover {
+            color: var(--text-color);
+            background: #2567a5;
+        }
+    }
+
+    input[type='checkbox'] {
+        width: auto;
+        margin-left: 10px;
+    }
+
+    .inpur-wrap {
+        margin: 10px 0;
+    }
+}
+
+// HOME PAGE
+
+.homepage-container {
+    min-height: 540px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    color: var(--text-color);
+    background: var(--background);
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        border-radius: 20px;
+        background: url('/assets/images/car-image.jpeg');
+        background-repeat: no-repeat;
+        background-size: cover !important;
+        background-position: center;
+
+        h1 {
+            font-size: 60px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: var(--text-color);
+        }
+
+        .title-wrap {
+            color: #c1cfda;
+            width: 400px;
+        }
+
+        .title-container {
+            display: flex;
+            width: 100%;
+        }
+
+        .title-section {
+            width: 50%;
+            text-align: start;
+        }
+
+        .search-block {
+            display: flex;
+            margin: auto auto 40px auto;
+            padding: 10px;
+            border-radius: 10px;
+            background: white;
+        }
+
+        input {
+            margin-right: 10px;
+            min-width: 260px;
+            border: none;
+        }
+
+        .input-button {
+            border: none;
+            background: white;
+        }
+    }
+}
+
+// footer
+
+footer {
+    width: 100%;
+    height: 100px;
+    background-color: var(--navbar-background);
+
+    .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 100px;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            text-align: center;
+            margin: 4px 0;
+        }
+
+        span {
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        a {
+            font-weight: 100;
+        }
+
+        button {
+            padding: 0;
+            font-weight: 100;
+            background: var(--navbar-background);
+            border: none;
+        }
+    }
+}

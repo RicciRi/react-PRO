@@ -29,10 +29,6 @@ const Login = () => {
 
     return (
         <div className="homepage-container container-fluid p-5">
-            <h1>HELLO Login PAGE</h1>
-            <Link to="/">
-                <h1 className="logo">Home</h1>
-            </Link>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>First Name:</label>
