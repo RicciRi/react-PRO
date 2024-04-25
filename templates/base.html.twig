@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>My SPA</title>
+		{{ encore_entry_link_tags('app') }}
+		{# Стили из Webpack Encore #}
+	</head>
+	<body>
+		<div id="root"></div>
+		{# Здесь React будет рендерить свой контент #}
+		{{ encore_entry_script_tags('app') }}
+		{# Скрипты из Webpack Encore #}
+	</body>
+</html>
