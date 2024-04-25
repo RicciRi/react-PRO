@@ -3,3 +3,29 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+# config/routes.yaml
+
+# api_routes:
+#     path: /api/{path}
+#     controller: App\Controller\YourApiController::{action}
+#     requirements:
+#         path: .+
+
+registration:
+    path: /api/register
+    controller: App\Controller\RegistrationController::register
+
+login:
+    path: /api/login
+    controller: App\Controller\AuthController::login
+
+logout:
+    path: /api/logout
+    controller: App\Controller\AuthController::logout
+
+# SPA route
+react_spa:
+    path: /{reactRouting}
+    controller: App\Controller\SpaController::index
+    requirements:
+        reactRouting: '.*'

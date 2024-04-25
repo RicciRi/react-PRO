@@ -3,52 +3,61 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from '../components/TranslateContext';
 
 const Login = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
     const { trans } = useTranslation();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
 
-        fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                first_name: firstName,
-                last_name: lastName,
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('Response:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
             });
+
+            if (!response.ok) {
+                throw new Error('Invalid credentials');
+            }
+
+            const data = await response.json();
+            const token = data.token;
+
+            localStorage.setItem('token', token); // Сохраняем токен в localStorage
+            setError(''); // Сброс ошибки
+            // Пример перенаправления: window.location.href = '/dashboard';
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
     return (
         <div className="p-5">
             <div className="form-section">
-                <form onSubmit={handleSubmit}>
-                    <h1>{trans('lang.signIn')}</h1>
+                <form onSubmit={handleLogin}>
+                    <h1>{trans('lang.email')}</h1>
                     <div>
                         <input
-                            type="text"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
                         />
+
                         <label>{trans('lang.name')}</label>
                     </div>
                     <div>
                         <input
-                            type="text"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
                         />
-                        <label>{trans('lang.surname')}</label>
+                        <label>{trans('lang.password')}</label>
                     </div>
                     <button className="button" type="submit">
                         {trans('lang.login')}
