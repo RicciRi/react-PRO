@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from '../components/TranslateContext';
-
 const Login = () => {
     const { trans } = useTranslation();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -21,15 +21,15 @@ const Login = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Invalid credentials');
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Login failed');
             }
 
             const data = await response.json();
             const token = data.token;
-
-            localStorage.setItem('token', token); // Сохраняем токен в localStorage
-            setError(''); // Сброс ошибки
-            // Пример перенаправления: window.location.href = '/dashboard';
+            localStorage.setItem('token', token);
+            setError('');
+            navigate('/');
         } catch (err) {
             setError(err.message);
         }
@@ -40,6 +40,7 @@ const Login = () => {
             <div className="form-section">
                 <form onSubmit={handleLogin}>
                     <h1>{trans('lang.email')}</h1>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
                     <div>
                         <input
                             type="email"
@@ -48,7 +49,7 @@ const Login = () => {
                             required
                         />
 
-                        <label>{trans('lang.name')}</label>
+                        <label>{trans('lang.email')}</label>
                     </div>
                     <div>
                         <input

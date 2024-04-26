@@ -17,7 +17,7 @@ registration:
 
 login:
     path: /api/login
-    controller: App\Controller\AuthController::login
+    controller: App\Controller\LoginController::login
 
 logout:
     path: /api/logout

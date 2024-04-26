@@ -1,9 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 import { useTranslation } from './TranslateContext';
 
-const Header = ({ user }) => {
+const Header = () => {
     const { trans } = useTranslation();
+    const navigate = useNavigate();
+
+    const isLoggedIn = localStorage.getItem('token') !== null;
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        navigate('/login');
+    };
 
     return (
         <header>
@@ -14,7 +23,7 @@ const Header = ({ user }) => {
                             <h1 className="logo">{trans('lang.logo')}</h1>
                         </Link>
 
-                        {user && (
+                        {isLoggedIn && (
                             <ul className="navbar-link-wrap">
                                 <li>
                                     <Link to="/" className="navbar-link">
@@ -35,23 +44,12 @@ const Header = ({ user }) => {
                         )}
 
                         <ul className="navbar-button-wrap">
-                            {user ? (
+                            {isLoggedIn ? (
                                 <>
                                     <li>
-                                        <a
-                                            href="/logout"
-                                            className="button navbar-button"
-                                        >
+                                        <button onClick={handleLogout}>
                                             {trans('lang.logout')}
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <Link
-                                            to="/user-settings"
-                                            className="navbar-link"
-                                        >
-                                            <i className="fa-regular fa-user"></i>
-                                        </Link>
+                                        </button>
                                     </li>
                                 </>
                             ) : (

@@ -10,6 +10,7 @@ const Register = () => {
     const [lastName, setLastName] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [registerFinish, setRegisterFinish] = useState('');
 
     const handleRegistration = async (e) => {
         e.preventDefault(); // Предотвращаем перезагрузку страницы
@@ -40,7 +41,7 @@ const Register = () => {
             }
 
             const result = await response.json();
-            alert('Регистрация прошла успешно');
+            setRegisterFinish(true);
             setError(''); // Сброс ошибки
         } catch (err) {
             setError(err.message); // Показать сообщение об ошибке
@@ -50,59 +51,65 @@ const Register = () => {
     return (
         <div className="p-5">
             <div className="form-section">
-                <form onSubmit={handleRegistration}>
-                    <h1>{trans('lang.register')}</h1>
-                    {error && <div style={{ color: 'red' }}>{error}</div>}{' '}
-                    {/* Отображение ошибки */}
-                    <div>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <label>{trans('lang.email')}</label>
-                    </div>
-                    <div>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <label>{trans('lang.password')}</label>
-                    </div>
-                    <div>
-                        <input
-                            type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-                        <label>Confirm Password:</label>
-                    </div>
-                    <div>
-                        <input
-                            type="text"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            required
-                        />
-                        <label>{trans('lang.name')}</label>
-                    </div>
-                    <div>
-                        <input
-                            type="text"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            required
-                        />
-                        <label>{trans('lang.surname')}</label>
-                    </div>
-                    <button className="button" type="submit">
-                        {trans('lang.register')}
-                    </button>
-                </form>
+                <h1>{trans('lang.register')}</h1>
+
+                {registerFinish ? (
+                    <h3>{trans('lang.accountCreated')}</h3>
+                ) : (
+                    <form onSubmit={handleRegistration}>
+                        {error && <div style={{ color: 'red' }}>{error}</div>}{' '}
+                        <div>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                            <label>{trans('lang.email')}</label>
+                        </div>
+                        <div>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <label>{trans('lang.password')}</label>
+                        </div>
+                        <div>
+                            <input
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
+                                required
+                            />
+                            <label>Confirm Password:</label>
+                        </div>
+                        <div>
+                            <input
+                                type="text"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required
+                            />
+                            <label>{trans('lang.name')}</label>
+                        </div>
+                        <div>
+                            <input
+                                type="text"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                required
+                            />
+                            <label>{trans('lang.surname')}</label>
+                        </div>
+                        <button className="button" type="submit">
+                            {trans('lang.register')}
+                        </button>
+                    </form>
+                )}
             </div>
         </div>
     );
