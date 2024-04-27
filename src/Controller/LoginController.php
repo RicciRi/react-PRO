@@ -28,16 +28,31 @@ class LoginController extends AbstractController
             return new JsonResponse(['error' => 'User not found'], 404);
         }
 
-        $token = $JWTManager->create($user);
+        $email = $user->getUserIdentifier();
 
 
-        $lastUsername = $authUtils->getLastUsername();
+        $tokenPayload = [
+            'email' => $email,
+            'iat' => time(),  // время создания токена
+            'exp' => time() + 3600,  // время истечения токена
+        ];
+
+
+        $token = $JWTManager->createFromPayload($user, $tokenPayload);
+
+        $userInfo = [
+            'id' => $user->getId(),
+            'email' => $email,
+            'role' => $user->getRoles(),
+            'firstName' => $user->getFirstName(),
+            'lastName' => $user->getLastName(),
+        ];
 
 
         return new JsonResponse([
-            'status' => 'Logged in',
-            'username' => $lastUsername,
+            'userInfo' => $userInfo,
             'token' => $token,
+            'user' => $user
         ], 200);
     }
 }

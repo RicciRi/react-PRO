@@ -37,7 +37,8 @@ const Register = () => {
             });
 
             if (!response.ok) {
-                throw new Error('Ошибка при регистрации');
+                const errorData = await response.json(); // Извлечь сообщение об ошибке
+                throw new Error(errorData.error || 'Registration failed');
             }
 
             const result = await response.json();

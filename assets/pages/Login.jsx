@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from '../components/TranslateContext';
+import { UserContext } from '../components/UserContext';
+
 const Login = () => {
     const { trans } = useTranslation();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const { login } = useContext(UserContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -20,16 +23,16 @@ const Login = () => {
                 body: JSON.stringify({ email, password }),
             });
 
-            if (!response.ok) {
+            if (response.ok) {
+                const data = await response.json();
+                login(data);
+                setError(null);
+                console.log(data);
+                navigate('/');
+            } else {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Login failed');
             }
-
-            const data = await response.json();
-            const token = data.token;
-            localStorage.setItem('token', token);
-            setError('');
-            navigate('/');
         } catch (err) {
             setError(err.message);
         }
@@ -39,7 +42,7 @@ const Login = () => {
         <div className="p-5">
             <div className="form-section">
                 <form onSubmit={handleLogin}>
-                    <h1>{trans('lang.email')}</h1>
+                    <h1>{trans('lang.signIn')}</h1>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     <div>
                         <input

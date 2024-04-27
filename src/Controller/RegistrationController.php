@@ -28,6 +28,13 @@ class RegistrationController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        $email = $data['email'];
+        $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        if ($existingUser) {
+            return new JsonResponse(['error' => 'Email already in use'], 400);
+        }
+
         $user = new User();
         $user->setEmail($data['email']);
         $user->setFirstName($data['firstName'] ?? '');
