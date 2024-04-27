@@ -13,6 +13,7 @@ export const UserProvider = ({ children }) => {
     const logout = () => {
         localStorage.removeItem('token');
         setUserData(null);
+        window.location.reload();
     };
 
     useEffect(() => {

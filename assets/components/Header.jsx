@@ -1,18 +1,11 @@
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from './TranslateContext';
 import { UserContext } from './UserContext';
 
 const Header = () => {
     const { trans } = useTranslation();
-    const { userData } = useContext(UserContext);
-
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
-    };
+    const { userData, logout } = useContext(UserContext);
 
     return (
         <header>
@@ -30,7 +23,7 @@ const Header = () => {
                                         {trans('lang.home')}
                                     </Link>
                                 </li>
-                                <li>
+                                {/* <li>
                                     <Link to="/" className="navbar-link">
                                         {trans('lang.cars')}
                                     </Link>
@@ -39,7 +32,7 @@ const Header = () => {
                                     <Link to="/" className="navbar-link">
                                         {trans('lang.contacts')}
                                     </Link>
-                                </li>
+                                </li> */}
                             </ul>
                         )}
 
@@ -49,10 +42,18 @@ const Header = () => {
                                     <li>
                                         <button
                                             className="button navbar-button"
-                                            onClick={handleLogout}
+                                            onClick={logout}
                                         >
                                             {trans('lang.logout')}
                                         </button>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to="/user/settings"
+                                            className="button navbar-button"
+                                        >
+                                            {trans('lang.account')}
+                                        </Link>
                                     </li>
                                 </>
                             ) : (
