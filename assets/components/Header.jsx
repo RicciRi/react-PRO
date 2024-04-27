@@ -47,7 +47,10 @@ const Header = () => {
                             {isLoggedIn ? (
                                 <>
                                     <li>
-                                        <button onClick={handleLogout}>
+                                        <button
+                                            className="button navbar-button"
+                                            onClick={handleLogout}
+                                        >
                                             {trans('lang.logout')}
                                         </button>
                                     </li>
