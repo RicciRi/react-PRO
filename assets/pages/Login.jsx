@@ -27,7 +27,6 @@ const Login = () => {
                 const data = await response.json();
                 login(data);
                 setError(null);
-                console.log(data);
                 navigate('/');
             } else {
                 const errorData = await response.json();

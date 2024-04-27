@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
 import { useTranslation } from './TranslateContext';
+import { UserContext } from './UserContext';
 
 const Header = () => {
     const { trans } = useTranslation();
-    const navigate = useNavigate();
+    const { userData } = useContext(UserContext);
 
-    const isLoggedIn = localStorage.getItem('token') !== null;
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -23,7 +23,7 @@ const Header = () => {
                             <h1 className="logo">{trans('lang.logo')}</h1>
                         </Link>
 
-                        {isLoggedIn && (
+                        {userData && (
                             <ul className="navbar-link-wrap">
                                 <li>
                                     <Link to="/" className="navbar-link">
@@ -44,7 +44,7 @@ const Header = () => {
                         )}
 
                         <ul className="navbar-button-wrap">
-                            {isLoggedIn ? (
+                            {userData ? (
                                 <>
                                     <li>
                                         <button
