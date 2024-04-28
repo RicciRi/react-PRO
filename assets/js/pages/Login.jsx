@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from '../components/TranslateContext';
-import { UserContext } from '../components/UserContext';
+import { useTranslation } from '../context/TranslateContext';
+import { UserContext } from '../context/UserContext';
 
 const Login = () => {
     const { trans } = useTranslation();

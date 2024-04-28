@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from './TranslateContext';
+import { useTranslation } from '../context/TranslateContext';
 
 const Footer = () => {
     const { changeLocale } = useTranslation();

@@ -1,12 +1,9 @@
 import React, { useContext } from 'react';
-
-import { useTranslation } from '../components/TranslateContext';
-import { UserContext } from '../components/UserContext';
+import { useTranslation } from '../context/TranslateContext';
+import { UserContext } from '../context/UserContext';
 
 const Home = () => {
     const { trans } = useTranslation();
-    const { userData } = useContext(UserContext);
-    const userInfo = userData ? userData.userInfo : false;
 
     return (
         <div className="homepage-container container-fluid p-5">

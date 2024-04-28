@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import enTranslations from '../translations/messages.en.json'; // Английский перевод
-import ukTranslations from '../translations/messages.ua.json'; // Украинский перевод
+import enTranslations from '../../translations/messages.en.json'; // Английский перевод
+import ukTranslations from '../../translations/messages.ua.json'; // Украинский перевод
 
 // Словарь всех переводов
 const translations = {

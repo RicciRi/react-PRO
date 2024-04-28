@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from './TranslateContext';
-import { UserContext } from './UserContext';
+import { useTranslation } from '../context/TranslateContext';
+import { UserContext } from '../context/UserContext';
 
 const Header = () => {
     const { trans } = useTranslation();

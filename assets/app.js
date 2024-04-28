@@ -4,17 +4,17 @@ import './styles/app.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { TranslationProvider } from './components/TranslateContext';
-import { UserProvider } from './components/UserContext';
+import { TranslationProvider } from './js/context/TranslateContext';
+import { UserProvider } from './js/context/UserContext';
 
-import AuthRequired from './components/AuthRequired';
-import ExitRequired from './components/ExitRequired';
-import Layout from './components/Layout';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Logout from './pages/Logout';
-import Register from './pages/Register';
-import UserSettings from './pages/UserSettings';
+import AuthRequired from './js/components/AuthRequired';
+import ExitRequired from './js/components/ExitRequired';
+import Layout from './js/components/Layout';
+import Home from './js/pages/Home';
+import Login from './js/pages/Login';
+import Logout from './js/pages/Logout';
+import Register from './js/pages/Register';
+import UserSettings from './js/pages/UserSettings';
 
 function App() {
     return (

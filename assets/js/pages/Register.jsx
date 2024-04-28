@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from '../components/TranslateContext';
+import { useTranslation } from '../context/TranslateContext';
 
 const Register = () => {
     const { trans } = useTranslation();
