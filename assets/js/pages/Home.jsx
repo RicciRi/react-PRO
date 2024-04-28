@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from '../context/TranslateContext';
-import { UserContext } from '../context/UserContext';
 
 const Home = () => {
     const { trans } = useTranslation();

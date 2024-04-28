@@ -21,14 +21,14 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            json_login:
-                check_path: /api/login
-                username_path: email
-                password_path: password
-            logout:
-                path: /api/logout
-                target: /
+            # json_login:
+            #     check_path: /api/login
+            #     username_path: email
+            #     password_path: password
+            # logout:
+            #     path: /api/logout
+            #     target: /
             # Добавьте другие методы аутентификации, если необходимо
     # Контроль доступа
     access_control:
-        - { path: ^/api/protected, roles: ROLE_USER } # Пример ограничения доступа
+        # - { path: ^/api/protected, roles: ROLE_USER } # Пример ограничения доступа

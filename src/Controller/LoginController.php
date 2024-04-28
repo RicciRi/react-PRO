@@ -1,59 +1,86 @@
 <?php
 
-// src/Controller/LoginController.php
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\ORM\EntityManagerInterface; // Подключение Doctrine
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\User; // Подключение сущности User
 
-
-#[Route('/api/login', name: 'login', methods: ['POST'])]
 
 class LoginController extends AbstractController
 {
-    public function login(AuthenticationUtils $authUtils, Request $request, JWTTokenManagerInterface $JWTManager): JsonResponse
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $error = $authUtils->getLastAuthenticationError();
+        $this->entityManager = $entityManager; // Внедрение зависимости Doctrine
+    }
 
-        if ($error) {
-            return new JsonResponse(['error' => $error->getMessage()], 401);
+    #[Route('/api/login', name: 'login', methods: ['POST'])]
+    public function login(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        JWTTokenManagerInterface $JWTManager
+    ): JsonResponse {
+        $requestData = json_decode($request->getContent(), true); // Парсинг данных из запроса
+        $email = $requestData['email'];
+        $password = $requestData['password'];
+
+        // Поиск пользователя по email
+        $user = $this->entityManager
+            ->getRepository(User::class) // Используем EntityManager
+            ->findOneBy(['email' => $email]);
+
+        if (!$user) { // Если пользователь не найден
+            return new JsonResponse(['error' => 'User not found'], 404); // Ошибка 404
         }
 
-        $user = $this->getUser();
-        if (!$user) {
-            return new JsonResponse(['error' => 'User not found'], 404);
+        // Проверка пароля
+        if (!$passwordHasher->isPasswordValid($user, $password)) { // Если пароль неверен
+            return new JsonResponse(['error' => 'Invalid password'], 401); // Ошибка 401
         }
 
-        $email = $user->getUserIdentifier();
-
-
+        // Генерация JWT токена при успешной аутентификации
         $tokenPayload = [
-            'email' => $email,
-            'iat' => time(),  // время создания токена
-            'exp' => time() + 3600,  // время истечения токена
+            'email' => $user->getEmail(),
+            'iat' => time(),
+            'exp' => time() + 3600, // 1 час
         ];
 
+        $token = $JWTManager->createFromPayload($user, $tokenPayload); // Генерация токена
 
-        $token = $JWTManager->createFromPayload($user, $tokenPayload);
+        // Установка куки с токеном
+        $cookie = new Cookie(
+            'auth_token',
+            $token,
+            strtotime('+1 hour'), // Время жизни куки
+            '/',
+            null,
+            true, // Secure
+            true, // HTTP-only
+            false,
+            'Lax' // SameSite
+        );
 
-        $userInfo = [
-            'id' => $user->getId(),
-            'email' => $email,
-            'role' => $user->getRoles(),
-            'firstName' => $user->getFirstName(),
-            'lastName' => $user->getLastName(),
-        ];
+        // Подготовка ответа
+        $response = new JsonResponse([
+            'userInfo' => [
+                'id' => $user->getId(),
+                'email' => $user->getEmail(),
+                'roles' => $user->getRoles(),
+                'firstName' => $user->getFirstName(),
+                'lastName' => $user->getLastName(),
+            ],
+        ]);
 
-
-        return new JsonResponse([
-            'userInfo' => $userInfo,
-            'token' => $token,
-            'user' => $user
-        ], 200);
+        // Добавляем куки в заголовок ответа
+        $response->headers->setCookie($cookie);
+        return $response;
     }
 }
-

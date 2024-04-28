@@ -18,9 +18,9 @@ import UserSettings from './js/pages/UserSettings';
 
 function App() {
     return (
-        <TranslationProvider>
-            <UserProvider>
-                <BrowserRouter>
+        <BrowserRouter>
+            <TranslationProvider>
+                <UserProvider>
                     <Routes>
                         <Route path="/" element={<Layout />}>
                             <Route index element={<Home />} />
@@ -42,9 +42,9 @@ function App() {
                             </Route>
                         </Route>
                     </Routes>
-                </BrowserRouter>
-            </UserProvider>
-        </TranslationProvider>
+                </UserProvider>
+            </TranslationProvider>
+        </BrowserRouter>
     );
 }
 

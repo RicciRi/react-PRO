@@ -12,7 +12,7 @@ const Register = () => {
     const [registerFinish, setRegisterFinish] = useState('');
 
     const handleRegistration = async (e) => {
-        e.preventDefault(); // Предотвращаем перезагрузку страницы
+        e.preventDefault();
 
         if (password !== confirmPassword) {
             setError('Passwords do not match');

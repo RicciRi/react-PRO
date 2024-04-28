@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use App\Repository\UserRepository;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Cookie;
+
 
 #[Route('/api/user', name: 'get_user', methods: ['GET'])]
 class UserController extends AbstractController
@@ -21,27 +23,21 @@ class UserController extends AbstractController
 
     public function getCurrentUser(Request $request, JWTEncoderInterface $jwtEncoder): JsonResponse
     {
-        // Проверяем, есть ли заголовок Authorization
-        $authorizationHeader = $request->headers->get('Authorization');
-        if (!$authorizationHeader) {
-            return new JsonResponse(['error' => 'Authorization header is missing'], 401);
+        $cookie = $request->cookies->get('auth_token');
+
+        if (!$cookie) {
+            return new JsonResponse(['error' => 'Token not found'], 401); // Токен отсутствует
         }
 
-        // Проверяем, начинается ли заголовок с "Bearer "
-        if (!str_starts_with($authorizationHeader, 'Bearer ')) {
-            return new JsonResponse(['error' => 'Invalid authorization header format'], 401);
-        }
-
-        // Получаем токен и декодируем его
-        $token = substr($authorizationHeader, 7);
-        $decoded = $jwtEncoder->decode($token);
+        $decoded = $jwtEncoder->decode($cookie);
 
         if (!$decoded) {
-            return new JsonResponse(['error' => 'Invalid token'], 401);
+            return new JsonResponse(['error' => 'Invalid token'], 401); // Токен недействителен
         }
 
+
         if (!isset($decoded['email'])) {
-            return new JsonResponse(['error' => 'Token does not contain user email'], 401);
+            return new JsonResponse(['error' => 'Token does not contain user email'], 401); // Недействительный токен
         }
 
         // Находим пользователя по email в базе данных

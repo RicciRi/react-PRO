@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from '../context/TranslateContext';
 import { UserContext } from '../context/UserContext';
 
-const Login = () => {
+export default function Login() {
     const { trans } = useTranslation();
-    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -15,25 +14,18 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
+            const response = await login({ email, password });
 
-            if (response.ok) {
-                const data = await response.json();
-                login(data);
-                setError(null);
-                navigate('/');
+            if (response && response.ok) {
+                setError(''); // Сброс ошибки, если логин успешен
+            } else if (response) {
+                setError(response.error); // Установка ошибки, чтобы отобразить пользователю
             } else {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Login failed');
+                setError('An unknown error occurred'); // Если `response` undefined
             }
-        } catch (err) {
-            setError(err.message);
+        } catch (e) {
+            console.error('Login error:', e);
+            setError('An unexpected error occurred'); // Обработка неожиданной ошибки
         }
     };
 
@@ -69,6 +61,4 @@ const Login = () => {
             </div>
         </div>
     );
-};
-
-export default Login;
+}
