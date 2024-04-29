@@ -2,6 +2,9 @@
 
 :root {
     --text-color: white;
+    --text-success: green;
+    --text-error: red;
+
     --hover-color: #808080;
     --background: #080808;
     --navbar-background: rgba(32, 32, 32, 1);
@@ -49,6 +52,16 @@ a {
     &:hover {
         color: var(--hover-color);
     }
+}
+
+.error-message {
+    font-weight: 600;
+    color: var(--text-error);
+}
+
+.success-message {
+    font-weight: 600;
+    color: var(--text-success);
 }
 
 // HEADER

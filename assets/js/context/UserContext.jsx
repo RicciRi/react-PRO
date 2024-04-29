@@ -26,7 +26,7 @@ export const UserProvider = ({ children }) => {
 
                     if (userResponse.ok) {
                         const userData = await userResponse.json();
-                        setUserData(userData.userInfo);
+                        setUserData(userData);
                     }
                 } else {
                     setIsAuthenticated(false);
@@ -72,6 +72,7 @@ export const UserProvider = ({ children }) => {
             throw new Error('Logout failed');
         }
     };
+
     return (
         <UserContext.Provider
             value={{ userData, isAuthenticated, login, logout }}
