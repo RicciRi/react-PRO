@@ -2,7 +2,6 @@ import './styles/app.css';
 import './styles/app.scss';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client'; // Правильный импорт
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { TranslationProvider } from './js/context/TranslateContext';
@@ -16,6 +15,7 @@ import Login from './js/pages/Login';
 import Logout from './js/pages/Logout';
 import Register from './js/pages/Register';
 import UserSettings from './js/pages/UserSettings';
+import NotFound from './js/pages/NotFound';
 
 function App() {
     return (
@@ -41,6 +41,7 @@ function App() {
                                     element={<UserSettings />}
                                 />
                             </Route>
+                            <Route path="*" element={<NotFound />} />
                         </Route>
                     </Routes>
                 </UserProvider>

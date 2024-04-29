@@ -2,13 +2,13 @@ import React from 'react';
 import { useTranslation } from '../context/TranslateContext';
 
 const Footer = () => {
-    const { changeLocale } = useTranslation();
+    const { changeLocale, trans } = useTranslation();
     return (
         <footer>
             <div className="container">
                 <ul>
                     <li>
-                        <span>Social links:</span>
+                        <span>{trans('lang.socialLinks')}</span>
                     </li>
                     <li>
                         <a href="https://www.instagram.com/richard.rudenko/">
@@ -24,23 +24,33 @@ const Footer = () => {
 
                 <ul>
                     <li>
-                        <span>Choose language:</span>
-                    </li>
-                    <li>
-                        <button
-                            className="button"
-                            onClick={() => changeLocale('en')}
-                        >
-                            English
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className="button"
-                            onClick={() => changeLocale('ua')}
-                        >
-                            Українська
-                        </button>
+                        <span>{trans('lang.chooseLang')}</span>
+                        <ul className="translate-list">
+                            <li>
+                                <button
+                                    className="button"
+                                    onClick={() => changeLocale('en')}
+                                >
+                                    {trans('lang.english')}
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="button"
+                                    onClick={() => changeLocale('ua')}
+                                >
+                                    {trans('lang.ukrainian')}
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className="button"
+                                    onClick={() => changeLocale('de')}
+                                >
+                                    {trans('lang.germany')}
+                                </button>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
                 <ul>

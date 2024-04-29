@@ -21,11 +21,11 @@ export default function Login() {
             } else if (response) {
                 setError(response.error); // Установка ошибки, чтобы отобразить пользователю
             } else {
-                setError('An unknown error occurred'); // Если `response` undefined
+                setError(trans('lang.unknownError')); // Если `response` undefined
             }
         } catch (e) {
             console.error('Login error:', e);
-            setError('An unexpected error occurred'); // Обработка неожиданной ошибки
+            setError(trans('lang.unexpectedError')); // Обработка неожиданной ошибки
         }
     };
 

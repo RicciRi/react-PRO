@@ -42,14 +42,14 @@ const UserSettings = () => {
             });
 
             if (response.ok) {
-                setMessage('Yor data has been update');
+                setMessage(trans('lang.dataUpdated'));
             } else {
                 const errorData = await response.json();
-                setError(errorData.error || 'Update failed');
+                setError(errorData.error || trans('lang.updateFailed'));
             }
         } catch (e) {
             console.error('An error occurred while updating user info:', e);
-            setError('An unexpected error occurred');
+            setError(lang('lang.unexpectedError'));
         }
     };
 

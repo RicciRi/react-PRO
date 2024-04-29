@@ -279,5 +279,13 @@ footer {
             background: var(--navbar-background);
             border: none;
         }
+
+        .translate-list {
+            display: flex;
+            width: 300px;
+            li {
+                width: 50%;
+            }
+        }
     }
 }

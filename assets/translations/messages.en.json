@@ -15,6 +15,7 @@
     "lang.email": "Email",
     "lang.account": "Account",
     "lang.password": "Password",
+    "lang.confirmPassword": "Confirm Password",
     "lang.save": "Save",
     "lang.loggedInAs": "You are logged in as",
     "lang.alredyLogin": "You are already logged in!",
@@ -23,5 +24,13 @@
     "lang.WhatLooking": "What are you looking for?",
     "lang.remembeMe": "Remember me",
     "lang.changeInfo": "Change Info",
-    "lang.accountCreated": "Your account has been created!"
+    "lang.accountCreated": "Your account has been created!",
+    "lang.updateFailed": "Update failed",
+    "lang.dataUpdated": "Data updated",
+    "lang.socialLinks": "Social Links",
+    "lang.logoutPrompt": "You must logout first",
+    "lang.chooseLang": "Choose Language:",
+    "lang.english": "English",
+    "lang.ukrainian": "Ukrainian",
+    "lang.germany": "Deutsch"
 }

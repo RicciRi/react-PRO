@@ -16,7 +16,7 @@ const Register = () => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            setError(trans('lang.passwordMismatch'));
             return;
         }
 
@@ -42,7 +42,9 @@ const Register = () => {
 
             if (!response.ok) {
                 const errorData = await response.json(); // Извлечь сообщение об ошибке
-                throw new Error(errorData.error || 'Registration failed');
+                throw new Error(
+                    errorData.error || trans('lang.registrationFailed')
+                );
             }
 
             const result = await response.json();
@@ -58,8 +60,9 @@ const Register = () => {
         <div className="p-5">
             <div className="form-section">
                 <h1>{trans('lang.register')}</h1>
-                {isLoading && <div className="spinner">Loading...</div>}
-                {/* Спиннер при загрузке */}
+                {isLoading && (
+                    <div className="spinner">{trans('lang.loading')}</div>
+                )}
                 {registerFinish ? (
                     <h3>{trans('lang.accountCreated')}</h3>
                 ) : (
@@ -104,7 +107,7 @@ const Register = () => {
                                 autocomplete="new-password" // Атрибут autocomplete
                             />
                             <label htmlFor="confirmPassword">
-                                Confirm Password
+                                {trans('lang.confirmPassword')}
                             </label>
                         </div>
                         <div>

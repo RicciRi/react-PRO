@@ -1,18 +1,16 @@
 import React, { useContext } from 'react';
+import { useTranslation } from '../context/TranslateContext';
 import { UserContext } from '../context/UserContext';
 
 export default function Logout() {
+    const { trans } = useTranslation();
     const { logout } = useContext(UserContext);
-
-    const handleLogout = () => {
-        logout();
-    };
 
     return (
         <>
-            <h1>You must logout first</h1>
-            <button onClick={handleLogout} className="button">
-                Logout
+            <h1>{trans('lang.logoutPrompt')}</h1>
+            <button onClick={logout} className="button">
+                {trans('lang.logout')}
             </button>
         </>
     );

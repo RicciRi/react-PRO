@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import enTranslations from '../../translations/messages.en.json'; // Английский перевод
-import ukTranslations from '../../translations/messages.ua.json'; // Украинский перевод
+import enTranslations from '../../translations/messages.en.json';
+import ukTranslations from '../../translations/messages.ua.json';
+import deTranslations from '../../translations/messages.de.json';
 
 // Словарь всех переводов
 const translations = {
     en: enTranslations,
     ua: ukTranslations,
+    de: deTranslations,
 };
 
 // Создаем контекст для переводов
