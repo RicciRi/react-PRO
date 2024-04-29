@@ -43,6 +43,7 @@ export default function Login() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
+                            autocomplete="email" // Добавляем autocomplete
                         />
 
                         <label>{trans('lang.email')}</label>
@@ -55,6 +56,7 @@ export default function Login() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
+                            autocomplete="current-password" // Добавляем autocomplete
                         />
                         <label>{trans('lang.password')}</label>
                     </div>

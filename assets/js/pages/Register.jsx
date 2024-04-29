@@ -73,17 +73,19 @@ const Register = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
+                                autocomplete="email" // Атрибут autocomplete
                             />
                             <label htmlFor="email">{trans('lang.email')}</label>{' '}
                         </div>
                         <div>
                             <input
-                                id="email"
+                                id="password"
                                 type="password"
-                                name="email"
+                                name="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
+                                autocomplete="new-password" // Атрибут autocomplete
                             />
                             <label htmlFor="password">
                                 {trans('lang.password')}
@@ -99,6 +101,7 @@ const Register = () => {
                                     setConfirmPassword(e.target.value)
                                 }
                                 required
+                                autocomplete="new-password" // Атрибут autocomplete
                             />
                             <label htmlFor="confirmPassword">
                                 Confirm Password

@@ -3,6 +3,7 @@ import './styles/app.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'; // Правильный импорт
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { TranslationProvider } from './js/context/TranslateContext';
 import { UserProvider } from './js/context/UserContext';
@@ -48,5 +49,6 @@ function App() {
     );
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container); // Создание корневого элемента
 root.render(<App />);
