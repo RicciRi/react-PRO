@@ -5,7 +5,7 @@ import { UserContext } from '../context/UserContext';
 
 const Header = () => {
     const { trans } = useTranslation();
-    const { userData, logout } = useContext(UserContext);
+    const { isAuthenticated, logout } = useContext(UserContext);
 
     return (
         <header>
@@ -16,7 +16,7 @@ const Header = () => {
                             <h1 className="logo">{trans('lang.logo')}</h1>
                         </Link>
 
-                        {userData && (
+                        {isAuthenticated && (
                             <ul className="navbar-link-wrap">
                                 <li>
                                     <Link to="/" className="navbar-link">
@@ -37,7 +37,7 @@ const Header = () => {
                         )}
 
                         <ul className="navbar-button-wrap">
-                            {userData ? (
+                            {isAuthenticated ? (
                                 <>
                                     <li>
                                         <button

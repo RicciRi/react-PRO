@@ -50,10 +50,10 @@ class AuthController extends AbstractController
     #[Route('/api/check-auth', name: 'check_auth', methods: ['GET'])]
     public function checkAuth(Request $request, JWTEncoderInterface $jwtEncoder): JsonResponse
     {
-        $cookie = $request->cookies->get('auth_token'); // Получить куки с токеном
+        $cookie = $request->cookies->get('auth_token'); //get cookies with Token
 
         if (!$cookie) {
-            return new JsonResponse(['authenticated' => false], 200); // Пользователь не вошел в систему
+            return new JsonResponse(['authenticated' => false], 200); // if user dont have a token 
         }
 
         $decoded = $jwtEncoder->decode($cookie); // Декодировать токен
@@ -65,7 +65,4 @@ class AuthController extends AbstractController
         // Если декодирование успешно, вернуть успешный статус аутентификации
         return new JsonResponse(['authenticated' => true], 200);
     }
-
-
-
 }
