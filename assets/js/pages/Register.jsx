@@ -10,6 +10,7 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [registerFinish, setRegisterFinish] = useState('');
+    const [isLoading, setIsLoading] = useState(false); // Для отображения спиннера
 
     const handleRegistration = async (e) => {
         e.preventDefault();
@@ -26,6 +27,8 @@ const Register = () => {
             lastName,
         };
 
+        setIsLoading(true); // Начинаем загрузку
+
         try {
             const response = await fetch('/api/register', {
                 method: 'POST',
@@ -34,6 +37,8 @@ const Register = () => {
                 },
                 body: JSON.stringify(requestBody),
             });
+
+            setIsLoading(false); // Заканчиваем загрузку
 
             if (!response.ok) {
                 const errorData = await response.json(); // Извлечь сообщение об ошибке
@@ -44,6 +49,7 @@ const Register = () => {
             setRegisterFinish(true);
             setError(''); // Сброс ошибки
         } catch (err) {
+            setIsLoading(false); // Заканчиваем загрузку
             setError(err.message); // Показать сообщение об ошибке
         }
     };
@@ -52,58 +58,77 @@ const Register = () => {
         <div className="p-5">
             <div className="form-section">
                 <h1>{trans('lang.register')}</h1>
-
+                {isLoading && <div className="spinner">Loading...</div>}
+                {/* Спиннер при загрузке */}
                 {registerFinish ? (
                     <h3>{trans('lang.accountCreated')}</h3>
                 ) : (
                     <form onSubmit={handleRegistration}>
-                        {error && <div style={{ color: 'red' }}>{error}</div>}{' '}
+                        {error && <div style={{ color: 'red' }}>{error}</div>}
                         <div>
                             <input
+                                id="email"
                                 type="email"
+                                name="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
-                            <label>{trans('lang.email')}</label>
+                            <label htmlFor="email">{trans('lang.email')}</label>{' '}
                         </div>
                         <div>
                             <input
+                                id="email"
                                 type="password"
+                                name="email"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
-                            <label>{trans('lang.password')}</label>
+                            <label htmlFor="password">
+                                {trans('lang.password')}
+                            </label>
                         </div>
                         <div>
                             <input
+                                id="confirmPassword"
                                 type="password"
+                                name="confirmPassword"
                                 value={confirmPassword}
                                 onChange={(e) =>
                                     setConfirmPassword(e.target.value)
                                 }
                                 required
                             />
-                            <label>Confirm Password:</label>
+                            <label htmlFor="confirmPassword">
+                                Confirm Password
+                            </label>
                         </div>
                         <div>
                             <input
+                                id="firstName"
+                                name="firstName"
                                 type="text"
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
                                 required
                             />
-                            <label>{trans('lang.name')}</label>
+                            <label htmlFor="firstName">
+                                {trans('lang.name')}
+                            </label>
                         </div>
                         <div>
                             <input
+                                id="lastName"
+                                name="lastName"
                                 type="text"
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                                 required
                             />
-                            <label>{trans('lang.surname')}</label>
+                            <label htmlFor="lastName">
+                                {trans('lang.surname')}
+                            </label>
                         </div>
                         <button className="button" type="submit">
                             {trans('lang.register')}

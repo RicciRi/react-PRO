@@ -23,6 +23,8 @@ const Home = () => {
 
                 <div className="search-block">
                     <input
+                        id="search"
+                        name="search"
                         type="text"
                         className="form-control"
                         placeholder={trans('lang.WhatLooking')}

@@ -37,7 +37,9 @@ export default function Login() {
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     <div>
                         <input
+                            id="email" // Добавляем уникальный id
                             type="email"
+                            name="email" // Добавляем уникальный name
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
@@ -47,7 +49,9 @@ export default function Login() {
                     </div>
                     <div>
                         <input
+                            id="password" // Уникальный id
                             type="password"
+                            name="password" // Уникальный name
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required

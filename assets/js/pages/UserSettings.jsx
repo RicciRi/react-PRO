@@ -9,7 +9,7 @@ const UserSettings = () => {
 
     return (
         <div class="settings-container p-5">
-            <div class="form-section">
+            {/* <div class="form-section">
                 <h2>{trans('lang.settings')}</h2>
                 <div class="inpur-wrap">
                     <input
@@ -43,7 +43,7 @@ const UserSettings = () => {
                 <button type="submit" class="button">
                     {trans('lang.save')}
                 </button>
-            </div>
+            </div> */}
         </div>
     );
 };
