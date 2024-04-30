@@ -31,6 +31,7 @@ class LoginController extends AbstractController
         $requestData = json_decode($request->getContent(), true); // Парсинг данных из запроса
         $email = $requestData['email'];
         $password = $requestData['password'];
+        $tokenTTL = $this->getParameter('lexik_jwt_authentication.token_ttl'); // Отримати час життя токена
 
         // Поиск пользователя по email
         $user = $this->entityManager
@@ -50,7 +51,7 @@ class LoginController extends AbstractController
         $tokenPayload = [
             'email' => $user->getEmail(),
             'iat' => time(),
-            'exp' => time() + 3600, // 1 час
+            'exp' => time() + $tokenTTL, // 1 час
         ];
 
         $token = $JWTManager->createFromPayload($user, $tokenPayload); // Генерация токена
