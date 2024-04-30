@@ -17,7 +17,11 @@ export const UserProvider = ({ children }) => {
 
                 const data = await response.json();
 
-                if (response.ok && data.authenticated) {
+                if (data.tokenExpired) {
+                    tokenLogout();
+                }
+
+                if (data.authenticated) {
                     setIsAuthenticated(true);
                     const userResponse = await fetch('/api/user', {
                         credentials: 'include',
@@ -35,7 +39,6 @@ export const UserProvider = ({ children }) => {
                 console.error('An error occurred during checkAuth:', error);
             }
         }
-
         checkAuth();
     }, []);
 
@@ -52,6 +55,7 @@ export const UserProvider = ({ children }) => {
             const userData = await response.json();
             setUserData(userData.userInfo);
             navigate('/');
+            window.location.reload();
         } else {
             const errorData = await response.json();
             return errorData;
@@ -66,8 +70,23 @@ export const UserProvider = ({ children }) => {
         if (response.ok) {
             setIsAuthenticated(false);
             setUserData(null);
-            localStorage.removeItem('userData');
             navigate('/');
+            window.location.reload();
+        } else {
+            throw new Error('Logout failed');
+        }
+    };
+
+    const tokenLogout = async () => {
+        const response = await fetch('/api/logout', {
+            credentials: 'include',
+        });
+
+        if (response.ok) {
+            setIsAuthenticated(false);
+            setUserData(null);
+            navigate('/reLogin');
+            window.location.reload();
         } else {
             throw new Error('Logout failed');
         }
@@ -75,7 +94,7 @@ export const UserProvider = ({ children }) => {
 
     return (
         <UserContext.Provider
-            value={{ userData, isAuthenticated, login, logout }}
+            value={{ userData, isAuthenticated, tokenLogout, login, logout }}
         >
             {children}
         </UserContext.Provider>

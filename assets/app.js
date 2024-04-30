@@ -16,6 +16,7 @@ import Logout from './js/pages/Logout';
 import Register from './js/pages/Register';
 import UserSettings from './js/pages/UserSettings';
 import NotFound from './js/pages/NotFound';
+import ReLogin from './js/pages/reLogin';
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
                                     path="/register"
                                     element={<Register />}
                                 />
+                                <Route path="/reLogin" element={<ReLogin />} />
                             </Route>
 
                             <Route element={<AuthRequired />}>

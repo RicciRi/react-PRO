@@ -29,10 +29,12 @@ class AuthController extends AbstractController
 
     public function logout(): JsonResponse
     {
+        $tokenTTL = $this->getParameter('lexik_jwt_authentication.token_ttl'); // Получаем время жизни токена
+
         $cookie = new Cookie(
             'auth_token',
             '',
-            time() - 3600, // Удаление токена
+            time() - $tokenTTL, // Удаление токена
             '/',
             null,
             true, // Secure
@@ -56,10 +58,16 @@ class AuthController extends AbstractController
             return new JsonResponse(['authenticated' => false], 200); // if user dont have a token 
         }
 
-        $decoded = $jwtEncoder->decode($cookie); // Декодировать токен
-
-        if (!$decoded) {
-            return new JsonResponse(['authenticated' => false], 200); // Токен недействителен
+        try {
+            $decoded = $jwtEncoder->decode($cookie); // Декодировать токен
+            if (!$decoded) {
+                return new JsonResponse(['authenticated' => false], 200); // Токен недействителен
+            }
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'authenticated' => false,
+                'tokenExpired' => true
+            ], 200);  // Возвращаем ошибку 401, так как токен недействителен
         }
 
         // Если декодирование успешно, вернуть успешный статус аутентификации

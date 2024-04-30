@@ -115,11 +115,12 @@ class UserController extends AbstractController
         if (isset($data['lastName'])) {
             $user->setLastName($data['lastName']);
         }
+        $tokenTTL = $this->getParameter('lexik_jwt_authentication.token_ttl'); // Получаем время жизни токена
 
         $tokenPayload = [
             'email' => $data['email'],
             'iat' => time(),
-            'exp' => time() + 3600,
+            'exp' => time() + $tokenTTL,
         ];
 
         $this->entityManager->persist($user);

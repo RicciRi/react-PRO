@@ -55,6 +55,7 @@ const UserSettings = () => {
                 setError(errorData.error || trans('lang.updateFailed'));
             }
         } catch (e) {
+            window.location.reload();
             console.error('An error occurred while updating user info:', e);
             setError(lang('lang.unexpectedError'));
         }
