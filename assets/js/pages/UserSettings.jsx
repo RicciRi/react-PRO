@@ -9,28 +9,35 @@ const UserSettings = () => {
 
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
-    const [email, setEmail] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
+
+    const [formData, setFormData] = useState({
+        email: '',
+        firstName: '',
+        lastName: '',
+    });
 
     useEffect(() => {
         if (userData) {
-            setEmail(userData.email); // Установка начального значения
-            setFirstName(userData.firstName);
-            setLastName(userData.lastName);
+            setFormData({
+                email: userData.email,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+            });
         }
     }, [userData]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
         setError('');
-
-        const updateData = {
-            email,
-            firstName,
-            lastName,
-        };
 
         try {
             const response = await fetch('/api/user/update', {
@@ -38,7 +45,7 @@ const UserSettings = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(updateData),
+                body: JSON.stringify(formData),
             });
 
             if (response.ok) {
@@ -64,8 +71,9 @@ const UserSettings = () => {
                     <div class="inpur-wrap">
                         <input
                             type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
                             required
                         />
 
@@ -74,8 +82,9 @@ const UserSettings = () => {
                     <div class="inpur-wrap">
                         <input
                             type="text"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleChange}
                             required
                         />
                         <label>{trans('lang.name')}</label>
@@ -84,8 +93,9 @@ const UserSettings = () => {
                     <div class="inpur-wrap">
                         <input
                             type="text"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
+                            value={formData.lastName}
+                            name="lastName"
+                            onChange={handleChange}
                             required
                         />
                         <label>{trans('lang.surname')}</label>
