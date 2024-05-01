@@ -1,0 +1,3 @@
+framework:
+    mailer:
+        dsn: 'smtp://%env(MAIL_USER)%:%env(MAIL_PASS)%@smtp.gmail.com:587'

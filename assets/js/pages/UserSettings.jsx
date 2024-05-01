@@ -9,6 +9,7 @@ const UserSettings = () => {
 
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [formData, setFormData] = useState({
         email: '',
@@ -36,6 +37,10 @@ const UserSettings = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (isSubmitting) return;
+        setIsSubmitting(true);
+
         setMessage('');
         setError('');
 
@@ -58,6 +63,8 @@ const UserSettings = () => {
             window.location.reload();
             console.error('An error occurred while updating user info:', e);
             setError(lang('lang.unexpectedError'));
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -71,35 +78,41 @@ const UserSettings = () => {
 
                     <div class="inpur-wrap">
                         <input
+                            id="email"
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
                             required
+                            autoComplete="email"
                         />
 
-                        <label>{trans('lang.email')}</label>
+                        <label htmlFor="email">{trans('lang.email')}</label>
                     </div>
                     <div class="inpur-wrap">
                         <input
+                            id="firstName"
                             type="text"
                             name="firstName"
                             value={formData.firstName}
                             onChange={handleChange}
                             required
                         />
-                        <label>{trans('lang.name')}</label>
+                        <label htmlFor="firstName">{trans('lang.name')}</label>
                     </div>
 
                     <div class="inpur-wrap">
                         <input
+                            id="lastName"
                             type="text"
                             value={formData.lastName}
                             name="lastName"
                             onChange={handleChange}
                             required
                         />
-                        <label>{trans('lang.surname')}</label>
+                        <label htmlFor="lastName">
+                            {trans('lang.surname')}
+                        </label>
                     </div>
                     <button type="submit" class="button">
                         {trans('lang.save')}

@@ -41,6 +41,16 @@ class LoginController extends AbstractController
             return new JsonResponse(['error' => 'User not found'], 404); // Ошибка 404
         }
 
+        $isConfirmed = $user->getIsConfirmed();
+
+        if (!$isConfirmed) {
+            return new JsonResponse([
+                'error' => "You didn't confirm your email!",
+                'confirmEmail' => true
+            ], 404); // Ошибка 404
+        }
+
+
         // Проверка пароля
         if (!$passwordHasher->isPasswordValid($user, $password)) { // Если пароль неверен
             return new JsonResponse(['error' => 'Invalid password'], 401); // Ошибка 401

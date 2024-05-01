@@ -17,6 +17,8 @@ import Register from './js/pages/Register';
 import UserSettings from './js/pages/UserSettings';
 import NotFound from './js/pages/NotFound';
 import ReLogin from './js/pages/reLogin';
+import ConfirmEmail from './js/pages/ConfirmEmail';
+import NewConfirmEmail from './js/pages/NewConfirmEmail';
 
 function App() {
     return (
@@ -30,11 +32,19 @@ function App() {
 
                             <Route element={<ExitRequired />}>
                                 <Route path="login" element={<Login />} />
+                                <Route path="/reLogin" element={<ReLogin />} />
                                 <Route
                                     path="/register"
                                     element={<Register />}
                                 />
-                                <Route path="/reLogin" element={<ReLogin />} />
+                                <Route
+                                    path="register/confirm"
+                                    element={<ConfirmEmail />}
+                                />
+                                <Route
+                                    path="register/confirm/new"
+                                    element={<NewConfirmEmail />}
+                                />
                             </Route>
 
                             <Route element={<AuthRequired />}>

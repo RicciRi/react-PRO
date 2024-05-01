@@ -28,7 +28,7 @@ export default function ExitRequired() {
     }, []);
 
     if (isAuthenticated === null) {
-        return <p>Loading...</p>; // wait for response
+        return <p>Loading...</p>;
     }
 
     if (!isAuthenticated) {

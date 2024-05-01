@@ -175,6 +175,22 @@ main {
     .inpur-wrap {
         margin: 10px 0;
     }
+
+    .password-input-wrap {
+        position: relative;
+
+        input {
+            padding-right: 30px; /* Расстояние для размещения иконки */
+        }
+
+        span {
+            position: absolute;
+            top: 50%;
+            right: 10px; /* Расположение иконки */
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    }
 }
 
 // HOME PAGE
