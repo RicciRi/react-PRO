@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from '../context/TranslateContext';
-import { UserContext } from '../context/UserContext';
+import { useTranslation } from '../../../context/TranslateContext';
+import { UserContext } from '../../../context/UserContext';
 
 const UserSettings = () => {
     const { trans } = useTranslation();
@@ -69,14 +68,14 @@ const UserSettings = () => {
     };
 
     return (
-        <div class="settings-container p-5">
+        <div className="settings-container p-5">
             <form onSubmit={handleSubmit}>
-                <div class="form-section">
+                <div className="form-section">
                     <h2>{trans('lang.settings')}</h2>
                     {error && <p className="error-message">{error}</p>}
                     {message && <p className="success-message">{message}</p>}
 
-                    <div class="inpur-wrap">
+                    <div className="inpur-wrap">
                         <input
                             id="email"
                             type="email"
@@ -89,7 +88,7 @@ const UserSettings = () => {
 
                         <label htmlFor="email">{trans('lang.email')}</label>
                     </div>
-                    <div class="inpur-wrap">
+                    <div className="inpur-wrap">
                         <input
                             id="firstName"
                             type="text"
@@ -101,7 +100,7 @@ const UserSettings = () => {
                         <label htmlFor="firstName">{trans('lang.name')}</label>
                     </div>
 
-                    <div class="inpur-wrap">
+                    <div className="inpur-wrap">
                         <input
                             id="lastName"
                             type="text"
@@ -114,7 +113,7 @@ const UserSettings = () => {
                             {trans('lang.surname')}
                         </label>
                     </div>
-                    <button type="submit" class="button">
+                    <button type="submit" className="button">
                         {trans('lang.save')}
                     </button>
                 </div>

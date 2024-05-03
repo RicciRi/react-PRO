@@ -49,7 +49,7 @@ export default function Login() {
         return (
             <div className="p-5">
                 <div className="form-section">
-                    <h1>You need to conirm your email first!</h1>
+                    <h1>You need to confirm your email first!</h1>
                     <p>Please, follow link</p>
                     <Link to="/register/confirm">CONFIRM</Link>
                 </div>
@@ -71,7 +71,7 @@ export default function Login() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            autocomplete="email" // Добавляем autocomplete
+                            autoComplete="email" // Добавляем autocomplete
                         />
 
                         <label htmlFor="email">{trans('lang.email')}</label>
@@ -85,7 +85,7 @@ export default function Login() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                                autocomplete="current-password" // Добавляем autocomplete
+                                autoComplete="current-password" // Добавляем autocomplete
                             />
                             <span onClick={passwordToggle}>
                                 {hightPassword ? (

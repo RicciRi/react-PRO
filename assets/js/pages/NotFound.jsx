@@ -6,8 +6,8 @@ export default function NotFound() {
     const { trans } = useTranslation();
 
     return (
-        <div className="not-found-container">
-            <h1>{trans('lang.logout')}</h1>
+        <div className="container p-5">
+            <h1>{trans('lang.pageNotFound')}</h1>
             <Link to="/" className="link-button">
                 {trans('lang.returnHome')}
             </Link>
