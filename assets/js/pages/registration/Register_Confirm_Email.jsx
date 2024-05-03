@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from '../context/TranslateContext';
+import { useTranslation } from '../../context/TranslateContext';
 
-const ConfirmEmail = () => {
+const Register_Confirm_Email = () => {
     const { trans } = useTranslation();
     const navigate = useNavigate();
     const [confirmationCode, setConfirmationCode] = useState('');
@@ -73,4 +73,4 @@ const ConfirmEmail = () => {
     );
 };
 
-export default ConfirmEmail;
+export default Register_Confirm_Email;

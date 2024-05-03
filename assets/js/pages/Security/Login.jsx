@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from '../context/TranslateContext';
-import { UserContext } from '../context/UserContext';
+import { useTranslation } from '../../context/TranslateContext';
+import { UserContext } from '../../context/UserContext';
 
 export default function Login() {
     const { trans } = useTranslation();
@@ -89,9 +89,9 @@ export default function Login() {
                             />
                             <span onClick={passwordToggle}>
                                 {hightPassword ? (
-                                    <i class="fa-solid fa-eye-slash"></i>
+                                    <i className="fa-solid fa-eye-slash"></i>
                                 ) : (
-                                    <i class="fa-solid fa-eye"></i>
+                                    <i className="fa-solid fa-eye"></i>
                                 )}
                             </span>
                         </span>
