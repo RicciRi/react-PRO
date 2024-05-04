@@ -24,10 +24,10 @@ import Navigation from "./js/pages/Main_Navigation/navigation";
 import Import from "./js/pages/Main_Navigation/Import/Import";
 import Users from "./js/pages/Main_Navigation/ManageUsers/Users";
 import UserAccount from "./js/pages/Main_Navigation/User/UserAccount";
-import Block_1 from "./js/pages/Main_Navigation/User/Block_1";
-import Block_2 from "./js/pages/Main_Navigation/User/Block_2";
-import Block_3 from "./js/pages/Main_Navigation/User/Block_3";
-import Block_4 from "./js/pages/Main_Navigation/User/Block_4";
+import Block_1 from "./js/pages/Main_Navigation/ManageUsers/Block_1";
+import Block_2 from "./js/pages/Main_Navigation/ManageUsers/Block_2";
+import Block_3 from "./js/pages/Main_Navigation/ManageUsers/Block_3";
+import Block_4 from "./js/pages/Main_Navigation/ManageUsers/Block_4";
 
 function App() {
     return (
@@ -63,8 +63,21 @@ function App() {
                                         path="account"
                                         element={<UserAccount/>}
                                     >
+                                    </Route>
+                                    <Route
+                                        path="settings"
+                                        element={<UserSettings/>}
+                                    />
+                                    <Route
+                                        path="import"
+                                        element={<Import/>}
+                                    />
+                                    <Route
+                                        path="users"
+                                        element={<Users/>}
+                                    >
                                         <Route
-                                            path="block/1"
+                                            index
                                             element={<Block_1 />}
                                         />
                                         <Route
@@ -79,23 +92,8 @@ function App() {
                                             path="block/4"
                                             element={<Block_4 />}
                                         />
-
                                     </Route>
-                                    <Route
-                                        path="settings"
-                                        element={<UserSettings/>}
-                                    />
-                                    <Route
-                                        path="import"
-                                        element={<Import/>}
-                                    />
-                                    <Route
-                                        path="users"
-                                        element={<Users/>}
-                                    />
                                 </Route>
-
-
                             </Route>
                             <Route path="*" element={<NotFound/>}/>
                         </Route>

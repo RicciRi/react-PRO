@@ -496,6 +496,178 @@ main {
     }
 }
 
+// Account
+.account-settings-container {
+    color: var(--text-color) !important;
+    background-color: var(--main-navbar-background-color);
+    height: 100%;
+    padding: 0 0 20px 0;
+    font-family: 'Poppins', sans-serif;
+
+    h3 {
+        font-weight: 400;
+        font-size: 20px;
+    }
+
+    li {
+        margin: 40px 0;
+        font-size: 20px;
+        font-weight: 200;
+    }
+
+    .ghost-text {
+        margin-top: 10px;
+        font-size: 12px;
+        font-weight: 200;
+    }
+
+    .info-account {
+        color: var(--text-color);
+        background-color: var(--card-background-color);
+        min-height: 90%;
+    }
+
+    .wrap-account-image {
+        width: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        a {
+            margin-top: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 100;
+            font-size: 12px;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+    }
+
+    .account-image {
+        background-color: var(--image-simulator);
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 1px solid var(--text-color);
+    }
+
+    .account-image .info-account {
+        color: var(--text-color);
+        min-height: 800px;
+    }
+
+    .info-account-section {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        padding-top: 30px;
+
+        ul {
+            min-width: 300px;
+            list-style: none;
+        }
+
+        .ul-border {
+            li:not(:last-child) {
+                border-bottom: 1px solid var(--text-color);
+            }
+        }
+
+        .color-site-toggle {
+            margin: 10px 0;
+
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 100px;
+                height: 34px;
+                cursor: pointer;
+            }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border-radius: 18px;
+                background-color: rgba(217, 217, 217, 1);
+                transition: 0.4s;
+            }
+
+            .slider:before {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                content: "";
+                height: 34px;
+                width: 54px;
+                border: 1px solid white;
+                border-radius: 18px;
+                background-color: rgba(29, 29, 29, 1);
+                transition: 0.4s;
+            }
+
+            .slider:after {
+                border: 1px solid black;
+            }
+
+            input:checked + .slider {
+                background-color: rgba(29, 29, 29, 1);
+            }
+
+            input:checked + .slider:before {
+                background-color: rgba(217, 217, 217, 1);
+                transform: translateX(46px);
+            }
+
+            .moon, .sun {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 20px;
+                padding: 0 5px;
+            }
+
+            .moon {
+                left: 6px;
+            }
+
+            .sun {
+                right: 10px;
+            }
+        }
+
+
+    }
+
+    @include media-breakpoint-down(lg) {
+        .info-account-section {
+            padding-top: 0;
+            align-items: center;
+        }
+        .wrap-account-image {
+            width: 100px;
+            padding: 20px 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .account-image {
+            width: 100px;
+            height: 100px;
+            margin-right: auto;
+        }
+    }
+}
+
+
 // footer
 
 footer {
