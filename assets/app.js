@@ -3,6 +3,7 @@ import './styles/app.scss';
 import 'bootstrap';
 
 import React from 'react';
+import Modal from 'react-modal';
 import {createRoot} from 'react-dom/client'; // Правильный импорт
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {TranslationProvider} from './js/context/TranslateContext';
@@ -17,7 +18,8 @@ import Logout from './js/pages/Logout';
 import Register from './js/pages/registration/Register';
 import UserSettings from './js/pages/Main_Navigation/User/UserSettings';
 import NotFound from './js/pages/NotFound';
-import ReLogin from './js/pages/reLogin';
+import SessionExpired from './js/pages/SessionExpired'
+
 import Register_Confirm_Email from './js/pages/registration/Register_Confirm_Email';
 import Register_New_Confirm_Email from './js/pages/registration/Register_New_Confirm_Email';
 import Navigation from "./js/pages/Main_Navigation/navigation";
@@ -28,6 +30,8 @@ import Block_1 from "./js/pages/Main_Navigation/ManageUsers/Block_1";
 import Block_2 from "./js/pages/Main_Navigation/ManageUsers/Block_2";
 import Block_3 from "./js/pages/Main_Navigation/ManageUsers/Block_3";
 import Block_4 from "./js/pages/Main_Navigation/ManageUsers/Block_4";
+
+
 
 function App() {
     return (
@@ -41,7 +45,7 @@ function App() {
 
                             <Route element={<ExitRequired/>}>
                                 <Route path="login" element={<Login/>}/>
-                                <Route path="/reLogin" element={<ReLogin/>}/>
+                                <Route path="/session/expired" element={<SessionExpired />}/>
                                 <Route
                                     path="/register"
                                     element={<Register/>}
@@ -103,6 +107,7 @@ function App() {
         </BrowserRouter>
     );
 }
+Modal.setAppElement('#root'); // Здесь 'root' - это ID корневого элемента в HTML
 
 const container = document.getElementById('root');
 const root = createRoot(container); // Создание корневого элемента

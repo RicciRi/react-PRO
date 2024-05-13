@@ -1,46 +1,74 @@
 import React, { createContext, useState, useEffect } from 'react';
+import SessionExpired from "../pages/SessionExpired";
 import { useNavigate } from 'react-router-dom';
+
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        transform: 'translate(-50%, -50%)', // Центрирование
+        padding: '20px', // Дополнительное пространство
+        background: 'none !important', // Цвет фона
+        borderRadius: '10px', // Закругленные края
+        border: '1px solid #ccc', // Граница
+    },
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Полупрозрачный фон
+    },
+};
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const [userData, setUserData] = useState();
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(null);
+    const [isTokenExpiredModalOpen, setIsTokenExpiredModalOpen] = useState(false); // Состояние модального окна
     const navigate = useNavigate();
 
+
     useEffect(() => {
-        async function checkAuth() {
-            try {
-                const response = await fetch('/api/check-auth', {
+        checkAuth();
+
+        const interval = setInterval(() => {
+            checkAuth();
+        }, 300000); // 5 min = 300000
+
+        return () => clearInterval(interval); // Очистка таймера при размонтировании
+    }, []);
+
+    const  checkAuth = async () => {
+        try {
+            const response = await fetch('/api/check-auth', {
+                credentials: 'include',
+            });
+
+            const data = await response.json();
+
+            if (data.tokenExpired) {
+                tokenLogout();
+            }
+
+            if (data.authenticated) {
+                setIsAuthenticated(true);
+                const userResponse = await fetch('/api/user', {
                     credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
                 });
 
-                const data = await response.json();
-
-                if (data.tokenExpired) {
-                    tokenLogout();
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    setUserData(userData);
                 }
-
-                if (data.authenticated) {
-                    setIsAuthenticated(true);
-                    const userResponse = await fetch('/api/user', {
-                        credentials: 'include',
-                        headers: { 'Content-Type': 'application/json' },
-                    });
-
-                    if (userResponse.ok) {
-                        const userData = await userResponse.json();
-                        setUserData(userData);
-                    }
-                } else {
-                    setIsAuthenticated(false);
-                }
-            } catch (error) {
-                console.error('An error occurred during checkAuth:', error);
+            } else {
+                setIsAuthenticated(false);
             }
+        } catch (error) {
+            console.error('An error occurred during checkAuth:', error);
         }
-        checkAuth();
-    }, []);
+    }
+
 
     const login = async (credentials) => {
         const response = await fetch('/api/login', {
@@ -83,19 +111,25 @@ export const UserProvider = ({ children }) => {
         });
 
         if (response.ok) {
+            setIsTokenExpiredModalOpen(true); // Открываем модальное окно
             setIsAuthenticated(false);
             setUserData(null);
-            navigate('/reLogin');
-            window.location.reload();
         } else {
             throw new Error('Logout failed');
         }
     };
 
+
     return (
         <UserContext.Provider
-            value={{ userData, isAuthenticated, tokenLogout, login, logout }}
+            value={{ userData, isAuthenticated, tokenLogout, login, logout, checkAuth }}
         >
+            <SessionExpired
+                isOpen={isTokenExpiredModalOpen}
+                onClose={() => setIsTokenExpiredModalOpen(false)}
+                style={customStyles}
+
+            />
             {children}
         </UserContext.Provider>
     );

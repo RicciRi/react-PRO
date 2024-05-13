@@ -8,7 +8,7 @@ import { IoMdSunny } from "react-icons/io";
 export default function UserAccount() {
     const {trans} = useTranslation()
     const {userData} = useContext(UserContext)
-    console.log(userData)
+
     function handleThemeToggle() {
         console.log('change!')
     }

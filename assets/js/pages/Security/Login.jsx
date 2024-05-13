@@ -1,11 +1,13 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from '../../context/TranslateContext';
 import { UserContext } from '../../context/UserContext';
 
 export default function Login() {
     const { trans } = useTranslation();
     const { login } = useContext(UserContext);
+    const location = useLocation();
+
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -62,7 +64,10 @@ export default function Login() {
             <div className="form-section">
                 <form onSubmit={handleLogin}>
                     <h1>{trans('lang.signIn')}</h1>
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {location.state?.message && (
+                        <h3 className="error-message">{location.state.message}</h3>
+                    )}
+                    {error && <p className='error-message'>{error}</p>}
                     <div>
                         <input
                             id="email" // Добавляем уникальный id

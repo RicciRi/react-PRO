@@ -1,29 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
+import React, {useState, useEffect, useContext} from 'react';
+import {Outlet, Navigate} from 'react-router-dom';
+import {UserContext} from '../../context/UserContext'
 
 // Pages such as Login and Registation are only available when the user is logged out!
-export default function ExitRequired() {
-    const [isAuthenticated, setIsAuthenticated] = useState(null);
+export default function AuthRequired() {
+    const {isAuthenticated, checkAuth, expiredToken} = useContext(UserContext);
 
     useEffect(() => {
-        async function checkAuth() {
-            try {
-                const response = await fetch('/api/check-auth', {
-                    credentials: 'include',
-                });
-
-                const data = await response.json(); // Получение данных из ответа
-
-                if (response.ok && data.authenticated) {
-                    setIsAuthenticated(true);
-                } else {
-                    setIsAuthenticated(false);
-                }
-            } catch (error) {
-                console.error('An error occurred during checkAuth:', error); // Обработка неожиданных ошибок
-            }
-        }
-
         checkAuth();
     }, []);
 
@@ -32,7 +15,14 @@ export default function ExitRequired() {
     }
 
     if (!isAuthenticated) {
-        return <Navigate to="/logout" replace />;
+        return <Navigate
+            to="/login"
+            state={{
+                message: 'You must log in first',
+                from: location.pathname,
+            }}
+            replace
+        />;
     }
-    return <Outlet />;
+    return <Outlet/>;
 }
