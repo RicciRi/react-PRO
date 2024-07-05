@@ -1,10 +1,10 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { useTranslation } from '../../../context/TranslateContext';
-import { UserContext } from '../../../context/UserContext';
+import React, {useState, useContext, useEffect} from 'react';
+import {useTranslation} from '../../../context/TranslateContext';
+import {UserContext} from '../../../context/UserContext';
 
 const UserSettings = () => {
-    const { trans } = useTranslation();
-    const { userData } = useContext(UserContext);
+    const {trans} = useTranslation();
+    const {userData} = useContext(UserContext);
 
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
@@ -27,7 +27,7 @@ const UserSettings = () => {
     }, [userData]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setFormData((prev) => ({
             ...prev,
             [name]: value,
@@ -61,7 +61,7 @@ const UserSettings = () => {
         } catch (e) {
             window.location.reload();
             console.error('An error occurred while updating user info:', e);
-            setError(lang('lang.unexpectedError'));
+            setError(trans('lang.unexpectedError'));
         } finally {
             setIsSubmitting(false);
         }
@@ -75,19 +75,6 @@ const UserSettings = () => {
                     {error && <p className="error-message">{error}</p>}
                     {message && <p className="success-message">{message}</p>}
 
-                    <div className="inpur-wrap">
-                        <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                            autoComplete="email"
-                        />
-
-                        <label htmlFor="email">{trans('lang.email')}</label>
-                    </div>
                     <div className="inpur-wrap">
                         <input
                             id="firstName"

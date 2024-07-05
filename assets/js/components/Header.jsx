@@ -124,14 +124,14 @@ const Header = () => {
                                         </Link>
                                     </li>
 
-                                    <li className="list-items">
-                                        <div className="icon-wrap">
-                                            <LuImport />
-                                        </div>
-                                        <Link className="drop-items" to={"nav/import"}>
-                                            {trans('lang.import')}
-                                        </Link>
-                                    </li>
+                                    {/*<li className="list-items">*/}
+                                    {/*    <div className="icon-wrap">*/}
+                                    {/*        <LuImport />*/}
+                                    {/*    </div>*/}
+                                    {/*    <Link className="drop-items" to={"nav/import"}>*/}
+                                    {/*        {trans('lang.import')}*/}
+                                    {/*    </Link>*/}
+                                    {/*</li>*/}
                                     {/*{% endif %}*/}
 
                                     <li className="list-items">

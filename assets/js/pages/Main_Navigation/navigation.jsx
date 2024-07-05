@@ -39,14 +39,14 @@ export default function Navigation() {
                                 {trans('lang.settings')}
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to="import">
-                                <span className='icon-wrap'>
-                                    <LuImport/>
-                                </span>
-                                {trans('lang.import')}
-                            </NavLink>
-                        </li>
+                        {/*<li>*/}
+                        {/*    <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to="import">*/}
+                        {/*        <span className='icon-wrap'>*/}
+                        {/*            <LuImport/>*/}
+                        {/*        </span>*/}
+                        {/*        {trans('lang.import')}*/}
+                        {/*    </NavLink>*/}
+                        {/*</li>*/}
                     </ul>
                 </div>
             </div>

@@ -10,30 +10,37 @@ use App\Repository\UserRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\Validator\Validator\ValidatorInterface; // Для валидации
-use Symfony\Component\Serializer\SerializerInterface; // Для десериализации данных
-use Doctrine\ORM\EntityManagerInterface; // Подключение EntityManagerInterface
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface; // Импортируем класс
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
+// Для валидации
+use Symfony\Component\Serializer\SerializerInterface;
+
+// Для десериализации данных
+use Doctrine\ORM\EntityManagerInterface;
+
+// Подключение EntityManagerInterface
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+
+// Импортируем класс
 use App\Entity\User;
-
-
 
 
 class UserController extends AbstractController
 {
-    private UserRepository $userRepository;
-    private EntityManagerInterface $entityManager; // Объявление свойства
+    private UserRepository           $userRepository;
+    private EntityManagerInterface   $entityManager; // Объявление свойства
     private JWTTokenManagerInterface $JWTManager; // Объявление свойства JWTManager
 
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        UserRepository $userRepository,
-        JWTTokenManagerInterface $JWTManager // Внедрение JWTManager
-    ) {
-        $this->entityManager = $entityManager;
+        EntityManagerInterface   $entityManager,
+        UserRepository           $userRepository,
+        JWTTokenManagerInterface $JWTManager, // Внедрение JWTManager
+    )
+    {
+        $this->entityManager  = $entityManager;
         $this->userRepository = $userRepository;
-        $this->JWTManager = $JWTManager; // Инициализация JWTManager
+        $this->JWTManager     = $JWTManager; // Инициализация JWTManager
 
     }
 
@@ -65,21 +72,22 @@ class UserController extends AbstractController
 
         // Возвращаем информацию о пользователе
         return new JsonResponse([
-            'id' => $user->getId(),
-            'email' => $user->getEmail(),
-            'roles' => $user->getRoles(),
-            'firstName' => $user->getFirstName(),
-            'lastName' => $user->getLastName(),
-        ]);
+                                    'id'        => $user->getId(),
+                                    'email'     => $user->getEmail(),
+                                    'roles'     => $user->getRoles(),
+                                    'firstName' => $user->getFirstName(),
+                                    'lastName'  => $user->getLastName(),
+                                ]);
     }
 
     #[Route('/api/user/update', name: 'update_user', methods: ['PATCH'])]
     public function updateUser(
-        Request $request,
+        Request             $request,
         JWTEncoderInterface $jwtEncoder,
-        ValidatorInterface $validator
+        ValidatorInterface  $validator,
 
-    ): JsonResponse {
+    ): JsonResponse
+    {
         $cookie = $request->cookies->get('auth_token');
 
         if (!$cookie) {
@@ -100,13 +108,14 @@ class UserController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        if (isset($data['email']) && $data['email'] !== $user->getEmail()) {
-            $existingUser = $this->userRepository->findOneBy(['email' => $data['email']]);
-            if ($existingUser && $existingUser->getId() !== $user->getId()) {
-                return new JsonResponse(['error' => 'Email is already in use'], 400);
-            }
-            $user->setEmail($data['email']);
-        }
+        // if we want to change email
+        //        if (isset($data['email']) && $data['email'] !== $user->getEmail()) {
+        //            $existingUser = $this->userRepository->findOneBy(['email' => $data['email']]);
+        //            if ($existingUser && $existingUser->getId() !== $user->getId()) {
+        //                return new JsonResponse(['error' => 'Email is already in use'], 400);
+        //            }
+        //            $user->setEmail($data['email']);
+        //        }
 
         if (isset($data['firstName'])) {
             $user->setFirstName($data['firstName']);
@@ -119,8 +128,8 @@ class UserController extends AbstractController
 
         $tokenPayload = [
             'email' => $data['email'],
-            'iat' => time(),
-            'exp' => time() + $tokenTTL,
+            'iat'   => time(),
+            'exp'   => time() + $tokenTTL,
         ];
 
         $this->entityManager->persist($user);
@@ -137,16 +146,16 @@ class UserController extends AbstractController
             true, // Secure
             true, // HTTP-only
             false,
-            'Lax' // SameSite
+            'Lax', // SameSite
         );
 
         $response = new JsonResponse([
-            'id' => $user->getId(),
-            'email' => $user->getEmail(),
-            'roles' => $user->getRoles(),
-            'firstName' => $user->getFirstName(),
-            'lastName' => $user->getLastName(),
-        ]);
+                                         'id'        => $user->getId(),
+                                         'email'     => $user->getEmail(),
+                                         'roles'     => $user->getRoles(),
+                                         'firstName' => $user->getFirstName(),
+                                         'lastName'  => $user->getLastName(),
+                                     ]);
 
         $response->headers->setCookie($cookie);
 

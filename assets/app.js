@@ -23,7 +23,6 @@ import SessionExpired from './js/pages/SessionExpired'
 import Register_Confirm_Email from './js/pages/registration/Register_Confirm_Email';
 import Register_New_Confirm_Email from './js/pages/registration/Register_New_Confirm_Email';
 import Navigation from "./js/pages/Main_Navigation/navigation";
-import Import from "./js/pages/Main_Navigation/Import/Import";
 import Users from "./js/pages/Main_Navigation/ManageUsers/Users";
 import UserAccount from "./js/pages/Main_Navigation/User/UserAccount";
 import Block_1 from "./js/pages/Main_Navigation/ManageUsers/Block_1";
@@ -71,10 +70,6 @@ function App() {
                                     <Route
                                         path="settings"
                                         element={<UserSettings/>}
-                                    />
-                                    <Route
-                                        path="import"
-                                        element={<Import/>}
                                     />
                                     <Route
                                         path="users"
