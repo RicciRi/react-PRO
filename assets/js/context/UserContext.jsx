@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import SessionExpired from "../pages/SessionExpired";
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 const customStyles = {
     content: {
@@ -26,6 +26,12 @@ export const UserProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const [isTokenExpiredModalOpen, setIsTokenExpiredModalOpen] = useState(false); // Состояние модального окна
     const navigate = useNavigate();
+    const location = useLocation()
+    let from = location.state?.from || '/';
+    if (from === '/logout') {
+        from = '/'
+    }
+
 
 
     useEffect(() => {
@@ -82,7 +88,7 @@ export const UserProvider = ({ children }) => {
             setIsAuthenticated(true);
             const userData = await response.json();
             setUserData(userData.userInfo);
-            navigate('/');
+            navigate(from, { replace: true });
             window.location.reload();
         } else {
             const errorData = await response.json();
@@ -98,7 +104,7 @@ export const UserProvider = ({ children }) => {
         if (response.ok) {
             setIsAuthenticated(false);
             setUserData(null);
-            navigate('/');
+            navigate('/login');
             window.location.reload();
         } else {
             throw new Error('Logout failed');

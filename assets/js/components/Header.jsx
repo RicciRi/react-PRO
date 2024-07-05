@@ -14,6 +14,15 @@ const Header = () => {
     const {trans} = useTranslation();
     const {isAuthenticated, userData, logout} = useContext(UserContext);
 
+    if(isAuthenticated === null ) {
+        return (
+            <header>
+                <nav className="navbar">
+                    <div className="nav-container"></div>
+                </nav>
+            </header>
+        )
+    }
     return (
         <header>
             <nav className="navbar">
