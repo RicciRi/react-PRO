@@ -301,11 +301,11 @@ header {
   }
 }
 
-.avatar-wrap {
+.account-image {
   height: var(--avatar-size);
   width: var(--avatar-size);
   border-radius: 50%;
-  background: #0a53be;
+  //background: #0a53be;
   cursor: pointer;
 }
 
@@ -527,13 +527,13 @@ main {
     }
   }
 
-  .account-image {
-    background-color: var(--image-simulator);
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 1px solid var(--text-color);
-  }
+  //.account-image {
+  //  background-color: var(--image-simulator);
+  //  width: 150px;
+  //  height: 150px;
+  //  border-radius: 50%;
+  //  border: 1px solid var(--text-color);
+  //}
 
   .account-image .info-account {
     color: var(--text-color);
@@ -643,11 +643,11 @@ main {
       margin-left: auto;
       margin-right: auto;
     }
-    .account-image {
-      width: 100px;
-      height: 100px;
-      margin-right: auto;
-    }
+    //.account-image {
+    //  width: 100px;
+    //  height: 100px;
+    //  margin-right: auto;
+    //}
   }
 }
 
@@ -732,7 +732,7 @@ footer {
     background: var(--dropdown-menu-background-color);
     z-index: 1008;
 
-    .avatar-wrap {
+    .account-image {
       margin-right: 6px;
     }
   }

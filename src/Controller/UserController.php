@@ -24,6 +24,8 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 // Импортируем класс
 use App\Entity\User;
 
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+
 
 class UserController extends AbstractController
 {
@@ -77,10 +79,11 @@ class UserController extends AbstractController
                                     'roles'     => $user->getRoles(),
                                     'firstName' => $user->getFirstName(),
                                     'lastName'  => $user->getLastName(),
+                                    'accountImage' => $user->getAccountImage()
                                 ]);
     }
 
-    #[Route('/api/user/update', name: 'update_user', methods: ['PATCH'])]
+    #[Route('/api/user/update', name: 'update_user', methods: ['POST'])]
     public function updateUser(
         Request             $request,
         JWTEncoderInterface $jwtEncoder,
@@ -106,16 +109,24 @@ class UserController extends AbstractController
             return new JsonResponse(['error' => 'User not found'], 404);
         }
 
-        $data = json_decode($request->getContent(), true);
+        // $data = json_decode($request->getContent(), true);
+        $data = $request->request->all();
+        $file = $request->files->get('AccountImage');
 
-        // if we want to change email
-        //        if (isset($data['email']) && $data['email'] !== $user->getEmail()) {
-        //            $existingUser = $this->userRepository->findOneBy(['email' => $data['email']]);
-        //            if ($existingUser && $existingUser->getId() !== $user->getId()) {
-        //                return new JsonResponse(['error' => 'Email is already in use'], 400);
-        //            }
-        //            $user->setEmail($data['email']);
-        //        }
+        if ($file) {
+            $originalFilename = $file->getClientOriginalName();
+            $newFilename      = uniqid() . '.' . $file->guessExtension();
+
+            try {
+                $file->move(
+                    $this->getParameter('upload_directory'),
+                    $originalFilename,
+                );
+                $user->setAccountImage($originalFilename); // Сохранение имени файла в базе данных
+            } catch (FileException $e) {
+                return new JsonResponse(['success' => false, 'error' => $e->getMessage()]);
+            }
+        }
 
         if (isset($data['firstName'])) {
             $user->setFirstName($data['firstName']);
@@ -127,7 +138,7 @@ class UserController extends AbstractController
         $tokenTTL = $this->getParameter('lexik_jwt_authentication.token_ttl'); // Получаем время жизни токена
 
         $tokenPayload = [
-            'email' => $data['email'],
+            'email' => $user->getEmail(),
             'iat'   => time(),
             'exp'   => time() + $tokenTTL,
         ];
@@ -150,11 +161,14 @@ class UserController extends AbstractController
         );
 
         $response = new JsonResponse([
-                                         'id'        => $user->getId(),
-                                         'email'     => $user->getEmail(),
-                                         'roles'     => $user->getRoles(),
-                                         'firstName' => $user->getFirstName(),
-                                         'lastName'  => $user->getLastName(),
+                                         'response'     => $data,
+                                         'file'         => $file,
+                                         'id'           => $user->getId(),
+                                         'email'        => $user->getEmail(),
+                                         'roles'        => $user->getRoles(),
+                                         'firstName'    => $user->getFirstName(),
+                                         'lastName'     => $user->getLastName(),
+                                         'accountImage' => $user->getAccountImage(),
                                      ]);
 
         $response->headers->setCookie($cookie);

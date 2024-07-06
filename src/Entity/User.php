@@ -19,13 +19,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $password = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $password = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $accountImage = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $isConfirmed = false;
@@ -101,6 +104,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+        return $this;
+    }
+
+    public function getAccountImage(): ?string
+    {
+        return $this->accountImage;
+    }
+
+    public function setAccountImage(string $accountImage): static
+    {
+        $this->accountImage = $accountImage;
         return $this;
     }
 

@@ -72,7 +72,13 @@ const Header = ({onClick}) => {
                         </ul>
                     </>) : (<>
                         {/*{#  DROPDOWN MENU for authorized users #}*/}
-                        <div className="avatar-wrap" id='avatar-wrap' onClick={onClick}></div>
+                        {userData?.accountImage ?
+                            <div className="avatar-wrap" id='avatar-wrap' onClick={onClick}>
+                                <img className="account-image" src={`/uploads/photos/${userData?.accountImage}`} alt="alt"/>
+                            </div>
+                            :
+                            <div className="avatar-wrap" id='avatar-wrap' onClick={onClick}></div>
+                        }
                     </>)}
                 </div>
             </div>

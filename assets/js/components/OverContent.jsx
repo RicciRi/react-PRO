@@ -32,7 +32,7 @@ const OverContent = ({onClick}) => {
             <div className="nav-menu dialog-backdrop" id="nav-menu">
                 <div className="d-flex-between">
                     <div className="d-flex-start">
-                        <div className="avatar-wrap"></div>
+                        <img className="account-image" src={`/uploads/photos/${userData?.accountImage}`} alt="alt"/>
                         <div className="d-column-start">
                             <span className="f-14 color-muted">{userData?.firstName} {userData?.lastName}</span>
                         </div>

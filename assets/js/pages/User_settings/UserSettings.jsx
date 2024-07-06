@@ -1,17 +1,19 @@
 import React, {useState, useContext, useEffect} from 'react';
+import axios from 'axios';
 import {useTranslation} from '../../context/TranslateContext';
 import {UserContext} from '../../context/UserContext';
 
-const UserSettings = () => {
+export default function UserSettings() {
+
     const {trans} = useTranslation();
-    const {userData} = useContext(UserContext);
+    const {userData, checkAuth} = useContext(UserContext);
 
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [file, setFile] = useState(null);
 
     const [formData, setFormData] = useState({
-        email: '',
         firstName: '',
         lastName: '',
     });
@@ -19,7 +21,6 @@ const UserSettings = () => {
     useEffect(() => {
         if (userData) {
             setFormData({
-                email: userData.email,
                 firstName: userData.firstName,
                 lastName: userData.lastName,
             });
@@ -34,6 +35,17 @@ const UserSettings = () => {
         }));
     };
 
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+
+        if (e.size > 1024 * 1024) {
+            alert('Размер файла не должен превышать 1MB.');
+            return;
+        }
+
+        setFile(selectedFile);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -43,23 +55,28 @@ const UserSettings = () => {
         setMessage('');
         setError('');
 
+        const formPayload = new FormData();
+        formPayload.append('firstName', formData.firstName);
+        formPayload.append('lastName', formData.lastName);
+        if (file) {
+            formPayload.append('AccountImage', file);
+        }
+
         try {
             const response = await fetch('/api/user/update', {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
+                method: 'POST',
+                body: formPayload,
             });
 
             if (response.ok) {
+                const data = await response
                 setMessage(trans('lang.dataUpdated'));
+                checkAuth()
             } else {
                 const errorData = await response.json();
                 setError(errorData.error || trans('lang.updateFailed'));
             }
         } catch (e) {
-            window.location.reload();
             console.error('An error occurred while updating user info:', e);
             setError(trans('lang.unexpectedError'));
         } finally {
@@ -69,6 +86,12 @@ const UserSettings = () => {
 
     return (
         <div className="settings-container p-5">
+            {/*{userData?.accountImage ?*/}
+            {/*    <img src={`/uploads/photos/${userData?.accountImage}`} alt="alt"/>*/}
+            {/*    :*/}
+            {/*    <p>.....</p>*/}
+            {/*}*/}
+
             <form onSubmit={handleSubmit}>
                 <div className="form-section">
                     <h2>{trans('lang.settings')}</h2>
@@ -96,10 +119,20 @@ const UserSettings = () => {
                             onChange={handleChange}
                             required
                         />
-                        <label htmlFor="lastName">
-                            {trans('lang.surname')}
-                        </label>
+                        <label htmlFor="lastName">{trans('lang.surname')}</label>
                     </div>
+
+                    <div className="input-wrap">
+                        <input
+                            id="AccountImage"
+                            type="file"
+                            accept=".jpg,.jpeg,.png"
+                            name="AccountImage"
+                            onChange={handleFileChange}
+                        />
+                        <label htmlFor="AccountImage">{trans('lang.accountImage')}</label>
+                    </div>
+
                     <button type="submit" className="button">
                         {trans('lang.save')}
                     </button>
@@ -109,4 +142,3 @@ const UserSettings = () => {
     );
 };
 
-export default UserSettings;
