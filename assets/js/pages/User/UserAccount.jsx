@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import {Link, NavLink, Outlet} from "react-router-dom";
-import {useTranslation} from "../../../context/TranslateContext";
-import {UserContext} from "../../../context/UserContext";
+import {useTranslation} from "../../context/TranslateContext";
+import {UserContext} from "../../context/UserContext";
 import { FaMoon } from "react-icons/fa";
 import { IoMdSunny } from "react-icons/io";
 

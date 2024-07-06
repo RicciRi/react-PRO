@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { useTranslation } from '../context/TranslateContext';
-import { UserContext } from '../context/UserContext';
+import { useTranslation } from '../../context/TranslateContext';
+import { UserContext } from '../../context/UserContext';
 
 export default function Logout() {
     const { trans } = useTranslation();

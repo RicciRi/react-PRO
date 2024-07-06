@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import SessionExpired from "../pages/SessionExpired";
+import SessionExpired from "../pages/Another/SessionExpired";
 import {useLocation, useNavigate} from 'react-router-dom';
 
 const customStyles = {

@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {useTranslation} from '../../../context/TranslateContext';
-import {UserContext} from '../../../context/UserContext';
+import {useTranslation} from '../../context/TranslateContext';
+import {UserContext} from '../../context/UserContext';
 
 const UserSettings = () => {
     const {trans} = useTranslation();

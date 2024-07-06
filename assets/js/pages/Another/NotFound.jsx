@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from '../context/TranslateContext';
+import { useTranslation } from '../../context/TranslateContext';
 
 export default function NotFound() {
     const { trans } = useTranslation();

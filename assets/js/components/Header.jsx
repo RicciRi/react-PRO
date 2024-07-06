@@ -1,43 +1,37 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useTranslation} from '../context/TranslateContext';
 import {UserContext} from '../context/UserContext';
 
-import {FaRegUser, FaUsers} from "react-icons/fa";
-import {CiSettings, CiLogout} from "react-icons/ci";
-import {LuImport} from "react-icons/lu";
+
+import {IoPaperPlaneOutline} from "react-icons/io5";
+import {AiOutlineInbox} from "react-icons/ai";
+import {MdOutlineMailOutline} from "react-icons/md";
+import { RiContactsBook3Line } from "react-icons/ri";
 
 
-
-
-const Header = () => {
+const Header = ({onClick}) => {
     const {trans} = useTranslation();
     const {isAuthenticated, userData, logout} = useContext(UserContext);
 
-    if(isAuthenticated === null ) {
+    if (isAuthenticated === null) {
         return (
             <header>
-                <nav className="navbar">
+                <nav>
                     <div className="nav-container"></div>
                 </nav>
-            </header>
-        )
+            </header>)
     }
+
     return (
         <header>
-            <nav className="navbar">
+            <div className="navbar-container">
                 <div className="nav-container">
                     {/*{#    LOGO BY DEFAULT HERE #}*/}
                     <a className="navbar-brand" href="/">
                         <h1>RR</h1>
                     </a>
                     {!isAuthenticated ? (<>
-                        {/*{# LINKS #}*/}
-                        {/*<div className="link-wrap d-none d-md-flex">*/}
-                        {/*    <a href="#" className="nav-link">Features</a>*/}
-                        {/*    <a href="#" className="nav-link">Price</a>*/}
-                        {/*</div>*/}
-                        {/*{# BUTTONS #}*/}
                         <div className="d-flex">
                             <Link
                                 to="/login"
@@ -78,77 +72,55 @@ const Header = () => {
                         </ul>
                     </>) : (<>
                         {/*{#  DROPDOWN MENU for authorized users #}*/}
-                        <ul className="navbar-nav">
-                            <li className="dropdown-link">
-                                <a className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
-                                   aria-expanded="true">
-                                    {/*{# {% if license == 'pro' and app.user.account_image %} #}*/}
-                                    {/*{# HERE WILL BE USER IMAGE #}*/}
-                                    {/*{# {% else %} #}*/}
-                                    {/*{# HERE WILL BE DEFAULT ACCOUNT IMAGE #}*/}
-                                    <div className="container-account-image"></div>
-                                    {/*{# {% endif %} #}*/}
-                                </a>
-                                <ul className="dropdown-menu dropdown-menu-container">
-                                    <li className="list-items">
-                                        <div className="icon-wrap">
-                                            <div className="container-account-image"></div>
-                                        </div>
-                                        {userData && <span
-                                            className="drop-items no-hover">{userData.firstName} {userData.lastName}</span>}
-                                    </li>
-                                    <li className="list-items">
-                                        <div className="icon-wrap">
-                                            <FaRegUser/>
-                                        </div>
-                                        <Link className="drop-items" to={"nav/account"}>
-                                            {trans('lang.myAccount')}
-                                        </Link>
-                                    </li>
-
-                                    <li className="list-items">
-                                        <div className="icon-wrap">
-                                            <FaUsers/>
-                                        </div>
-                                        <Link className="drop-items" to={"nav/users"}>
-                                            {trans('lang.users')}
-                                        </Link>
-                                    </li>
-
-                                    <li className="list-items">
-                                        <div className="icon-wrap">
-                                            <CiSettings />
-                                        </div>
-                                        <Link className="drop-items" to={"nav/settings"}>
-                                            {trans('lang.settings')}
-                                        </Link>
-                                    </li>
-
-                                    {/*<li className="list-items">*/}
-                                    {/*    <div className="icon-wrap">*/}
-                                    {/*        <LuImport />*/}
-                                    {/*    </div>*/}
-                                    {/*    <Link className="drop-items" to={"nav/import"}>*/}
-                                    {/*        {trans('lang.import')}*/}
-                                    {/*    </Link>*/}
-                                    {/*</li>*/}
-                                    {/*{% endif %}*/}
-
-                                    <li className="list-items">
-                                        <div className="icon-wrap">
-                                            <CiLogout />
-                                        </div>
-                                        <a href="#" className="drop-items" onClick={logout}>
-                                            {trans('lang.logout')}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                        {/*{% endif %}*/}
+                        <div className="avatar-wrap" id='avatar-wrap' onClick={onClick}></div>
                     </>)}
                 </div>
-            </nav>
+            </div>
+            <div className="navigation-menu">
+                <ul className="ul-basic-style nav-bg d-flex">
+                    <li>
+                        <Link to="send">
+                            <span className="d-flex-center">
+                                <IoPaperPlaneOutline/>
+                            </span>
+                            <span>
+                                {trans('lang.sendMessage')}
+                            </span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="contacts">
+                            <span className="d-flex-center">
+                                <RiContactsBook3Line/>
+                            </span>
+                            <span>
+                                {trans('lang.contacts')}
+                            </span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="template">
+                            <span className="d-flex-center">
+                                <MdOutlineMailOutline/>
+                            </span>
+                            <span>
+                                {trans('lang.emailTemplate')}
+                            </span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="history">
+                            <span className="d-flex-center">
+                                <AiOutlineInbox/>
+                            </span>
+                            <span>
+                                {trans('lang.history')}
+                            </span>
+                        </Link>
+                    </li>
+
+                </ul>
+            </div>
         </header>);
 };
 

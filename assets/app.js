@@ -12,25 +12,21 @@ import {UserProvider} from './js/context/UserContext';
 import AuthRequired from './js/components/Requires/AuthRequired';
 import ExitRequired from './js/components/Requires/ExitRequired';
 import Layout from './js/components/Layout';
-import Home from './js/pages/Home';
+import Home from './js/pages/Another/Home';
 import Login from './js/pages/Security/Login';
-import Logout from './js/pages/Logout';
-import Register from './js/pages/registration/Register';
-import UserSettings from './js/pages/Main_Navigation/User/UserSettings';
-import NotFound from './js/pages/NotFound';
-import SessionExpired from './js/pages/SessionExpired'
+import Logout from './js/pages/Another/Logout';
+import Register from './js/pages/Registration/Register';
+import UserSettings from './js/pages/User_settings/UserSettings';
+import NotFound from './js/pages/Another/NotFound';
+import SessionExpired from './js/pages/Another/SessionExpired'
 
-import Register_Confirm_Email from './js/pages/registration/Register_Confirm_Email';
-import Register_New_Confirm_Email from './js/pages/registration/Register_New_Confirm_Email';
-import Navigation from "./js/pages/Main_Navigation/navigation";
-import Users from "./js/pages/Main_Navigation/ManageUsers/Users";
-import UserAccount from "./js/pages/Main_Navigation/User/UserAccount";
-import Block_1 from "./js/pages/Main_Navigation/ManageUsers/Block_1";
-import Block_2 from "./js/pages/Main_Navigation/ManageUsers/Block_2";
-import Block_3 from "./js/pages/Main_Navigation/ManageUsers/Block_3";
-import Block_4 from "./js/pages/Main_Navigation/ManageUsers/Block_4";
-
-
+import Register_Confirm_Email from './js/pages/Registration/Register_Confirm_Email';
+import Register_New_Confirm_Email from './js/pages/Registration/Register_New_Confirm_Email';
+import UserAccount from "./js/pages/User/UserAccount";
+import Contacts from "./js/pages/Contacts/Contacts";
+import EmailTemplate from "./js/pages/Email_template/Email_template";
+import History from "./js/pages/History/History";
+import SendMessage from "./js/pages/Send_message/Send_message";
 
 function App() {
     return (
@@ -44,7 +40,7 @@ function App() {
 
                             <Route element={<ExitRequired/>}>
                                 <Route path="login" element={<Login/>}/>
-                                <Route path="/session/expired" element={<SessionExpired />}/>
+                                <Route path="/session/expired" element={<SessionExpired/>}/>
                                 <Route
                                     path="/register"
                                     element={<Register/>}
@@ -61,38 +57,31 @@ function App() {
                             </Route>
 
                             <Route element={<AuthRequired/>}>
-                                <Route path="nav" element={<Navigation/> }>
-                                    <Route
-                                        path="account"
-                                        element={<UserAccount/>}
-                                    >
-                                    </Route>
-                                    <Route
-                                        path="settings"
-                                        element={<UserSettings/>}
-                                    />
-                                    <Route
-                                        path="users"
-                                        element={<Users/>}
-                                    >
-                                        <Route
-                                            index
-                                            element={<Block_1 />}
-                                        />
-                                        <Route
-                                            path="block/2"
-                                            element={<Block_2 />}
-                                        />
-                                        <Route
-                                            path="block/3"
-                                            element={<Block_3 />}
-                                        />
-                                        <Route
-                                            path="block/4"
-                                            element={<Block_4 />}
-                                        />
-                                    </Route>
+                                <Route
+                                    path="account"
+                                    element={<UserAccount/>}
+                                >
                                 </Route>
+                                <Route
+                                    path="settings"
+                                    element={<UserSettings/>}
+                                />
+                                <Route
+                                    path="send"
+                                    element={<SendMessage />}
+                                />
+                                <Route
+                                    path="contacts"
+                                    element={<Contacts />}
+                                />
+                                <Route
+                                    path="template"
+                                    element={<EmailTemplate />}
+                                />
+                                <Route
+                                    path="history"
+                                    element={<History />}
+                                />
                             </Route>
                             <Route path="*" element={<NotFound/>}/>
                         </Route>
@@ -102,6 +91,7 @@ function App() {
         </BrowserRouter>
     );
 }
+
 Modal.setAppElement('#root'); // Здесь 'root' - это ID корневого элемента в HTML
 
 const container = document.getElementById('root');
