@@ -50,5 +50,12 @@
   "lang.confirm": "Confirm account",
   "lang.enterConfirmationCode": "Enter confirmation code",
   "lang.confirmEmail": "Confirm email",
-  "lang.doNotReceiveCode": "Don't receive the code?"
+  "lang.doNotReceiveCode": "Don't receive the code?",
+  "lang.recipient": "Recipient",
+  "lang.title": "Title",
+  "lang.message": "Message",
+  "lang.uploadFile": "Upload file",
+  "lang.fileToUpload": "Files to be uploaded",
+  "lang.send": "Send"
+
 }

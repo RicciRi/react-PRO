@@ -26,7 +26,7 @@ import UserAccount from "./js/pages/User/UserAccount";
 import Contacts from "./js/pages/Contacts/Contacts";
 import EmailTemplate from "./js/pages/Email_template/Email_template";
 import History from "./js/pages/History/History";
-import SendMessage from "./js/pages/Send_message/Send_message";
+import Upload from "./js/pages/Send_message/Send_message";
 
 function App() {
     return (
@@ -56,6 +56,7 @@ function App() {
                             </Route>
 
                             <Route element={<AuthRequired/>}>
+
                                 <Route
                                     path="account"
                                     element={<UserAccount/>}
@@ -67,19 +68,20 @@ function App() {
                                 />
                                 <Route
                                     path="send"
-                                    element={<SendMessage />}
+                                    element={<Upload/>}
+
                                 />
                                 <Route
                                     path="contacts"
-                                    element={<Contacts />}
+                                    element={<Contacts/>}
                                 />
                                 <Route
                                     path="template"
-                                    element={<EmailTemplate />}
+                                    element={<EmailTemplate/>}
                                 />
                                 <Route
                                     path="history"
-                                    element={<History />}
+                                    element={<History/>}
                                 />
                             </Route>
                             <Route path="*" element={<NotFound/>}/>

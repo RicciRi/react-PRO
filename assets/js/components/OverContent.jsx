@@ -5,7 +5,7 @@ import {UserContext} from "../context/UserContext";
 
 
 import {LuUser2} from "react-icons/lu";
-import {IoSettingsOutline} from "react-icons/io5";
+import {IoPaperPlaneOutline, IoSettingsOutline} from "react-icons/io5";
 import {CiMoneyCheck1} from "react-icons/ci";
 import {FaRegFaceSmile} from "react-icons/fa6";
 import {IoMdClose} from "react-icons/io";
@@ -90,6 +90,15 @@ const OverContent = ({onClick}) => {
                             </span>
                             <span className="">{trans('lang.currentPlan')}</span>
                         </a>
+                    </li>
+                    <hr className="m-2"/>
+                    <li>
+                        <Link to="/send">
+                            <span className="d-flex-center">
+                                <IoPaperPlaneOutline />
+                            </span>
+                            <span>{trans('lang.send')}</span>
+                        </Link>
                     </li>
                     <hr className="m-2"/>
                     <li>

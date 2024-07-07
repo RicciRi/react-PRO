@@ -119,7 +119,7 @@ class UserController extends AbstractController
 
             try {
                 $file->move(
-                    $this->getParameter('upload_directory'),
+                    $this->getParameter('upload_photo_directory'),
                     $originalFilename,
                 );
                 $user->setAccountImage($originalFilename); // Сохранение имени файла в базе данных
