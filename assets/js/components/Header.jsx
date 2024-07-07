@@ -7,7 +7,7 @@ import {UserContext} from '../context/UserContext';
 import {IoPaperPlaneOutline} from "react-icons/io5";
 import {AiOutlineInbox} from "react-icons/ai";
 import {MdOutlineMailOutline} from "react-icons/md";
-import { RiContactsBook3Line } from "react-icons/ri";
+import {RiContactsBook3Line} from "react-icons/ri";
 
 
 const Header = ({onClick}) => {
@@ -74,59 +74,64 @@ const Header = ({onClick}) => {
                         {/*{#  DROPDOWN MENU for authorized users #}*/}
                         {userData?.accountImage ?
                             <div className="avatar-wrap" id='avatar-wrap' onClick={onClick}>
-                                <img className="account-image" src={`/uploads/photos/${userData?.accountImage}`} alt="alt"/>
+                                <img className="account-image" src={`/uploads/photos/${userData?.accountImage}`}
+                                     alt="alt"/>
                             </div>
                             :
-                            <div className="avatar-wrap" id='avatar-wrap' onClick={onClick}></div>
+                            <div className="default-account-image" id='avatar-wrap' onClick={onClick}>
+                                RR
+                            </div>
                         }
                     </>)}
                 </div>
             </div>
-            <div className="navigation-menu">
-                <ul className="ul-basic-style nav-bg d-flex">
-                    <li>
-                        <Link to="send">
+            {isAuthenticated ?
+                <div className="navigation-menu">
+                    <ul className="ul-basic-style nav-bg d-flex">
+                        <li>
+                            <Link to="send">
                             <span className="d-flex-center">
                                 <IoPaperPlaneOutline/>
                             </span>
-                            <span>
+                                <span>
                                 {trans('lang.sendMessage')}
                             </span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="contacts">
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="contacts">
                             <span className="d-flex-center">
                                 <RiContactsBook3Line/>
                             </span>
-                            <span>
+                                <span>
                                 {trans('lang.contacts')}
                             </span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="template">
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="template">
                             <span className="d-flex-center">
                                 <MdOutlineMailOutline/>
                             </span>
-                            <span>
+                                <span>
                                 {trans('lang.emailTemplate')}
                             </span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="history">
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="history">
                             <span className="d-flex-center">
                                 <AiOutlineInbox/>
                             </span>
-                            <span>
+                                <span>
                                 {trans('lang.history')}
                             </span>
-                        </Link>
-                    </li>
-
-                </ul>
-            </div>
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+                : <></>
+            }
         </header>);
 };
 

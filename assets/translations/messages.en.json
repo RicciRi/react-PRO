@@ -41,6 +41,14 @@
   "lang.sentMessages": "Sent messages",
   "lang.emailTemplate": "Email template",
   "lang.contacts": "Contacts",
-  "lang.history": "History"
-
+  "lang.history": "History",
+  "lang.signInTo": "Sign in to Ricci",
+  "lang.createAccount": "Create an account",
+  "lang.accountNotExist": "New to Ricci?",
+  "lang.forgotPassword": "Forgot password?",
+  "lang.alreadyRegister": "Already have an account?",
+  "lang.confirm": "Confirm account",
+  "lang.enterConfirmationCode": "Enter confirmation code",
+  "lang.confirmEmail": "Confirm email",
+  "lang.doNotReceiveCode": "Don't receive the code?"
 }

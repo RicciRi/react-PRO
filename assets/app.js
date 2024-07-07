@@ -42,18 +42,17 @@ function App() {
                                 <Route path="login" element={<Login/>}/>
                                 <Route path="/session/expired" element={<SessionExpired/>}/>
                                 <Route
-                                    path="/register"
+                                    path="register"
                                     element={<Register/>}
-                                >
-                                    <Route
-                                        path="register/confirm"
-                                        element={<Register_Confirm_Email/>}
-                                    />
-                                    <Route
-                                        path="register/new/confirm"
-                                        element={<Register_New_Confirm_Email/>}
-                                    />
-                                </Route>
+                                />
+                                <Route
+                                    path="register/confirm"
+                                    element={<Register_Confirm_Email/>}
+                                />
+                                {/*<Route*/}
+                                {/*    path="register/confirm/new"*/}
+                                {/*    element={<Register_New_Confirm_Email/>}*/}
+                                {/*/>*/}
                             </Route>
 
                             <Route element={<AuthRequired/>}>

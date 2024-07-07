@@ -9,7 +9,7 @@ import {IoSettingsOutline} from "react-icons/io5";
 import {CiMoneyCheck1} from "react-icons/ci";
 import {FaRegFaceSmile} from "react-icons/fa6";
 import {IoMdClose} from "react-icons/io";
-import { MdLogout } from "react-icons/md";
+import {MdLogout} from "react-icons/md";
 
 import {Link} from "react-router-dom";
 
@@ -32,7 +32,16 @@ const OverContent = ({onClick}) => {
             <div className="nav-menu dialog-backdrop" id="nav-menu">
                 <div className="d-flex-between">
                     <div className="d-flex-start">
-                        <img className="account-image" src={`/uploads/photos/${userData?.accountImage}`} alt="alt"/>
+                        {userData?.accountImage ?
+                            <div className="avatar-wrap" id='avatar-wrap' onClick={onClick}>
+                                <img className="account-image" src={`/uploads/photos/${userData?.accountImage}`}
+                                     alt="alt"/>
+                            </div>
+                            :
+                            <div className="default-account-image" id='avatar-wrap' onClick={onClick}>
+                                RR
+                            </div>
+                        }
                         <div className="d-column-start">
                             <span className="f-14 color-muted">{userData?.firstName} {userData?.lastName}</span>
                         </div>
@@ -82,11 +91,11 @@ const OverContent = ({onClick}) => {
                             <span className="">{trans('lang.currentPlan')}</span>
                         </a>
                     </li>
-                    <hr className="m-2" />
+                    <hr className="m-2"/>
                     <li>
                         <a href="#" onClick={logout}>
                             <span className="d-flex-center">
-                                <MdLogout />
+                                <MdLogout/>
                             </span>
                             <span>{trans('lang.signOut')}</span>
                         </a>

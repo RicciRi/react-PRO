@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useTranslation } from '../../context/TranslateContext';
-import { useNavigate, Link } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useTranslation} from '../../context/TranslateContext';
+import {useNavigate, Link} from 'react-router-dom';
 
 const Register = () => {
-    const { trans } = useTranslation();
+    const {trans} = useTranslation();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -39,7 +39,7 @@ const Register = () => {
         try {
             const response = await fetch('/api/register', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(requestBody),
             });
 
@@ -56,8 +56,8 @@ const Register = () => {
             // Теперь отправляем код подтверждения после успешной регистрации
             await fetch('/api/send-confirmation', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email }),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email}),
             });
             setError('');
             setConfirmationSent(true);
@@ -70,9 +70,13 @@ const Register = () => {
     };
 
     return (
-        <div className="p-5">
-            <div className="form-section">
-                <h1>{trans('lang.register')}</h1>
+        <div className="authentication-container mb-5">
+
+            <img className="logo ml-mr-auto mt-4 mb-3" src="/icons/logo.svg" alt="Logo"/>
+
+            <h1 className=' mb-3'>{trans('lang.register')}</h1>
+
+            <div className="auth-form-body p-4">
                 {isLoading ? (
                     <div className="spinner">{trans('lang.loading')}</div>
                 ) : confirmationSent ? (
@@ -83,8 +87,9 @@ const Register = () => {
                     </>
                 ) : (
                     <form onSubmit={handleRegistration}>
-                        {error && <div style={{ color: 'red' }}>{error}</div>}
-                        <div>
+                        {error && <div style={{color: 'red'}}>{error}</div>}
+                        <div className="input-wrap">
+                            <label htmlFor="email">{trans('lang.email')}</label>
                             <input
                                 id="email"
                                 type="email"
@@ -94,35 +99,27 @@ const Register = () => {
                                 required
                                 autoComplete="email"
                             />
-                            <label htmlFor="email">{trans('lang.email')}</label>
                         </div>
-                        <div>
-                            <div className="password-input-wrap">
-                                <input
-                                    id="password"
-                                    type={hightPassword ? 'password' : 'text'}
-                                    name="password"
-                                    value={password}
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
-                                    required
-                                    autoComplete="new-password"
-                                />
-                                <span onClick={passwordToggle}>
-                                    {hightPassword ? (
-                                        <i className="fa-solid fa-eye-slash"></i>
-                                    ) : (
-                                        <i className="fa-solid fa-eye"></i>
-                                    )}
-                                </span>
-                            </div>
+                        <div className="input-wrap">
                             <label htmlFor="password">
                                 {trans('lang.password')}
                             </label>
+                            <input
+                                id="password"
+                                type={hightPassword ? 'password' : 'text'}
+                                name="password"
+                                value={password}
+                                onChange={(e) =>
+                                    setPassword(e.target.value)
+                                }
+                                required
+                                autoComplete="new-password"
+                            />
                         </div>
-
-                        <div>
+                        <div className="input-wrap">
+                            <label htmlFor="confirmPassword">
+                                {trans('lang.confirmPassword')}
+                            </label>
                             <input
                                 id="confirmPassword"
                                 type={hightPassword ? 'password' : 'text'}
@@ -134,11 +131,11 @@ const Register = () => {
                                 required
                                 autoComplete="new-password"
                             />
-                            <label htmlFor="confirmPassword">
-                                {trans('lang.confirmPassword')}
-                            </label>
                         </div>
-                        <div>
+                        <div className="input-wrap">
+                            <label htmlFor="firstName">
+                                {trans('lang.name')}
+                            </label>
                             <input
                                 id="firstName"
                                 type="text"
@@ -147,11 +144,11 @@ const Register = () => {
                                 onChange={(e) => setFirstName(e.target.value)}
                                 required
                             />
-                            <label htmlFor="firstName">
-                                {trans('lang.name')}
-                            </label>
                         </div>
-                        <div>
+                        <div className="input-wrap">
+                            <label htmlFor="lastName">
+                                {trans('lang.surname')}
+                            </label>
                             <input
                                 id="lastName"
                                 type="text"
@@ -160,19 +157,23 @@ const Register = () => {
                                 onChange={(e) => setLastName(e.target.value)}
                                 required
                             />
-                            <label htmlFor="lastName">
-                                {trans('lang.surname')}
-                            </label>
                         </div>
                         <button
-                            className="button"
+                            className="button button-block button-green"
                             type="submit"
                             disabled={isLoading}
                         >
                             {trans('lang.register')}
                         </button>
+                        <h2>
+                            {trans('lang.alreadyRegister')}
+                            <a href="/login" className="link-hover">
+                                {trans("lang.signIn")}
+                            </a>
+                        </h2>
                     </form>
                 )}
+
             </div>
         </div>
     );

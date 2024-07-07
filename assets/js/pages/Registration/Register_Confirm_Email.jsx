@@ -39,11 +39,16 @@ const Register_Confirm_Email = () => {
     };
 
     return (
-        <div className="p-5">
-            <div className="form-section">
-                <h1>{trans('lang.confirmEmail')}</h1>
+        <div className="authentication-container mb-5">
+
+            <img className="logo ml-mr-auto mt-4 mb-3" src="/icons/logo.svg" alt="Logo"/>
+
+            <h1 className=' mb-3'>{trans('lang.confirmEmail')}</h1>
+
+            <div className="auth-form-body p-4">
+
                 <form onSubmit={handleConfirm}>
-                    <div>
+                    <div className="inpur-wrap">
                         <label>{trans('lang.enterConfirmationCode')}</label>
                         <input
                             type="text"
@@ -54,17 +59,17 @@ const Register_Confirm_Email = () => {
                         />
                     </div>
                     <button
-                        className="button"
+                        className="button button-green button-block"
                         type="submit"
                         disabled={isSubmitting}
                     >
                         {trans('lang.confirm')}
                     </button>
 
-                    <p>
-                        Don't recieve a code?
-                        <Link to="/register/confirm/new">Try again!</Link>
-                    </p>
+                    <h2>
+                        {trans('lang.doNotReceiveCode')}
+                        <Link to="/register/confirm">Try again!</Link>
+                    </h2>
                 </form>
                 {error && <p className="error-message">{error}</p>}
                 {message && <p className="">{message}</p>}
