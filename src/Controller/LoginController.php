@@ -6,11 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Doctrine\ORM\EntityManagerInterface; // Подключение Doctrine
+use Doctrine\ORM\EntityManagerInterface;
+
+// Подключение Doctrine
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\User; // Подключение сущности User
+use App\Entity\User;
+
+// Подключение сущности User
 
 
 class LoginController extends AbstractController
@@ -24,13 +28,14 @@ class LoginController extends AbstractController
 
     #[Route('/api/login', name: 'login', methods: ['POST'])]
     public function login(
-        Request $request,
+        Request                     $request,
         UserPasswordHasherInterface $passwordHasher,
-        JWTTokenManagerInterface $JWTManager
-    ): JsonResponse {
+        JWTTokenManagerInterface    $JWTManager,
+    ): JsonResponse
+    {
         $requestData = json_decode($request->getContent(), true); // Парсинг данных из запроса
-        $email = $requestData['email'];
-        $password = $requestData['password'];
+        $email       = $requestData['email'];
+        $password    = $requestData['password'];
 
         // Поиск пользователя по email
         $user = $this->entityManager
@@ -45,9 +50,9 @@ class LoginController extends AbstractController
 
         if (!$isConfirmed) {
             return new JsonResponse([
-                'error' => "You didn't confirm your email!",
-                'confirmEmail' => true
-            ], 404); // Ошибка 404
+                                        'error' => "You didn't confirm your email!",
+                                                                                                                                                                                                                'confirmEmail' => true,
+                                    ], 404); // Ошибка 404
         }
 
 
@@ -61,8 +66,9 @@ class LoginController extends AbstractController
 
         $tokenPayload = [
             'email' => $user->getEmail(),
-            'iat' => time(),
-            'exp' => time() + $tokenTTL,
+            'id'    => $user->getId(),
+            'iat'   => time(),
+            'exp'   => time() + $tokenTTL,
         ];
 
         $token = $JWTManager->createFromPayload($user, $tokenPayload); // Генерация токена
@@ -75,21 +81,21 @@ class LoginController extends AbstractController
             '/',
             null,
             true, // Secure
-            true, // HTTP-only
+            false, // HTTP-only
             false,
-            'Lax' // SameSite
+            'Lax', // SameSite
         );
 
         // Подготовка ответа
         $response = new JsonResponse([
-            'userInfo' => [
-                'id' => $user->getId(),
-                'email' => $user->getEmail(),
-                'roles' => $user->getRoles(),
-                'firstName' => $user->getFirstName(),
-                'lastName' => $user->getLastName(),
-            ],
-        ]);
+                                         'userInfo' => [
+                                             'id'        => $user->getId(),
+                                             'email'     => $user->getEmail(),
+                                             'roles'     => $user->getRoles(),
+                                             'firstName' => $user->getFirstName(),
+                                             'lastName'  => $user->getLastName(),
+                                         ],
+                                     ]);
 
         // Добавляем куки в заголовок ответа
         $response->headers->setCookie($cookie);

@@ -1,91 +1,75 @@
+
 import React, { useState, useEffect } from 'react';
+import axios from "axios";
+import {useForm} from "react-hook-form";
+
 
 function Contacts() {
     const [contacts, setContacts] = useState([]);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [company, setCompany] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [token, setToken] = useState('');
+    const {register, handleSubmit, reset} = useForm();
 
     useEffect(() => {
-        // Функция для чтения токена из куки
-        const getTokenFromCookie = () => {
-            const cookieValue = document.cookie
-                .split('; ')
-                .find(row => row.startsWith('auth_token'))
-                .split('=')[1];
-            return cookieValue;
-        };
-
-        const fetchedToken = getTokenFromCookie(); // Получаем токен из куки
-
-        console.log(fetchedToken)
-        setToken(fetchedToken); // Устанавливаем токен в состояние
-        fetchContacts(); // Вызываем функцию для загрузки контактов
+        fetchContacts();
     }, []);
 
     const fetchContacts = async () => {
         try {
             setLoading(true);
             const response = await fetch('/api/contacts', {
+                method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${token}`, // Передача токена в заголовке запроса
+                    'Content-Type': 'application/json',
                 },
             });
-            if (!response.ok) {
-                throw new Error('Failed to fetch contacts');
-            }
+
             const data = await response.json();
             setContacts(data);
         } catch (error) {
-            console.error('Error fetching contacts:', error);
-            setError('Error fetching contacts. Please try again.');
+            setError('error')
         } finally {
             setLoading(false);
         }
     };
 
-    const addContact = async () => {
+    const handleAddContact = async (data) => {
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('email', data.email);
+        formData.append('company', data.company);
+
         try {
-            const newContact = { name, email, company };
-            const response = await fetch('/api/add/contacts', {
-                method: 'POST',
+            setLoading(true)
+            await axios.post('/api/contacts/add', formData, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`, // Передача токена в заголовке запроса
+                    'Content-Type': 'multipart/form-data',
                 },
-                body: JSON.stringify(newContact),
             });
-            if (!response.ok) {
-                throw new Error('Failed to add contact');
-            }
-            setName('');
-            setEmail('');
-            setCompany('');
-            fetchContacts();
+            reset();
         } catch (error) {
-            console.error('Error adding contact:', error);
-            setError('Error adding contact. Please try again.');
+            setError('error')
+        } finally {
+            fetchContacts()
         }
     };
 
-    const deleteContact = async (id) => {
+    const handleDeleteContact = async (id) => {
         try {
-            const response = await fetch(`/api/contacts/${id}`, {
+            setLoading(true);
+            const response = await fetch(`/api/contacts/delete/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    Authorization: `Bearer ${token}`, // Передача токена в заголовке запроса
+                    'Content-Type': 'application/json',
                 },
             });
-            if (!response.ok) {
-                throw new Error('Failed to delete contact');
-            }
-            fetchContacts();
+
+            const data = await response;
+            console.log(data)
         } catch (error) {
-            console.error('Error deleting contact:', error);
-            setError('Error deleting contact. Please try again.');
+            setError('error')
+        } finally {
+            fetchContacts()
         }
     };
 
@@ -96,31 +80,33 @@ function Contacts() {
         <div>
             <h2>Manage Contacts</h2>
             <div>
-                <input
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                    type="text"
-                    placeholder="Company"
-                    value={company}
-                    onChange={(e) => setCompany(e.target.value)}
-                />
-                <button onClick={addContact}>Add Contact</button>
+                <form onSubmit={handleSubmit(handleAddContact)}>
+                    <input
+                        type="text"
+                        placeholder="Name"
+                        {...register('name')}
+                        required
+                    />
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        {...register('email')}
+                        required
+                    />
+                    <input
+                        type="text"
+                        placeholder="Company"
+                        {...register('company')}
+
+                    />
+                    <button type="submit">Add Contact</button>
+                </form>
             </div>
             <ul>
                 {contacts.map((contact) => (
                     <li key={contact.id}>
                         {contact.name} ({contact.email}) - {contact.company}
-                        <button onClick={() => deleteContact(contact.id)}>Delete</button>
+                        <button onClick={() => handleDeleteContact(contact.id)}>Delete</button>
                     </li>
                 ))}
             </ul>

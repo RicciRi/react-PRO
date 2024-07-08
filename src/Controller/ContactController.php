@@ -1,87 +1,118 @@
 <?php
 
-// src/Controller/ContactController.php
 namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
+
 
 class ContactController extends AbstractController
 {
-    public function __construct(private readonly UserRepository $userRepository)
+
+    #[Route('/api/contacts', name: 'api_contacts', methods: ['POST'])]
+    public function getContacts(Request $request, JWTEncoderInterface $jwtEncoder, ContactRepository $contactRepository, EntityManagerInterface $entityManager): Response
     {
-    }
-    #[Route('/api/contacts', name: 'get_contacts', methods: ['GET'])]
-    public function getContacts(EntityManagerInterface $entityManager, UserRepository $userRepository): JsonResponse
-    {
-        $user = $this->userRepository->findOneBy(['id' => $this->getUser()]);
-        if ($user) {
-            return $this->json($user);
+        $cookie = $request->cookies->get('auth_token');
+
+        if (!$cookie) {
+            return $this->json(['error' => 'Token not found'], 404);
         }
-        return new Response('User not authenticated', Response::HTTP_UNAUTHORIZED);
 
-        // Дальнейший код, использующий $userId
-        // Например, получение контактов пользователя по его id
+        try {
+            $tokenData = $jwtEncoder->decode($cookie);
+        } catch (\Exception $e) {
+            return $this->json(['error' => 'Cant decode token'], 404);
+        }
 
-//        return $this->json(['userId' => $userId]);
+        if (!$tokenData) {
+            return $this->json(['error' => 'Cant decode token'], 404);
+        }
 
-//        if (!$user instanceof User) {
-//            return new Response('User not authenticated', Response::HTTP_UNAUTHORIZED);
-//        }
+        $userId = $tokenData['id'];
 
-//        $contacts = $entityManager->getRepository(Contact::class)->findBy(['user' => $user]);
+        $contacts = $contactRepository->findBy(['user' => $userId]);
 
-//        return $this->json($contacts);
+        // Создаем массив с нужными полями
+        $contactsArray = array_map(function($contact) {
+            return [
+                'id' => $contact->getId(),
+                'name' => $contact->getName(),
+                'email' => $contact->getEmail(),
+                'company' => $contact->getCompany()
+            ];
+        }, $contacts);
+
+        return $this->json($contactsArray);
+    }
+    #[Route('/api/contacts/add', name: 'add_contact', methods: ['POST'])]
+    public function addContact(Request $request, JWTEncoderInterface $jwtEncoder, ContactRepository $contactRepository, EntityManagerInterface $entityManager): Response
+    {
+        $cookie = $request->cookies->get('auth_token');
+
+        if (!$cookie) {
+            return $this->json(['error' => 'Token not found'], 404);
+        }
+
+        $tokenData = $jwtEncoder->decode($cookie);
+
+        if (!$tokenData) {
+            return $this->json(['error' => 'Cant decode token'], 404);
+        }
+
+        $userId = $tokenData['id'];
+
+        $name = $request->request->get('name');
+        $email = $request->request->get('email');
+        $company = $request->request->get('company');
+
+        $contact = new Contact();
+        $contact->setName($name);
+        $contact->setEmail($email);
+        $contact->setCompany($company ?? null);
+        $contact->setUser($userId);
+
+        $entityManager->persist($contact);
+        $entityManager->flush();
+
+        return new Response('Email sent!', Response::HTTP_OK);
     }
 
-//    #[Route('/api/add/contacts', name: 'add_contact', methods: ['POST'])]
-//    public function addContact(Request $request, EntityManagerInterface $entityManager): Response
-//    {
-//        $user = $this->getUser();
-//
-//        if (!$user instanceof User) {
-//            return new Response('User not authenticated', Response::HTTP_UNAUTHORIZED);
-//        }
-//
-//        $data = json_decode($request->getContent(), true);
-//
-//        $contact = new Contact();
-//        $contact->setName($data['name'] ?? '');
-//        $contact->setEmail($data['email'] ?? '');
-//        $contact->setCompany($data['company'] ?? null);
-//        $contact->setUser($user);
-//
-//        $entityManager->persist($contact);
-//        $entityManager->flush();
-//
-//        return $this->json($contact);
-//    }
-//
-//    #[Route('/api/contacts/{id}', name: 'delete_contact', methods: ['DELETE'])]
-//    public function deleteContact(int $id, EntityManagerInterface $entityManager): Response
-//    {
-//        $user = $this->getUser();
-//
-//        if (!$user instanceof User) {
-//            return new Response('User not authenticated', Response::HTTP_UNAUTHORIZED);
-//        }
-//
-//        $contact = $entityManager->getRepository(Contact::class)->findOneBy(['id' => $id, 'user' => $user]);
-//
-//        if ($contact) {
-//            $entityManager->remove($contact);
-//            $entityManager->flush();
-//            return new Response('Contact deleted', Response::HTTP_OK);
-//        }
-//
-//        return new Response('Contact not found', Response::HTTP_NOT_FOUND);
-//    }
+    #[Route('/api/contacts/delete/{id}', name: 'delete_contact', methods: ['DELETE'])]
+    public function deleteContact($id, Request $request, JWTEncoderInterface $jwtEncoder, ContactRepository $contactRepository, EntityManagerInterface $entityManager): Response
+    {
+        $cookie = $request->cookies->get('auth_token');
+
+        if (!$cookie) {
+            return $this->json(['error' => 'Token not found'], 404);
+        }
+
+        $tokenData = $jwtEncoder->decode($cookie);
+
+        if (!$tokenData) {
+            return $this->json(['error' => 'Cant decode token'], 404);
+        }
+
+        $userId = $tokenData['id'];
+
+        $contact = $contactRepository->findOneBy(['id' => $id, 'user' => $userId]);
+
+        if (!$contact) {
+            return $this->json(['error' => 'Contact not found'], 404);
+        }
+
+        $entityManager->remove($contact);
+        $entityManager->flush();
+
+        return new Response('Contact deleted!', Response::HTTP_OK);
+    }
+
 }
 

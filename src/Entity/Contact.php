@@ -22,9 +22,8 @@ class Contact
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $company = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $user;
+    #[ORM\Column(length: 255, nullable: false)]
+    private ?string $user;
 
 
     public function getId(): ?int
@@ -44,7 +43,7 @@ class Contact
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(string $user): self
     {
         $this->user = $user;
         return $this;
