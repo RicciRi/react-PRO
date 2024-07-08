@@ -4,6 +4,8 @@ import {useTranslation} from "../../context/TranslateContext";
 import {UserContext} from "../../context/UserContext";
 import {useForm} from 'react-hook-form';
 import axios from 'axios';
+import { BsTrash3 } from "react-icons/bs";
+
 
 export default function Upload(data) {
     const {trans} = useTranslation()
@@ -14,6 +16,10 @@ export default function Upload(data) {
 
     const onFileChange = (e) => {
         setFiles([...files, ...e.target.files]);
+    };
+
+    const removeFile = (index) => {
+        setFiles(files.filter((_, i) => i !== index));
     };
 
     const onSubmit = async (data) => {
@@ -83,7 +89,12 @@ export default function Upload(data) {
                             <ul>
                                 {files.map((file, index) => (
                                     <li key={index} className="p-2 mb-2">
-                                        <div className="file-name">{file.name}</div>
+                                        <div className="file-name d-flex-between">
+                                            {file.name}
+                                            <button className="button" onClick={() => removeFile(index)}>
+                                                <BsTrash3/>
+                                            </button>
+                                        </div>
                                         <div className="file-size">{file.size}</div>
                                     </li>
                                 ))}
