@@ -56,6 +56,8 @@
   "lang.message": "Message",
   "lang.uploadFile": "Upload file",
   "lang.fileToUpload": "Files to be uploaded",
-  "lang.send": "Send"
-
+  "lang.send": "Send",
+  "lang.edit": "Edit",
+  "lang.siteTheme": "Site Theme",
+  "lang.editProfile": "Edit profile"
 }
