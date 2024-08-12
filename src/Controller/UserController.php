@@ -139,6 +139,7 @@ class UserController extends AbstractController
 
         $tokenPayload = [
             'email' => $user->getEmail(),
+            'id'    => $user->getId(),
             'iat'   => time(),
             'exp'   => time() + $tokenTTL,
         ];

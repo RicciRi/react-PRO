@@ -22,7 +22,7 @@ const customStyles = {
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [userData, setUserData] = useState();
+    const [userData, setUserData] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const [isTokenExpiredModalOpen, setIsTokenExpiredModalOpen] = useState(false); // Состояние модального окна
     const navigate = useNavigate();
@@ -69,6 +69,7 @@ export const UserProvider = ({ children }) => {
                 }
             } else {
                 setIsAuthenticated(false);
+                setUserData(false)
             }
         } catch (error) {
             console.error('An error occurred during checkAuth:', error);

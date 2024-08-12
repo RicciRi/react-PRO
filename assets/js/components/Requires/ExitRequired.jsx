@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
+import Preloader from "../Preloader";
 
 // Pages such as Login and Registation are only available when the user is logged out!
 export default function ExitRequired() {
@@ -28,7 +29,7 @@ export default function ExitRequired() {
     }, []);
 
     if (isAuthenticated === null) {
-        return <p>Loading...</p>; // wait for response
+        return <Preloader/>;
     }
 
     if (isAuthenticated) {

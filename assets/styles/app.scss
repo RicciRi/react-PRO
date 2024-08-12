@@ -110,6 +110,15 @@ body {
   color: var(--color-muted);
 }
 
+.blue-hover:hover {
+  color: #2196f3 !important;
+
+}
+
+.custom-border-left {
+  border-left: 0.5px solid var(--border-color-default);
+}
+
 // Background
 
 .nav-bg {
@@ -118,8 +127,20 @@ body {
 
 // Font
 
+.f-26 {
+  font-size: 26px;
+}
+
 .f-20 {
   font-size: 20px;
+}
+
+.f-18 {
+  font-size: 18px;
+}
+
+.f-16 {
+  font-size: 16px;
 }
 
 .f-14 {
@@ -133,6 +154,43 @@ body {
 .f-10 {
   font-size: 10px;
 }
+
+.fw-100 {
+  font-weight: 100;
+}
+
+.fw-200 {
+  font-weight: 200;
+}
+
+.fw-300 {
+  font-weight: 300;
+}
+
+.fw-400 {
+  font-weight: 400;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.fw-800 {
+  font-weight: 800;
+}
+
+
+
+
+
 
 .error-message {
   text-align: center;
@@ -191,10 +249,23 @@ a {
   align-items: center;
 }
 
+.d-flex-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .d-column-start {
   display: flex;
   flex-direction: column;
   align-items: start;
+}
+
+.d-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 // Margin
@@ -268,6 +339,12 @@ a {
   }
 }
 
+.button-no-style {
+  color: white;
+  border: none;
+  background-color: transparent;
+}
+
 
 
 // inputs, label
@@ -277,12 +354,28 @@ input {
   padding: 5px 12px;
   border: none;
   border-radius: var(--border-radius-button);
+
+  &:focus {
+    outline: 1px solid #2196f3;
+  }
 }
 
 label {
   margin: 4px 0;
   font-size: 14px;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px transparent;
+  font-size: 14px;
+}
+
 
 // icons
 
@@ -348,6 +441,39 @@ ul {
   }
 }
 
+// loading
+
+.preloader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px; /* Высота прелоадера */
+  background-color: transparent; /* Цвет фона контейнера */
+  overflow: hidden; /* Скрыть излишки прелоадера */
+}
+
+.preloader {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #f78166, transparent);
+  animation: moveLine 1.5s infinite;
+}
+
+@keyframes moveLine {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 0;
+  }
+  100% {
+    left: 100%;
+  }
+}
 
 // HEADER
 
@@ -442,10 +568,11 @@ header {
   position: relative;
 
   .link {
+    display: flex;
     padding: 10px;
     position: absolute;
     right: 0;
-    bottom: 56px;
+    bottom: 20px;
     color: var(--text-color);
     background: var(--background-color);
     border: 1px solid var(--border-color-default);
@@ -718,12 +845,12 @@ main {
 
 footer {
   width: 100%;
-  height: 100px;
+  height: 80px;
   background-color: var(--background);
 
   .container {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     height: 100px;
 
@@ -747,11 +874,8 @@ footer {
       font-weight: 100;
     }
 
-    button {
-      padding: 0;
+    button{
       font-weight: 100;
-      background: var(--navbar-background);
-      border: none;
     }
 
     .translate-list {
@@ -790,7 +914,7 @@ footer {
     width: 320px;
     height: 100%;
     border: 1px solid var(--border-color-default);
-    border-radius: var(--border-radius-small) 0 0 var(--border-radius-small);
+    border-radius: var(--border-radius-small);
     background: var(--dropdown-menu-background-color);
     z-index: 1008;
 
@@ -925,6 +1049,48 @@ footer {
   }
 
 }
+
+.account-container {
+  .input-wrap {
+    display: block;
+  }
+
+}
+
+.contacts-container {
+  width: 100%;
+
+  .contact-section {
+    width: 100%;
+    padding: 10px;
+
+    .button-no-style {
+      color: transparent;
+    }
+
+    &:hover .button-no-style {
+      color: var(--white-color) !important;
+      &:hover{
+        color: var(--color-muted) !important;
+      }
+    }
+
+  }
+
+  .custom-border {
+    border-bottom: 2px solid var(--underline-borderColor-active);
+  }
+
+  .add-contact-form {
+    padding: 0 14px;
+    gap: 14px;
+  }
+
+  .icon {
+    color: var(--white-color);
+  }
+}
+
 
 
 

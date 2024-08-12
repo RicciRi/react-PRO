@@ -1,13 +1,18 @@
-
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import {useForm} from "react-hook-form";
+import {useTranslation} from '../../context/TranslateContext';
+import {useLoading} from "../../context/LoadingContext";
+import {IoIosCheckmarkCircleOutline, IoIosCloseCircleOutline} from "react-icons/io";
 
 
 function Contacts() {
     const [contacts, setContacts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const {showLoading, hideLoading} = useLoading()
     const [error, setError] = useState(null);
+    const [showAddForm, setShowAddForm] = useState(false)
+
+    const {trans} = useTranslation();
     const {register, handleSubmit, reset} = useForm();
 
     useEffect(() => {
@@ -16,7 +21,7 @@ function Contacts() {
 
     const fetchContacts = async () => {
         try {
-            setLoading(true);
+            showLoading(true);
             const response = await fetch('/api/contacts', {
                 method: 'POST',
                 headers: {
@@ -29,9 +34,13 @@ function Contacts() {
         } catch (error) {
             setError('error')
         } finally {
-            setLoading(false);
+            hideLoading(false);
         }
     };
+
+    // function openAddContactForm() {
+    //
+    // }
 
     const handleAddContact = async (data) => {
         const formData = new FormData();
@@ -40,7 +49,7 @@ function Contacts() {
         formData.append('company', data.company);
 
         try {
-            setLoading(true)
+            showLoading(true)
             await axios.post('/api/contacts/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -51,12 +60,13 @@ function Contacts() {
             setError('error')
         } finally {
             fetchContacts()
+            hideLoading(false)
         }
     };
 
     const handleDeleteContact = async (id) => {
         try {
-            setLoading(true);
+            showLoading(true);
             const response = await fetch(`/api/contacts/delete/${id}`, {
                 method: 'DELETE',
                 headers: {
@@ -65,51 +75,85 @@ function Contacts() {
             });
 
             const data = await response;
-            console.log(data)
         } catch (error) {
             setError('error')
+            console.log(error)
         } finally {
+            hideLoading(false)
             fetchContacts()
         }
     };
 
-    if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
 
     return (
-        <div>
-            <h2>Manage Contacts</h2>
-            <div>
-                <form onSubmit={handleSubmit(handleAddContact)}>
-                    <input
-                        type="text"
-                        placeholder="Name"
-                        {...register('name')}
-                        required
-                    />
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        {...register('email')}
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="Company"
-                        {...register('company')}
+        <div className="container p-3">
+            <div className="row">
+                <div className="col-12">
+                    <div className="contacts-container">
+                        <div className='d-flex-between custom-border'>
+                            <span className="fw-bold f-26">{trans('lang.contacts')}</span>
+                            <button className="button-no-style fw-200 f-14 p-0 m-1 blue-hover" onClick={() => setShowAddForm(true)}>
+                                {trans('lang.addContact')}
+                            </button>
+                        </div>
+                        {showAddForm &&
+                            <form className="add-contact-form d-flex-around" onSubmit={handleSubmit(handleAddContact)}>
+                                <input
+                                    type="text"
+                                    className="m-2"
+                                    placeholder="Name"
+                                    {...register('name')}
+                                    required
+                                />
+                                <input
+                                    type="email"
+                                    className="m-2"
+                                    placeholder="Email"
+                                    {...register('email')}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    className="m-2"
+                                    placeholder="Company"
+                                    {...register('company')}
+                                    required
 
-                    />
-                    <button type="submit">Add Contact</button>
-                </form>
+                                />
+                                <button className="button-no-style icon f-26 p-0 blue-hover d-flex" type="submit">
+                                    <IoIosCheckmarkCircleOutline/>
+                                </button>
+                                <button className="button-no-style icon f-26 p-0 blue-hover d-flex" onClick={() => setShowAddForm(false)}>
+                                    <IoIosCloseCircleOutline/>
+                                </button>
+
+                            </form>
+                        }
+                        {
+                            contacts.length > 0 ?
+                                contacts.map((contact) => (
+                                    <div className="contact-section mt-3" key={contact.id}>
+                                        <div className="d-flex-between">
+                                            <span className="fw-bold f-14">{contact.email}</span>
+                                            <span>
+                                            <button
+                                                className="button-no-style"
+                                                onClick={() => handleDeleteContact(contact.id)}>Delete</button>
+                                        </span>
+                                        </div>
+                                        <span className="color-muted f-12">{contact.name}</span> ·
+                                        <span className="color-muted f-12 m-1">{contact.company}</span>
+                                    </div>
+                                ))
+                                :
+                                <>
+                                    <h4 className="text-center m-3">{trans('lang.contactListEmpty')}</h4>
+                                </>
+                        }
+                    </div>
+                </div>
             </div>
-            <ul>
-                {contacts.map((contact) => (
-                    <li key={contact.id}>
-                        {contact.name} ({contact.email}) - {contact.company}
-                        <button onClick={() => handleDeleteContact(contact.id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
         </div>
     );
 }

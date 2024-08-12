@@ -8,6 +8,7 @@ import {createRoot} from 'react-dom/client'; // Правильный импор�
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {TranslationProvider} from './js/context/TranslateContext';
 import {UserProvider} from './js/context/UserContext';
+import {LoadingProvider} from './js/context/LoadingContext';
 
 import AuthRequired from './js/components/Requires/AuthRequired';
 import ExitRequired from './js/components/Requires/ExitRequired';
@@ -31,64 +32,44 @@ import Upload from "./js/pages/Send_message/Send_message";
 function App() {
     return (
         <BrowserRouter>
-            <TranslationProvider>
-                <UserProvider>
-                    <Routes>
-                        <Route path="/" element={<Layout/>}>
-                            <Route index element={<Home/>}/>
-                            <Route path="/logout" element={<Logout/>}/>
+            <LoadingProvider>
+                <TranslationProvider>
+                    <UserProvider>
+                        <Routes>
+                            <Route path="/" element={<Layout/>}>
+                                <Route index element={<Home/>}/>
+                                <Route path="/logout" element={<Logout/>}/>
 
-                            <Route element={<ExitRequired/>}>
-                                <Route path="login" element={<Login/>}/>
-                                <Route path="/session/expired" element={<SessionExpired/>}/>
-                                <Route
-                                    path="register"
-                                    element={<Register/>}
-                                />
-                                <Route
-                                    path="register/confirm"
-                                    element={<Register_Confirm_Email/>}
-                                />
-                                {/*<Route*/}
-                                {/*    path="register/confirm/new"*/}
-                                {/*    element={<Register_New_Confirm_Email/>}*/}
-                                {/*/>*/}
-                            </Route>
-
-                            <Route element={<AuthRequired/>}>
-
-                                <Route
-                                    path="account"
-                                    element={<UserAccount/>}
-                                >
+                                <Route element={<ExitRequired/>}>
+                                    <Route path="login" element={<Login/>}/>
+                                    <Route path="/session/expired" element={<SessionExpired/>}/>
+                                    <Route path="register" element={<Register/>}/>
+                                    <Route path="register/confirm" element={<Register_Confirm_Email/>}/>
+                                    {/*<Route*/}
+                                    {/*    path="register/confirm/new"*/}
+                                    {/*    element={<Register_New_Confirm_Email/>}*/}
+                                    {/*/>*/}
                                 </Route>
-                                <Route
-                                    path="settings"
-                                    element={<UserSettings/>}
-                                />
-                                <Route
-                                    path="send"
-                                    element={<Upload/>}
 
-                                />
-                                <Route
-                                    path="contacts"
-                                    element={<Contacts/>}
-                                />
-                                <Route
-                                    path="template"
-                                    element={<EmailTemplate/>}
-                                />
-                                <Route
-                                    path="history"
-                                    element={<History/>}
-                                />
+                                <Route element={<AuthRequired/>}>
+
+                                    <Route path="account" element={<UserAccount/>}>
+                                        <Route path="settings" element={<UserSettings/>}/>
+                                    </Route>
+
+                                    <Route path="/send" element={<Upload/>}>
+                                        <Route path="contacts" element={<Contacts/>}/>
+                                        <Route path="template" element={<EmailTemplate/>}/>
+                                        <Route path="history" element={<History/>}/>
+                                    </Route>
+
+                                </Route>
+                                <Route path="*" element={<NotFound/>}/>
                             </Route>
-                            <Route path="*" element={<NotFound/>}/>
-                        </Route>
-                    </Routes>
-                </UserProvider>
-            </TranslationProvider>
+                        </Routes>
+                    </UserProvider>
+                </TranslationProvider>
+            </LoadingProvider>
         </BrowserRouter>
     );
 }

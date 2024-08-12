@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {Outlet, Navigate} from 'react-router-dom';
 import {UserContext} from '../../context/UserContext'
+import Preloader from "../Preloader";
 
 // Pages such as Login and Registation are only available when the user is logged out!
 export default function AuthRequired() {
@@ -11,7 +12,7 @@ export default function AuthRequired() {
     }, []);
 
     if (isAuthenticated === null) {
-        return <p>Loading...</p>;
+        return <Preloader/>;
     }
 
     if (!isAuthenticated) {

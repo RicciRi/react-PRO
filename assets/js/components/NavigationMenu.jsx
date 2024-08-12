@@ -15,7 +15,7 @@ const NavigationMenu = () => {
         <div className="navigation-menu">
             <ul className="ul-basic-style nav-bg d-flex">
                 <li>
-                    <NavLink to="/send" className={({ isActive }) => isActive ? 'active-link' : ''}>
+                    <NavLink to="/send" className={({ isActive }) => isActive ? 'active-link' : ''} end>
                         <span className="d-flex-center">
                             <IoPaperPlaneOutline />
                         </span>
@@ -25,7 +25,7 @@ const NavigationMenu = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/contacts" className={({ isActive }) => isActive ? 'active-link' : ''}>
+                    <NavLink to="/send/contacts" className={({ isActive }) => isActive ? 'active-link' : ''}>
                         <span className="d-flex-center">
                             <RiContactsBook3Line />
                         </span>
@@ -35,7 +35,7 @@ const NavigationMenu = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/template" className={({ isActive }) => isActive ? 'active-link' : ''}>
+                    <NavLink to="/send/template" className={({ isActive }) => isActive ? 'active-link' : ''}>
                         <span className="d-flex-center">
                             <MdOutlineMailOutline />
                         </span>
@@ -45,7 +45,7 @@ const NavigationMenu = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/history" className={({ isActive }) => isActive ? 'active-link' : ''}>
+                    <NavLink to="/send/history" className={({ isActive }) => isActive ? 'active-link' : ''}>
                         <span className="d-flex-center">
                             <AiOutlineInbox />
                         </span>

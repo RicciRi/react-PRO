@@ -51,11 +51,24 @@ export default function Upload(data) {
         <div className="upload-container">
             <div className="container">
                 <div className="row">
-                    <div className="col-1">
-                        <button className="w-100">send file</button>
-                        <button className="w-100">send file</button>
+                    <div className="col-2">
+                        <div>
+                            {/*<h4>{trans('lang.fileToUpload')}</h4>*/}
+                            <ul>
+                                {files.map((file, index) => (
+                                    <li key={index} className="p-2 mb-2">
+                                        <div className="file-name d-flex-between">
+                                            {file.name}
+                                            <button className="button" onClick={() => removeFile(index)}>
+                                                <BsTrash3/>
+                                            </button>
+                                        </div>
+                                        <div className="file-size">{file.size}</div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                    <div className="col-1"></div>
                     <div className="col-4">
                         <form className="p-4" onSubmit={handleSubmit(onSubmit)}>
                             <div className="d-flex-center">
@@ -80,26 +93,12 @@ export default function Upload(data) {
                                 <label htmlFor="message">{trans('lang.message')}</label>
                                 <textarea id="message" name="message" {...register('body')} required></textarea>
                             </div>
-                            <button type="submit" className="button button-block button-green mt-3 mb-3">{trans('lang.send')}</button>
+                            <button type="submit"
+                                    className="button button-block button-green mt-3 mb-3">{trans('lang.send')}</button>
                         </form>
                     </div>
-                    <div className="col-2">
-                        <div>
-                            <h4>{trans('lang.fileToUpload')}</h4>
-                            <ul>
-                                {files.map((file, index) => (
-                                    <li key={index} className="p-2 mb-2">
-                                        <div className="file-name d-flex-between">
-                                            {file.name}
-                                            <button className="button" onClick={() => removeFile(index)}>
-                                                <BsTrash3/>
-                                            </button>
-                                        </div>
-                                        <div className="file-size">{file.size}</div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                    <div className="custom-border-left col-6">
+                        <Outlet/>
                     </div>
                 </div>
             </div>

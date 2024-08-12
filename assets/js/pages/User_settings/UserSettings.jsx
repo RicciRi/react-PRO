@@ -3,6 +3,8 @@ import axios from 'axios';
 import {useTranslation} from '../../context/TranslateContext';
 import {UserContext} from '../../context/UserContext';
 
+
+
 export default function UserSettings() {
 
     const {trans} = useTranslation();
@@ -85,60 +87,59 @@ export default function UserSettings() {
     };
 
     return (
-        <div className="settings-container p-5">
-            {/*{userData?.accountImage ?*/}
-            {/*    <img src={`/uploads/photos/${userData?.accountImage}`} alt="alt"/>*/}
-            {/*    :*/}
-            {/*    <p>.....</p>*/}
-            {/*}*/}
+        <form onSubmit={handleSubmit}>
+            {error && <p className="error-message">{error}</p>}
+            {message && <p className="success-message">{message}</p>}
 
-            <form onSubmit={handleSubmit}>
-                <div className="form-section">
-                    <h2>{trans('lang.settings')}</h2>
-                    {error && <p className="error-message">{error}</p>}
-                    {message && <p className="success-message">{message}</p>}
+            <div className="inpur-wrap mt-3">
+                <label htmlFor="firstName">{trans('lang.name')}</label>
 
-                    <div className="inpur-wrap">
-                        <input
-                            id="firstName"
-                            type="text"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            required
-                        />
-                        <label htmlFor="firstName">{trans('lang.name')}</label>
-                    </div>
+                <input
+                    id="firstName"
+                    className="form-control"
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
 
-                    <div className="inpur-wrap">
-                        <input
-                            id="lastName"
-                            type="text"
-                            value={formData.lastName}
-                            name="lastName"
-                            onChange={handleChange}
-                            required
-                        />
-                        <label htmlFor="lastName">{trans('lang.surname')}</label>
-                    </div>
+            <div className="inpur-wrap mt-3">
+                <label htmlFor="lastName">{trans('lang.surname')}</label>
 
-                    <div className="input-wrap">
-                        <input
-                            id="AccountImage"
-                            type="file"
-                            accept=".jpg,.jpeg,.png"
-                            name="AccountImage"
-                            onChange={handleFileChange}
-                        />
-                        <label htmlFor="AccountImage">{trans('lang.accountImage')}</label>
-                    </div>
+                <input
+                    id="lastName"
+                    className="form-control"
+                    type="text"
+                    value={formData.lastName}
+                    name="lastName"
+                    onChange={handleChange}
+                    required
+                />
+            </div>
 
-                    <button type="submit" className="button">
-                        {trans('lang.save')}
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div className="input-wrap mt-3 ">
+                <label htmlFor="AccountImage">{trans('lang.accountImage')}</label>
+
+                <input
+                    id="AccountImage"
+                    className="form-control"
+
+                    type="file"
+                    accept=".jpg,.jpeg,.png"
+                    name="AccountImage"
+                    onChange={handleFileChange}
+                />
+            </div>
+
+            <div className="d-flex-center mt-3">
+                <button type="submit" className="button button-block button-green">
+                    {trans('lang.save')}
+                </button>
+            </div>
+
+        </form>
     );
 };
 

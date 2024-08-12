@@ -17,11 +17,11 @@
   "lang.confirmPassword": "Confirm Password",
   "lang.save": "Save",
   "lang.loggedInAs": "You are logged in as",
-  "lang.alredyLogin": "You are already logged in!",
+  "lang.alreadyLogin": "You are already logged in!",
   "lang.getDreamCar": "Get Your Dream Car",
   "lang.newModel": "New Model",
   "lang.WhatLooking": "What are you looking for?",
-  "lang.remembeMe": "Remember me",
+  "lang.rememberMe": "Remember me",
   "lang.changeInfo": "Change Info",
   "lang.accountCreated": "Your account has been created!",
   "lang.updateFailed": "Update failed",
@@ -59,5 +59,7 @@
   "lang.send": "Send",
   "lang.edit": "Edit",
   "lang.siteTheme": "Site Theme",
-  "lang.editProfile": "Edit profile"
+  "lang.editProfile": "Edit profile",
+  "lang.addContact": "Add contact",
+  "lang.contactListEmpty": "Your contacts list is empty"
 }
