@@ -4,7 +4,7 @@ import {useTranslation} from "../../context/TranslateContext";
 import {UserContext} from "../../context/UserContext";
 import {useForm} from 'react-hook-form';
 import axios from 'axios';
-import { BsTrash3 } from "react-icons/bs";
+import {BsTrash3} from "react-icons/bs";
 
 
 export default function Upload(data) {
@@ -87,14 +87,18 @@ export default function Upload(data) {
                             </div>
                             <div>
                                 <label htmlFor="title">{trans("lang.title")}</label>
-                                <input id="title" name="title" type="title" {...register('subject')} required/>
+                                <input id="title" name="title" type="text" {...register('subject')} required/>
                             </div>
                             <div>
                                 <label htmlFor="message">{trans('lang.message')}</label>
                                 <textarea id="message" name="message" {...register('body')} required></textarea>
                             </div>
-                            <button type="submit"
-                                    className="button button-block button-green mt-3 mb-3">{trans('lang.send')}</button>
+                            <button
+                                type="submit"
+                                className="button button-block button-green mt-3 mb-3"
+                                disabled={files.length === 0 ? true : false}>
+                                {trans('lang.send')}
+                            </button>
                         </form>
                     </div>
                     <div className="custom-border-left col-6">

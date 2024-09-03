@@ -1,0 +1,191 @@
+
+// BASE SETTINGS
+
+// Animation
+@keyframes dialog-backdrop-appear {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.dialog-backdrop {
+  animation: 200ms cubic-bezier(0.33, 1, 0.68, 1) 0s 1 normal none running dialog-backdrop-appear;
+}
+
+
+// Color
+
+.text-color {
+  color: var(--text-color);
+}
+
+.white-color {
+  color: var(--white-color)
+}
+
+.black-color {
+  color: var(--black-color)
+}
+
+.color-muted {
+  color: var(--color-muted);
+}
+
+.blue-hover:hover {
+  color: #2196f3 !important;
+
+}
+
+.custom-border-left {
+  border-left: 0.5px solid var(--border-color-default);
+}
+
+// Background
+
+.nav-bg {
+  background: var(--navbar-background-color) !important;
+}
+
+
+// buttons
+
+button:disabled {
+  opacity: 0.5;
+  cursor: auto;
+  background-color: var(--green-color) !important;
+}
+
+
+//
+
+.error-message {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-error);
+}
+
+.success-message {
+  font-weight: 600;
+  color: var(--text-success);
+}
+
+// display
+.d-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.d-flex-start {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.d-flex-end {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.d-flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.d-flex-around {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.d-column-start {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.d-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+// Font
+
+.f-50 {
+  font-size: 50px;
+}
+
+.f-26 {
+  font-size: 26px;
+}
+
+.f-20 {
+  font-size: 20px;
+}
+
+.f-18 {
+  font-size: 18px;
+}
+
+.f-16 {
+  font-size: 16px;
+}
+
+.f-14 {
+  font-size: 14px;
+}
+
+.f-12 {
+  font-size: 12px;
+}
+
+.f-10 {
+  font-size: 10px;
+}
+
+.fw-100 {
+  font-weight: 100;
+}
+
+.fw-200 {
+  font-weight: 200;
+}
+
+.fw-300 {
+  font-weight: 300;
+}
+
+.fw-400 {
+  font-weight: 400;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.fw-800 {
+  font-weight: 800;
+}
+
+.fw-900 {
+  font-weight: 900;
+}

@@ -1,0 +1,26 @@
+// HOME PAGE
+
+.homepage-container {
+  min-height: 540px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  color: var(--text-color);
+  background: var(--background-black);
+
+
+  h1 {
+    font-size: 5rem;
+    margin: 80px auto 20px auto;
+  }
+
+
+.header-block {
+  min-height: 400px;
+  width: 100%;
+  background-image: url("../images/gradient.png");
+  background-size: cover;
+  border-radius: 20px;
+}
+
+}

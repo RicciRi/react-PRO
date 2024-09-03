@@ -18,7 +18,12 @@ class ContactController extends AbstractController
 {
 
     #[Route('/api/contacts', name: 'api_contacts', methods: ['POST'])]
-    public function getContacts(Request $request, JWTEncoderInterface $jwtEncoder, ContactRepository $contactRepository, EntityManagerInterface $entityManager): Response
+    public function getContacts(
+        Request                $request,
+        JWTEncoderInterface    $jwtEncoder,
+        ContactRepository      $contactRepository,
+        EntityManagerInterface $entityManager,
+    ): Response
     {
         $cookie = $request->cookies->get('auth_token');
 
@@ -41,17 +46,18 @@ class ContactController extends AbstractController
         $contacts = $contactRepository->findBy(['user' => $userId]);
 
         // Создаем массив с нужными полями
-        $contactsArray = array_map(function($contact) {
+        $contactsArray = array_map(function ($contact) {
             return [
-                'id' => $contact->getId(),
-                'name' => $contact->getName(),
-                'email' => $contact->getEmail(),
-                'company' => $contact->getCompany()
+                'id'      => $contact->getId(),
+                'name'    => $contact->getName(),
+                'email'   => $contact->getEmail(),
+                'company' => $contact->getCompany(),
             ];
         }, $contacts);
 
         return $this->json($contactsArray);
     }
+
     #[Route('/api/contacts/add', name: 'add_contact', methods: ['POST'])]
     public function addContact(Request $request, JWTEncoderInterface $jwtEncoder, ContactRepository $contactRepository, EntityManagerInterface $entityManager): Response
     {
@@ -69,8 +75,8 @@ class ContactController extends AbstractController
 
         $userId = $tokenData['id'];
 
-        $name = $request->request->get('name');
-        $email = $request->request->get('email');
+        $name    = $request->request->get('name');
+        $email   = $request->request->get('email');
         $company = $request->request->get('company');
 
         $contact = new Contact();
