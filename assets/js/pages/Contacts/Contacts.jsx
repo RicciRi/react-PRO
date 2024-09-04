@@ -5,7 +5,6 @@ import {useTranslation} from '../../context/TranslateContext';
 import {useLoading} from "../../context/LoadingContext";
 import {IoIosCheckmarkCircleOutline, IoIosCloseCircleOutline} from "react-icons/io";
 
-
 function Contacts() {
     const [contacts, setContacts] = useState([]);
     const {showLoading, hideLoading} = useLoading()
@@ -57,7 +56,7 @@ function Contacts() {
             });
             reset();
         } catch (error) {
-            setError('error')
+            console.error('Error:', error);
         } finally {
             fetchContacts()
             hideLoading(false)
@@ -93,7 +92,8 @@ function Contacts() {
                     <div className="contacts-container">
                         <div className='d-flex-between custom-border'>
                             <span className="fw-bold f-26">{trans('lang.contacts')}</span>
-                            <button className="button-no-style fw-200 f-14 p-0 m-1 blue-hover" onClick={() => setShowAddForm(true)}>
+                            <button className="button-no-style fw-200 f-14 p-0 m-1 blue-hover"
+                                    onClick={() => setShowAddForm(true)}>
                                 {trans('lang.addContact')}
                             </button>
                         </div>
@@ -124,7 +124,8 @@ function Contacts() {
                                 <button className="button-no-style icon f-26 p-0 blue-hover d-flex" type="submit">
                                     <IoIosCheckmarkCircleOutline/>
                                 </button>
-                                <button className="button-no-style icon f-26 p-0 blue-hover d-flex" onClick={() => setShowAddForm(false)}>
+                                <button className="button-no-style icon f-26 p-0 blue-hover d-flex"
+                                        onClick={() => setShowAddForm(false)}>
                                     <IoIosCloseCircleOutline/>
                                 </button>
 

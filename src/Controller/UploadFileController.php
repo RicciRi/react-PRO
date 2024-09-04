@@ -88,11 +88,17 @@ class UploadFileController extends AbstractController
         $entityManager->flush();
 
 
-        $body .= '<br><br>Files:<br>';
 
-        foreach ($fileUrls as $url) {
-            $body .= '<a href="' . $url . '">' . $url . '</a><br>';
-        }
+
+        $body = '<br>
+        <br>
+        <p>Hello! You can download your files by this link:</p>
+        <br>
+        https://localhost:8000/download 
+        <br>
+        <p>Code: ' . $uploadId . '</p>
+        <p>Password: ' . $uploadPassword . '</p>';
+
 
         $email->html($body);
         $mailer->send($email);

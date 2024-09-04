@@ -61,5 +61,6 @@
   "lang.siteTheme": "Site Theme",
   "lang.editProfile": "Edit profile",
   "lang.addContact": "Add contact",
-  "lang.contactListEmpty": "Your contacts list is empty"
+  "lang.contactListEmpty": "Your contacts list is empty",
+  "lang.download": "Download"
 }

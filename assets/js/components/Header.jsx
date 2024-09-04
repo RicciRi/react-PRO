@@ -19,7 +19,12 @@ const Header = ({onClick}) => {
     };
 
     const renderSendLink = () => {
-        const pathsWithNavMenu = ['/', '/home', '/account', '/settings'];
+        const pathsWithNavMenu = ['/', '/home', '/account', '/settings', '/download'];
+        return pathsWithNavMenu.includes(location.pathname);
+    };
+
+    const renderDownloadLink = () => {
+        const pathsWithNavMenu = ['/', '/home', '/account', '/settings', '/send', '/send/contacts', '/send/template', '/send/history'];
         return pathsWithNavMenu.includes(location.pathname);
     };
 
@@ -64,6 +69,11 @@ const Header = ({onClick}) => {
                                 {isAuthenticated && renderSendLink() &&
                                     <Link to="/send" className="button button-navbar">
                                         {trans('lang.send')}
+                                    </Link>
+                                }
+                                {renderDownloadLink() &&
+                                    <Link to="/download" className="button button-navbar">
+                                        {trans('lang.download')}
                                     </Link>
                                 }
                                 {userData?.accountImage ? (

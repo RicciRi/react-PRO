@@ -10,6 +10,11 @@ import {CiMoneyCheck1} from "react-icons/ci";
 import {FaRegFaceSmile} from "react-icons/fa6";
 import {IoMdClose} from "react-icons/io";
 import {MdLogout} from "react-icons/md";
+import { AiOutlineInbox } from "react-icons/ai";
+import { MdOutlineMailOutline } from "react-icons/md";
+import { RiContactsBook3Line } from "react-icons/ri";
+import { IoCloudDownloadOutline } from "react-icons/io5";
+
 
 import {Link} from "react-router-dom";
 
@@ -55,18 +60,17 @@ const OverContent = ({onClick}) => {
                     </div>
                 </div>
                 <ul className="ul-basic-style">
-                    <li onClick={onClick}>
-                        <Link to="/">
-                            <span className="d-flex-center">
-                                <FaRegFaceSmile/>
-                            </span>
-                            <span className="">
-                                {trans('lang.setStatus')}
-                            </span>
-                        </Link>
-
-                    </li>
-                    <hr className="m-2"/>
+                    {/*<li onClick={onClick}>*/}
+                    {/*    <Link to="/">*/}
+                    {/*        <span className="d-flex-center">*/}
+                    {/*            <FaRegFaceSmile/>*/}
+                    {/*        </span>*/}
+                    {/*        <span className="">*/}
+                    {/*            {trans('lang.setStatus')}*/}
+                    {/*        </span>*/}
+                    {/*    </Link>*/}
+                    {/*</li>*/}
+                    {/*<hr className="m-2"/>*/}
                     <li onClick={onClick}>
                         <Link to="/account">
                             <span className="d-flex-center">
@@ -93,11 +97,44 @@ const OverContent = ({onClick}) => {
                     </li>
                     <hr className="m-2"/>
                     <li>
+                        <Link to="/download">
+                            <span className="d-flex-center">
+                                <IoCloudDownloadOutline/>
+                            </span>
+                            <span>{trans('lang.download')}</span>
+                        </Link>
+                    </li>
+                    <hr className="m-2"/>
+                    <li>
                         <Link to="/send">
                             <span className="d-flex-center">
-                                <IoPaperPlaneOutline />
+                                <IoPaperPlaneOutline/>
                             </span>
                             <span>{trans('lang.send')}</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/send/contacts">
+                            <span className="d-flex-center">
+                                <RiContactsBook3Line/>
+                            </span>
+                            <span>{trans('lang.contacts')}</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/send/template">
+                            <span className="d-flex-center">
+                                <MdOutlineMailOutline/>
+                            </span>
+                            <span>{trans('lang.emailTemplate')}</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/send/history">
+                            <span className="d-flex-center">
+                                <AiOutlineInbox/>
+                            </span>
+                            <span>{trans('lang.history')}</span>
                         </Link>
                     </li>
                     <hr className="m-2"/>
