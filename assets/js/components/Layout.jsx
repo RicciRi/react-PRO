@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import OverContent from './OverContent';
@@ -21,12 +21,12 @@ export default function Layout() {
     return (
         <>
             <div className="site-wrapper">
-                <Header onClick={openMenu} />
+                <Header onClick={openMenu}/>
                 <main>
-                    <Outlet />
+                    <Outlet/>
                 </main>
-                <Footer />
-                <OverContent onClick={closeMenu}  />
+                <Footer/>
+                <OverContent onClick={closeMenu}/>
             </div>
         </>
     );

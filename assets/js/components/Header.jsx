@@ -92,7 +92,6 @@ const Header = ({onClick}) => {
                         </>
                     )}
                 </div>
-
             </div>
             {isAuthenticated && renderNavigationMenu() && <NavigationMenu/>}
         </header>

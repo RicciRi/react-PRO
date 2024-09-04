@@ -29,8 +29,8 @@ import EmailTemplate from "./js/pages/Email_template/Email_template";
 import History from "./js/pages/History/History";
 import Upload from "./js/pages/Send_message/Send_message";
 // style
-import  './styles/home.scss'
-import  './styles/index.scss'
+import './styles/home.scss'
+import './styles/index.scss'
 import DownloadLogin from "./js/pages/Download/Download";
 
 
@@ -42,7 +42,7 @@ function App() {
                     <UserProvider>
                         <Routes>
                             <Route path="/" element={<Layout/>}>
-                                <Route index element={<Navigate to="/home" />} />
+                                <Route index element={<Navigate to="/home"/>}/>
                                 <Route path="/home" element={<Home/>}/>
                                 <Route path="/logout" element={<Logout/>}/>
 

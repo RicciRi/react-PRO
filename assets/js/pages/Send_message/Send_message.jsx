@@ -5,11 +5,17 @@ import {UserContext} from "../../context/UserContext";
 import {useForm} from 'react-hook-form';
 import axios from 'axios';
 import {BsTrash3} from "react-icons/bs";
+import Toast from "../../components/Toast";
+import {useLoading} from "../../context/LoadingContext";
 
 
-export default function Upload(data) {
+export default function Upload() {
     const {trans} = useTranslation()
+    const {showLoading, hideLoading} = useLoading()
     const {userData} = useContext(UserContext)
+    const [showToast, setShowToast] = useState(false);
+    const [toastType, setToastType] = useState('success'); // По умолчанию тип 'success'
+
 
     const {register, handleSubmit, reset} = useForm();
     const [files, setFiles] = useState([]);
@@ -33,26 +39,41 @@ export default function Upload(data) {
         });
 
         try {
+            showLoading(true)
             await axios.post('/api/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            alert('Email sent successfully!');
             reset();
             setFiles([]);
+            setToastType('success');
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 5000);
+
         } catch (error) {
-            console.log('Error sending email:', error);
-            alert('Failed to send email');
+            setToastType('error');
+            setShowToast(true);
+            setTimeout(() => setShowToast(false), 5000);
+
+        } finally {
+            hideLoading(false);
         }
     };
+
 
     return (
         <div className="upload-container">
             <div className="container">
+                <Toast
+                    show={showToast}
+                    message={toastType === 'success' ? 'Your files have been sent successfully!' : 'Something went wrong!'}
+                    onClose={() => setShowToast(false)}
+                    type={toastType}
+                />
                 <div className="row">
                     <div className="col-2">
-                        <div>
+                    <div>
                             {/*<h4>{trans('lang.fileToUpload')}</h4>*/}
                             <ul>
                                 {files.map((file, index) => (
@@ -87,11 +108,13 @@ export default function Upload(data) {
                             </div>
                             <div>
                                 <label htmlFor="title">{trans("lang.title")}</label>
-                                <input id="title" name="title" type="text" {...register('subject')} required/>
+                                <input id="title" name="title" type="text" {...register('subject')}
+                                       placeholder={trans("lang.title")} required/>
                             </div>
                             <div>
                                 <label htmlFor="message">{trans('lang.message')}</label>
-                                <textarea id="message" name="message" {...register('body')} required></textarea>
+                                <textarea id="message" name="message" {...register('body')}
+                                          placeholder={trans("lang.message")} required></textarea>
                             </div>
                             <button
                                 type="submit"

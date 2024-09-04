@@ -1,0 +1,72 @@
+.toast {
+  display: block !important;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: 2px solid #202020;
+  border-radius: 5px;
+  background: #0d1117;
+  opacity: 0;
+  visibility: hidden; /* Начальное состояние скрыто */
+  transform: translateY(-40px); /* Начальная позиция */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Плавные изменения */
+
+
+  .toast-header {
+    color: #2196f3;
+    background: #0d1117;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #202020;
+  }
+
+  .toast-body {
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-top: 0.5px solid #202020;
+  }
+
+}
+
+.toast-success {
+
+  .toast-header {
+    color: #2196f3;
+  }
+
+  .toast-body {
+    color: #C0C0C0;
+  }
+
+}
+
+.toast-error {
+  border-color: #e87171;
+
+  .toast-header {
+    color: #e87171;
+  }
+
+  .toast-body {
+    color: #e87171;
+  }
+
+}
+
+.toast.toast-show {
+  opacity: 1;
+  visibility: visible; /* Видимость */
+  transform: translateY(0);
+}
+
+.toast.toast-hide {
+  opacity: 0;
+  visibility: hidden; /* Скрыть видимость */
+  transform: translateY(-40px);
+}
+
+.toast:not(.show) {
+  display: block !important;
+}
+

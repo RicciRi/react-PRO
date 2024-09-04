@@ -62,5 +62,9 @@
   "lang.editProfile": "Edit profile",
   "lang.addContact": "Add contact",
   "lang.contactListEmpty": "Your contacts list is empty",
-  "lang.download": "Download"
+  "lang.download": "Download",
+  "lang.uploadId": "Upload ID",
+  "lang.loginToDownload": "Login to download files"
+
+
 }

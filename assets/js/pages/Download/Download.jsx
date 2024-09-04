@@ -7,6 +7,7 @@ import {useLoading} from "../../context/LoadingContext";
 
 export default function Download() {
     const {showLoading, hideLoading} = useLoading();
+    const {trans} = useTranslation();
 
     const [uploadId, setUploadId] = useState('');
     const [password, setPassword] = useState('');
@@ -16,10 +17,10 @@ export default function Download() {
 
 
     const handleLogin = async (event) => {
-        event.preventDefault(); // Предотвращает перезагрузку страницы
+        event.preventDefault();
 
         const formData = {
-            uploadId: uploadId, // Убедитесь, что это поле соответствует полю на сервере
+            uploadId: uploadId,
             password: password,
         };
 
@@ -83,7 +84,7 @@ export default function Download() {
 
     return (
         <div className="container p-5">
-            <div className="">
+            <div className=" mb-5">
                 {uploadData ? (
                         <>
                             <div className="row">
@@ -119,33 +120,37 @@ export default function Download() {
                             </div>
                         </>
                     ) :
-                    <>
-                        <h1>Login to download files</h1>
-                        <form className="p-5" onSubmit={handleLogin}>
-                            <label htmlFor="uploadId">Upload ID</label><br/>
-                            <input
-                                id="uploadId"
-                                name="uploadId"
-                                type="text"
-                                value={uploadId}
-                                onChange={(e) => setUploadId(e.target.value)}
-                                required
-                            />
-                            <br/>
-                            <p className="m-5"></p>
-                            <label htmlFor="password">Password</label><br/>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                            <br/>
-                            <button className="button button-green m-5" type="submit">Loginnn</button>
-                        </form>
-                    </>
+                    <div className="authentication-container p-5">
+                        <h1>{trans('lang.loginToDownload')}</h1>
+                        <div className="auth-form-body mt-4">
+                            <form className="p-4" onSubmit={handleLogin}>
+                                <div className="input-wrap">
+                                    <label htmlFor="uploadId">{trans('lang.uploadId')}</label>
+                                    <input
+                                        id="uploadId"
+                                        name="uploadId"
+                                        type="text"
+                                        value={uploadId}
+                                        onChange={(e) => setUploadId(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <div className="input-wrap">
+
+                                    <label htmlFor="password">{trans('lang.password')}</label>
+                                    <input
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                <button className="button button-block button-green" type="submit">{trans('lang.signIn')}</button>
+                            </form>
+                        </div>
+                    </div>
                 }
             </div>
         </div>
