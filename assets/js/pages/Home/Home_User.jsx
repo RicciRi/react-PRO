@@ -22,7 +22,9 @@ export const Home_User = () => {
 
     return (
         <div className="homepage-container container-fluid p-5">
-            You are user!
+            <div className="header-block">
+                <h1 className="d-flex-center text-center fw-700">Secure File Transfer</h1>
+            </div>
         </div>
     );
 

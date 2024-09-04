@@ -51,7 +51,7 @@ class LoginController extends AbstractController
         if (!$isConfirmed) {
             return new JsonResponse([
                                         'error' => "You didn't confirm your email!",
-                                                                                                                                                                                                                'confirmEmail' => true,
+                                                                                                                                                                                                                            'confirmEmail' => true,
                                     ], 404); // Ошибка 404
         }
 
@@ -65,10 +65,13 @@ class LoginController extends AbstractController
         $tokenTTL = $this->getParameter('lexik_jwt_authentication.token_ttl'); // Получаем время жизни токена
 
         $tokenPayload = [
-            'email' => $user->getEmail(),
-            'id'    => $user->getId(),
-            'iat'   => time(),
-            'exp'   => time() + $tokenTTL,
+            'email'     => $user->getEmail(),
+            'id'        => $user->getId(),
+            'firstName' => $user->getFirstName(),
+            'lastName'  => $user->getLastName(),
+            'iat'       => time(),
+            'exp'       => time() + $tokenTTL,
+
         ];
 
         $token = $JWTManager->createFromPayload($user, $tokenPayload); // Генерация токена
@@ -86,7 +89,6 @@ class LoginController extends AbstractController
             'Lax', // SameSite
         );
 
-        // Подготовка ответа
         $response = new JsonResponse([
                                          'userInfo' => [
                                              'id'        => $user->getId(),

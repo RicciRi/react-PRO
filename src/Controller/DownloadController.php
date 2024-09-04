@@ -18,8 +18,8 @@ class DownloadController extends AbstractController
     private $uploadedFilesRepository;
 
     public function __construct(
-        UploadDataRepository $uploadDataRepository,
-        UploadedFilesRepository $uploadedFilesRepository
+        UploadDataRepository    $uploadDataRepository,
+        UploadedFilesRepository $uploadedFilesRepository,
     )
     {
         $this->uploadDataRepository    = $uploadDataRepository;
@@ -30,7 +30,7 @@ class DownloadController extends AbstractController
     #[Route('/download/login', name: 'download_login', methods: ['POST'])]
     public function login(Request $request): JsonResponse
     {
-        $data     = json_decode($request->getContent(), true); // Получаем JSON-данные
+        $data     = json_decode($request->getContent(), true);
         $uploadId = $data['uploadId'] ?? null;
         $password = $data['password'] ?? null;
 
@@ -44,16 +44,20 @@ class DownloadController extends AbstractController
             return $this->json(['error' => 'Invalid Upload ID'], 401);
         }
 
+        if ($uploadData->getUploadPassword() !== $password) {
+            return $this->json(['error' => 'Incorrect password!'], 400);
+        }
+
         $uploadTime    = $uploadData->getUploadTime();
         $formattedTime = $uploadTime->format('Y-m-d H:i');
 
         $uploadFiles = $this->uploadedFilesRepository->findBy(['uploadId' => $uploadId]);
 
-        $filesArray = array_map(function($file) {
+        $filesArray = array_map(function ($file) {
             return [
                 'originalFileName' => $file->getOriginalFileName(),
-                'fileName' => $file->getFileName(),
-                'id' => $file->getId()
+                'fileName'         => $file->getFileName(),
+                'id'               => $file->getId(),
             ];
         }, $uploadFiles);
 
@@ -64,7 +68,7 @@ class DownloadController extends AbstractController
                                    'title'   => $uploadData->getUploadTittle(),
                                    'id'      => $uploadData->getUploadId(),
                                    'time'    => $formattedTime,
-                                   ],
+                               ],
                            ]);
     }
 
@@ -88,7 +92,7 @@ class DownloadController extends AbstractController
         $response = new BinaryFileResponse($filePath);
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $file->getOriginalFileName()
+            $file->getOriginalFileName(),
         );
 
         return $response;

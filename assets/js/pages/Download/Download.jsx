@@ -15,6 +15,8 @@ export default function Download() {
     const [uploadData, setUploadData] = useState(null)
     const [files, setFiles] = useState([]);
 
+    const [error, setError] = useState(null)
+
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -26,7 +28,7 @@ export default function Download() {
 
         try {
             showLoading(true); // Показываем индикатор загрузки
-
+            setError(null)
             const response = await fetch('/download/login', {
                 method: 'POST',
                 headers: {
@@ -41,7 +43,7 @@ export default function Download() {
                 setFiles(data.files)
             } else {
                 const errorData = await response.json();
-                console.log(errorData);
+                setError(errorData.error);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -123,6 +125,7 @@ export default function Download() {
                     <div className="authentication-container p-5">
                         <h1>{trans('lang.loginToDownload')}</h1>
                         <div className="auth-form-body mt-4">
+                            {error && <p className='error-message m-4 mb-2'>{error}</p>}
                             <form className="p-4" onSubmit={handleLogin}>
                                 <div className="input-wrap">
                                     <label htmlFor="uploadId">{trans('lang.uploadId')}</label>

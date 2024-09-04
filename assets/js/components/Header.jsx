@@ -35,9 +35,9 @@ const Header = ({onClick}) => {
                 <nav>
                     <div className="navbar-container">
                         <div className="nav-container">
-                            <a href="/">
+                            <Link to="/home">
                                 <img className='logo' src="/icons/logo.svg" alt="logo"/>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </nav>
@@ -49,9 +49,9 @@ const Header = ({onClick}) => {
             {loading && <Preloader/>}
             <div className="navbar-container">
                 <div className="nav-container">
-                    <a href="/">
+                    <Link to="/home">
                         <img className='logo' src="/icons/logo.svg" alt="logo"/>
-                    </a>
+                    </Link>
                     {!isAuthenticated ? (
                         <>
                             <div className="d-flex">

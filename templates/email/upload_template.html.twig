@@ -1,0 +1,22 @@
+{% extends 'base.email.html.twig' %}
+
+{% block body %}
+    <div class="spacer"></div>
+    <div class="center">
+        <h3>Hello! You received a message from {{ userName }}</h3>
+        <p>Upload ID: {{ uploadID }}</p>
+        <p>Password: {{ password }}</p>
+
+        <p>You can download your files following this link: https://localhost:8000/download</p>
+    </div>
+    <div class="spacer">
+        <p class="text-center">
+            RICCI SECURE - Business made easy<br>
+            Poland, 02-468 Warsaw<br>
+            Hotline: +48 732 581 469<br>
+            Web:
+            Mail: ricci.send.email@gmail.com
+        </p>
+        <p>&nbsp;</p>
+    </div>
+{% endblock %}

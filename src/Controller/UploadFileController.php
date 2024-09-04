@@ -1,6 +1,5 @@
 <?php
 
-// src/Controller/EmailController.php
 namespace App\Controller;
 
 
@@ -18,6 +17,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Twig\Environment;
 
 
 class UploadFileController extends AbstractController
@@ -31,11 +31,12 @@ class UploadFileController extends AbstractController
         EntityManagerInterface $entityManager,
         GenerateService        $generateService,
         UserService            $userService,
+        Environment            $twig,
     ): Response
     {
         $user    = $userService->getUserByCookies();
-        $subject = $request->request->get('subject');
-        $body    = $request->request->get('body');
+        $title   = $request->request->get('subject');
+        $message = $request->request->get('body');
         $sendTo  = $request->request->get('email');
 
         /** @var UploadedFile[] $files */
@@ -45,10 +46,9 @@ class UploadFileController extends AbstractController
         $uploadId       = $generateService->generateUploadId();
         $uploadPassword = $generateService->generatePassword();
         $userId         = $user['id'];
-        $uploadTittle   = $subject;
-        $uploadMessage  = $body;
+        $uploadTittle   = $title;
+        $uploadMessage  = $message;
         $uploadTime     = new \DateTime();
-
 
         $uploadData = new UploadData();
         $uploadData->setUploadId($uploadId);
@@ -60,10 +60,17 @@ class UploadFileController extends AbstractController
 
         $entityManager->persist($uploadData);
 
+        $body = $twig->render('email/upload_template.html.twig', [
+            'userName' => $user['firstName'] . ' ' . $user['lastName'],
+            'uploadID' => $uploadId,
+            'password' => $uploadPassword,
+        ]);
+
+
         $email = (new Email())
             ->from('no-reply@example.com')
             ->to($sendTo)
-            ->subject($subject)
+            ->subject($title)
             ->html($body);
 
         $fileUrls = [];
@@ -86,18 +93,6 @@ class UploadFileController extends AbstractController
         }
 
         $entityManager->flush();
-
-
-
-
-        $body = '<br>
-        <br>
-        <p>Hello! You can download your files by this link:</p>
-        <br>
-        https://localhost:8000/download 
-        <br>
-        <p>Code: ' . $uploadId . '</p>
-        <p>Password: ' . $uploadPassword . '</p>';
 
 
         $email->html($body);
