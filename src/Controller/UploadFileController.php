@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Contact;
 use App\Entity\UploadData;
 use App\Entity\UploadedFiles;
 use App\Entity\User;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Environment;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class UploadFileController extends AbstractController
@@ -37,7 +39,10 @@ class UploadFileController extends AbstractController
         $user    = $userService->getUserByCookies();
         $title   = $request->request->get('subject');
         $message = $request->request->get('body');
-        $sendTo  = $request->request->get('email');
+        // $sendTo  = $request->request->get('email');
+
+        $contacts = $request->request->all('contacts'); // Получаем все контакты как массив
+
 
         /** @var UploadedFile[] $files */
 
@@ -67,13 +72,22 @@ class UploadFileController extends AbstractController
         ]);
 
 
-        $email = (new Email())
-            ->from('no-reply@example.com')
-            ->to($sendTo)
-            ->subject($title)
-            ->html($body);
+//        $email = (new Email())
+//            ->from('no-reply@example.com')
+//            ->to($sendTo)
+//            ->subject($title)
+//            ->html($body);
 
-        $fileUrls = [];
+        foreach ($contacts as $contactEmail) {
+            $email = (new Email())
+                ->from('no-reply@example.com')
+                ->to($contactEmail)
+                ->subject($title)
+                ->html($body);
+
+            $mailer->send($email);
+        }
+
         foreach ($files as $file) {
             $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $safeFilename     = $slugger->slug($originalFilename);
@@ -94,15 +108,38 @@ class UploadFileController extends AbstractController
 
         $entityManager->flush();
 
-
-        $email->html($body);
-        $mailer->send($email);
-
-
         return new Response('Email sent!', Response::HTTP_OK);
     }
 
 
+    #[Route('/api/search-contacts', name: 'api_search_contacts', methods: ['GET'])]
+    public function searchContacts(
+        EntityManagerInterface $entityManager,
+        Request                $request,
+        UserService            $userService,
+    ): JsonResponse
+    {
+        $searchTerm  = $request->query->get('query');
+        $currentUser = $userService->getUserByCookies();  // Получаем текущего пользователя
+
+        if (!$searchTerm || !$currentUser) {
+            return new JsonResponse([], 200);  // Пустой результат, если нет поискового запроса
+        }
+
+        $contacts = $entityManager->getRepository(Contact::class)->searchUserContacts($currentUser['id'], $searchTerm);
+
+        $contactArray = [];
+        foreach ($contacts as $contact) {
+            $contactArray[] = [
+                'id'      => $contact->getId(),
+                'email'   => $contact->getEmail(),
+                'company' => $contact->getCompany(),
+                'name'    => $contact->getName(),
+            ];
+        }
+
+        return new JsonResponse($contactArray, 200);
+    }
 }
 
 
