@@ -195,7 +195,7 @@ export default function Upload() {
                                     onChange={(e) => searchContacts(e.target.value)}
                                     onBlur={handleBlur}
                                     onKeyDown={handleKeyDown}
-                                    autoComplete="off"
+                                    autoComplete="shipping address-level4 webauthn"
                                 />
                                 here
                                 {searchResults.length > 0 && (
