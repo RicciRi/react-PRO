@@ -22,6 +22,7 @@ export default function Upload() {
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedContacts, setSelectedContacts] = useState([]);
+    const [highlightedIndex, setHighlightedIndex] = useState(0);
 
     useEffect(() => {
         // Загружаем контакты при первой загрузке компонента
@@ -46,6 +47,14 @@ export default function Upload() {
         fetchContacts();
     }, []);
 
+    useEffect(() => {
+        if (searchResults.length > 0) {
+            setHighlightedIndex(0); // Устанавливаем первый элемент активным сразу при появлении списка
+        } else {
+            setHighlightedIndex(-1); // Если нет результатов, сбрасываем выделение
+        }
+    }, [searchResults]);
+
     const onFileChange = (e) => {
         setFiles([...files, ...e.target.files]);
     };
@@ -55,6 +64,13 @@ export default function Upload() {
     };
 
     const onSubmit = async (data) => {
+
+        if(selectedContacts < 1) {
+            setToastType('error');
+            setShowToast(true);
+            return
+        }
+
         const formData = new FormData();
         formData.append('subject', data.subject);
         formData.append('body', data.body);
@@ -93,15 +109,16 @@ export default function Upload() {
         setSearchQuery(query);
         if (query.length === 0) {
             setSearchResults([]);
+            setHighlightedIndex(-1); // Сброс подсветки
             return;
         }
 
-        const results = contacts.filter(contact =>
-            contact.name.toLowerCase().includes(query.toLowerCase()) ||
-            contact.email.toLowerCase().includes(query.toLowerCase()) ||
-            contact.company.toLowerCase().includes(query.toLowerCase())
+        const filteredContacts = contacts.filter(contact =>
+            contact.email.toLowerCase().includes(query.toLowerCase()) &&
+            !selectedContacts.some(selected => selected.email === contact.email) // Ищем только не выбранные контакты
         );
-        setSearchResults(results);
+        setSearchResults(filteredContacts);
+        setHighlightedIndex(-1); // Сброс подсветки при новом поиске
     };
 
     const handleUserSelect = (contact) => {
@@ -117,6 +134,7 @@ export default function Upload() {
 
         setSearchResults([]);
         setSearchQuery('');
+        setHighlightedIndex(-1); // Сброс подсветки после выбора контакта
     };
 
     const removeSelectedContact = (contactId) => {
@@ -124,23 +142,39 @@ export default function Upload() {
     };
 
     const handleBlur = () => {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        setTimeout(() => {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (searchResults.length > 0) {
-            const bestMatch = searchResults[0];
-            handleUserSelect(bestMatch);
-        } else if (emailPattern.test(searchQuery)) {
-            setSelectedContacts([...selectedContacts, { email: searchQuery, name: searchQuery }]);
-            setSearchQuery('');
-        } else if (searchQuery) {
-            alert("Такого пользователя нет и это не email. Пожалуйста, исправьте.");
-        }
+            if (highlightedIndex !== -1 && searchResults[highlightedIndex]) {
+                handleUserSelect(searchResults[highlightedIndex]);
+            } else if (searchResults.length > 0) {
+                handleUserSelect(searchResults[0]);
+            } else if (emailPattern.test(searchQuery)) {
+                setSelectedContacts([...selectedContacts, {email: searchQuery, name: searchQuery}]);
+                setSearchQuery('');
+            } else if (searchQuery) {
+                alert("Такого пользователя нет и это не email. Пожалуйста, исправьте.");
+            }
+        }, 100); // Задержка 100 мс
     };
-
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'ArrowDown') {
             e.preventDefault();
-            handleBlur();
+            setHighlightedIndex((prevIndex) =>
+                prevIndex < searchResults.length - 1 ? prevIndex + 1 : prevIndex
+            );
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            setHighlightedIndex((prevIndex) =>
+                prevIndex > 0 ? prevIndex - 1 : prevIndex
+            );
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (highlightedIndex >= 0 && searchResults[highlightedIndex]) {
+                handleUserSelect(searchResults[highlightedIndex]);
+            } else {
+                handleBlur();
+            }
         }
     };
 
@@ -156,7 +190,7 @@ export default function Upload() {
                 <div className="row">
                     <div className="col-2">
                         <div>
-                            <ul>
+                            <ul className="file-list">
                                 {files.map((file, index) => (
                                     <li key={index} className="p-2 mb-2">
                                         <div className="file-name d-flex-between">
@@ -172,7 +206,7 @@ export default function Upload() {
                         </div>
                     </div>
                     <div className="col-4">
-                        <form className="p-4" onSubmit={handleSubmit(onSubmit)} autoComplete={false}>
+                        <form className="p-4" onSubmit={handleSubmit(onSubmit)} autoComplete="new-password">
                             <div className="d-flex-center">
                                 <label htmlFor="uploadFile">
                                     <div className="button button-block button-gradient-peach mt-4 mb-4">
@@ -183,46 +217,52 @@ export default function Upload() {
                                        onChange={onFileChange} multiple/>
                             </div>
                             <div>
-                                <label htmlFor="custom-email">
-                                    {trans('lang.email')}
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="custom-email"
-                                    value={searchQuery}
-                                    placeholder="Search by name, email, or company"
-                                    onChange={(e) => searchContacts(e.target.value)}
-                                    onBlur={handleBlur}
-                                    onKeyDown={handleKeyDown}
-                                    autoComplete="shipping address-level4 webauthn"
-                                />
-                                here
-                                {searchResults.length > 0 && (
-                                    <ul>
-                                        {searchResults.map((contact) => (
-                                            <li key={contact.id} onClick={() => handleUserSelect(contact)}>
-                                                {contact.name} - {contact.email} ({contact.company})
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </div>
-                            <div>
                                 {selectedContacts.length > 0 && (
-                                    <div>
-                                        <h4>Selected Contacts:</h4>
-                                        <ul>
+                                    <div className="selected-contacts">
+                                        <ul className="m-0 p-0">
                                             {selectedContacts.map(contact => (
-                                                <li key={contact.id}>
-                                                    {contact.name} - {contact.email}
-                                                    <button onClick={() => removeSelectedContact(contact.id)}>Remove
+                                                <li key={contact.id} className="d-flex-between">
+                                                    {contact.email}
+                                                    <button className="button-no-style f-12 fw-300" onClick={() => removeSelectedContact(contact.id)}>
+                                                        {trans("lang.remove")}
                                                     </button>
                                                 </li>
                                             ))}
                                         </ul>
                                     </div>
                                 )}
+                            </div>
+                            <div className="position-relative">
+                                <label htmlFor="email">
+                                    {trans('lang.emailTo')}
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="new-password"
+                                    value={searchQuery}
+                                    className="search-input"
+                                    placeholder="Search by name, email, or company"
+                                    onChange={(e) => searchContacts(e.target.value)}
+                                    onBlur={handleBlur}
+                                    onKeyDown={handleKeyDown}
+                                    autoComplete="new-password"
+                                />
+                                <div className="position-relative">
+                                    {searchResults.length > 0 && (
+                                        <div className="search-contact-container">
+                                            {searchResults.map((contact, index) => (
+                                                <div
+                                                    key={contact.id}
+                                                    onMouseDown={() => handleUserSelect(contact)} // Изменение на onMouseDown
+                                                    className={highlightedIndex === index ? 'highlighted' : ''}
+                                                >
+                                                    {contact.email}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <div>
                                 <label htmlFor="title">{trans("lang.title")}</label>
@@ -248,5 +288,5 @@ export default function Upload() {
                 </div>
             </div>
         </div>
-    );
+    )
 }

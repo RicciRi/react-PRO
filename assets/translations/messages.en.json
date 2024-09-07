@@ -64,7 +64,8 @@
   "lang.contactListEmpty": "Your contacts list is empty",
   "lang.download": "Download",
   "lang.uploadId": "Upload ID",
-  "lang.loginToDownload": "Login to download files"
-
+  "lang.loginToDownload": "Login to download files",
+  "lang.emailTo": "Email to",
+  "lang.remove": "remove"
 
 }
