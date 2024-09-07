@@ -852,13 +852,6 @@ footer {
     }
   }
 
-  .selected-contacts {
-    button {
-      &:hover {
-        color: #6ea8fe;
-      }
-    }
-  }
 
 
 }
@@ -876,6 +869,7 @@ footer {
   .contact-section {
     width: 100%;
     padding: 10px;
+    border-bottom: 1px solid var(--border-color-default);
 
     .button-no-style {
       color: transparent;
@@ -885,7 +879,7 @@ footer {
       color: var(--white-color) !important;
 
       &:hover {
-        color: var(--color-muted) !important;
+        color: #2196f3 !important;
       }
     }
 

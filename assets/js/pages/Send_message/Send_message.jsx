@@ -105,7 +105,7 @@ export default function Upload() {
         }
     };
 
-    const searchContacts = (query) => {
+    const searchContacts = async (query) => {
         setSearchQuery(query);
         if (query.length === 0) {
             setSearchResults([]);
@@ -113,14 +113,13 @@ export default function Upload() {
             return;
         }
 
-        const filteredContacts = contacts.filter(contact =>
-            contact.email.toLowerCase().includes(query.toLowerCase()) &&
-            !selectedContacts.some(selected => selected.email === contact.email) // Ищем только не выбранные контакты
-        );
-        setSearchResults(filteredContacts);
-        setHighlightedIndex(-1); // Сброс подсветки при новом поиске
+        try {
+            const response = await axios.get(`/api/search-contacts?query=${query}`);
+            setSearchResults(response.data);
+        } catch (error) {
+            console.error("Error fetching contacts:", error);
+        }
     };
-
     const handleUserSelect = (contact) => {
         if (selectedContacts.length >= 10) {
             alert('You can select up to 10 contacts only.');
@@ -223,7 +222,7 @@ export default function Upload() {
                                             {selectedContacts.map(contact => (
                                                 <li key={contact.id} className="d-flex-between">
                                                     {contact.email}
-                                                    <button className="button-no-style f-12 fw-300" onClick={() => removeSelectedContact(contact.id)}>
+                                                    <button className="button-no-style blue-hover f-12 fw-500" onClick={() => removeSelectedContact(contact.id)}>
                                                         {trans("lang.remove")}
                                                     </button>
                                                 </li>
@@ -242,7 +241,7 @@ export default function Upload() {
                                     name="new-password"
                                     value={searchQuery}
                                     className="search-input"
-                                    placeholder="Search by name, email, or company"
+                                    placeholder="Search by email"
                                     onChange={(e) => searchContacts(e.target.value)}
                                     onBlur={handleBlur}
                                     onKeyDown={handleKeyDown}
@@ -267,7 +266,7 @@ export default function Upload() {
                             <div>
                                 <label htmlFor="title">{trans("lang.title")}</label>
                                 <input id="title" name="title" type="text" {...register('subject')}
-                                       placeholder={trans("lang.title")} required/>
+                                       placeholder={trans("lang.title")} autoComplete="off" required/>
                             </div>
                             <div>
                                 <label htmlFor="message">{trans('lang.message')}</label>
