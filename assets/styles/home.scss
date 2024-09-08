@@ -8,19 +8,34 @@
   color: var(--text-color);
   background: var(--background-black);
 
-
   h1 {
     font-size: 5rem;
-    margin: 80px auto 20px auto;
+    margin: 0 auto;
   }
 
+  .header-block {
+    min-height: 400px;
+    width: 100%;
+    background-image: url("../images/gradient.png");
+    background-size: cover;
+    border-radius: 20px;
+  }
 
-.header-block {
-  min-height: 400px;
-  width: 100%;
-  background-image: url("../images/gradient.png");
-  background-size: cover;
-  border-radius: 20px;
-}
+  .row {
+
+    .img-wrap {
+      width: 500px;
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      max-height: 460px;
+      border-radius: 20px;
+
+    }
+  }
 
 }

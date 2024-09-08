@@ -7,45 +7,24 @@ import axios from 'axios';
 import {BsTrash3} from "react-icons/bs";
 import Toast from "../../components/Toast";
 import {useLoading} from "../../context/LoadingContext";
+import {BsExclamationCircle} from "react-icons/bs";
+
 
 export default function Upload() {
     const {trans} = useTranslation();
     const {showLoading, hideLoading} = useLoading();
-    const {userData} = useContext(UserContext);
+    // const { userData } = useContext(UserContext);
     const [showToast, setShowToast] = useState(false);
     const [toastType, setToastType] = useState('success');
-
+    const [startIndex, setStartIndex] = useState(0); // Состояние для отслеживания начального индекса отображаемого списка
     const {register, handleSubmit, reset} = useForm();
     const [files, setFiles] = useState([]);
-
-    const [contacts, setContacts] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedContacts, setSelectedContacts] = useState([]);
-    const [highlightedIndex, setHighlightedIndex] = useState(0);
+    const [highlightedIndex, setHighlightedIndex] = useState(-1); // Начальное значение -1
+    const [error, setError] = useState(null); // Состояние для хранения сообщения об ошибке
 
-    useEffect(() => {
-        // Загружаем контакты при первой загрузке компонента
-        const fetchContacts = async () => {
-            try {
-                showLoading(true);
-                const response = await fetch('/api/contacts', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                const data = await response.json();
-                setContacts(data);
-            } catch (error) {
-                setError('error');
-            } finally {
-                hideLoading(false);
-            }
-        };
-        fetchContacts();
-    }, []);
 
     useEffect(() => {
         if (searchResults.length > 0) {
@@ -64,11 +43,10 @@ export default function Upload() {
     };
 
     const onSubmit = async (data) => {
-
-        if(selectedContacts < 1) {
+        if (selectedContacts.length < 1) {
             setToastType('error');
             setShowToast(true);
-            return
+            return;
         }
 
         const formData = new FormData();
@@ -109,35 +87,46 @@ export default function Upload() {
         setSearchQuery(query);
         if (query.length === 0) {
             setSearchResults([]);
-            setHighlightedIndex(-1); // Сброс подсветки
+            setHighlightedIndex(-1);
             return;
         }
 
         try {
             const response = await axios.get(`/api/search-contacts?query=${query}`);
-            setSearchResults(response.data);
+            const filteredResults = response.data.filter(contact =>
+                !selectedContacts.some(selected => selected.id === contact.id)
+            );
+            setSearchResults(filteredResults);
         } catch (error) {
             console.error("Error fetching contacts:", error);
         }
     };
+
     const handleUserSelect = (contact) => {
         if (selectedContacts.length >= 10) {
-            alert('You can select up to 10 contacts only.');
+            alert('Можно выбрать не более 10 контактов.');
             return;
         }
 
-        const alreadySelected = selectedContacts.find(c => c.id === contact.id);
+        const alreadySelected = selectedContacts.some(c => c.email === contact.email);
+
         if (!alreadySelected) {
-            setSelectedContacts([...selectedContacts, contact]);
+            console.log('Добавление контакта:', contact);
+            setSelectedContacts(prevSelectedContacts => [...prevSelectedContacts, contact]);
+        } else {
+            console.log('Контакт уже выбран:', contact);
         }
 
         setSearchResults([]);
         setSearchQuery('');
-        setHighlightedIndex(-1); // Сброс подсветки после выбора контакта
+        setHighlightedIndex(-1);
+        setStartIndex(0);
+
+        document.getElementById('email').focus();
     };
 
-    const removeSelectedContact = (contactId) => {
-        setSelectedContacts(selectedContacts.filter(contact => contact.id !== contactId));
+    const removeSelectedContact = (email) => {
+        setSelectedContacts(selectedContacts.filter(contact => contact.email !== email));
     };
 
     const handleBlur = () => {
@@ -152,30 +141,78 @@ export default function Upload() {
                 setSelectedContacts([...selectedContacts, {email: searchQuery, name: searchQuery}]);
                 setSearchQuery('');
             } else if (searchQuery) {
-                alert("Такого пользователя нет и это не email. Пожалуйста, исправьте.");
+                setError(true);
             }
         }, 100); // Задержка 100 мс
     };
+
     const handleKeyDown = (e) => {
-        if (e.key === 'ArrowDown') {
+        if (e.key === 'Enter') {
             e.preventDefault();
-            setHighlightedIndex((prevIndex) =>
-                prevIndex < searchResults.length - 1 ? prevIndex + 1 : prevIndex
-            );
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            setHighlightedIndex((prevIndex) =>
-                prevIndex > 0 ? prevIndex - 1 : prevIndex
-            );
-        } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (highlightedIndex >= 0 && searchResults[highlightedIndex]) {
+
+            console.log('Нажат Enter');
+
+            if (highlightedIndex !== -1 && searchResults[highlightedIndex]) {
+                console.log('Выбран контакт с индексом:', highlightedIndex);
                 handleUserSelect(searchResults[highlightedIndex]);
-            } else {
-                handleBlur();
+            } else if (searchQuery) {
+                console.log('Поиск по запросу:', searchQuery);
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (emailPattern.test(searchQuery)) {
+                    console.log('Email проверен');
+                    const alreadySelected = selectedContacts.find(c => c.email === searchQuery);
+                    if (!alreadySelected) {
+                        console.log('Добавление email:', searchQuery);
+                        handleUserSelect({email: searchQuery, name: searchQuery});
+                    } else {
+                        console.log('Email уже добавлен:', searchQuery);
+                    }
+                } else {
+                    setError(true);
+                }
             }
+            setSearchQuery('');
+        } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            e.preventDefault();
+
+            setHighlightedIndex(prevHighlightedIndex => {
+                let newHighlightedIndex = prevHighlightedIndex;
+                let newStartIndex = startIndex;
+
+                if (e.key === 'ArrowDown') {
+                    if (prevHighlightedIndex < searchResults.length - 1) {
+                        newHighlightedIndex = prevHighlightedIndex + 1;
+
+                        if (newHighlightedIndex >= startIndex + 5) {
+                            newStartIndex = startIndex + 1;
+                        }
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    if (prevHighlightedIndex > 0) {
+                        newHighlightedIndex = prevHighlightedIndex - 1;
+
+                        if (newHighlightedIndex < startIndex) {
+                            newStartIndex = startIndex - 1;
+                        }
+                    }
+                }
+
+                if (searchResults.length > 5) {
+                    newStartIndex = Math.max(0, Math.min(newStartIndex, searchResults.length - 5));
+                }
+
+                setStartIndex(newStartIndex);
+                return newHighlightedIndex;
+            });
         }
     };
+
+    if(error) {
+        setTimeout(() => {
+            setError(false)
+        }, "4000");
+    }
+
 
     return (
         <div className="upload-container">
@@ -220,9 +257,10 @@ export default function Upload() {
                                     <div className="selected-contacts">
                                         <ul className="m-0 p-0">
                                             {selectedContacts.map(contact => (
-                                                <li key={contact.id} className="d-flex-between">
+                                                <li key={contact.email} className="d-flex-between">
                                                     {contact.email}
-                                                    <button className="button-no-style blue-hover f-12 fw-500" onClick={() => removeSelectedContact(contact.id)}>
+                                                    <button className="button-no-style blue-hover f-12 fw-500"
+                                                            onClick={() => removeSelectedContact(contact.email)}>
                                                         {trans("lang.remove")}
                                                     </button>
                                                 </li>
@@ -231,7 +269,16 @@ export default function Upload() {
                                     </div>
                                 )}
                             </div>
+
                             <div className="position-relative">
+                                {error && (
+                                    <div className="error-message error-input">
+                                        <BsExclamationCircle/>
+                                        <br/>
+                                        <span>Whoops!</span>
+                                        <p>It looks like one of the email addresses you entered is incorrect</p>
+                                    </div>
+                                )}
                                 <label htmlFor="email">
                                     {trans('lang.emailTo')}
                                 </label>
@@ -250,11 +297,11 @@ export default function Upload() {
                                 <div className="position-relative">
                                     {searchResults.length > 0 && (
                                         <div className="search-contact-container">
-                                            {searchResults.map((contact, index) => (
+                                            {searchResults.slice(startIndex, startIndex + 5).map((contact, index) => (
                                                 <div
                                                     key={contact.id}
-                                                    onMouseDown={() => handleUserSelect(contact)} // Изменение на onMouseDown
-                                                    className={highlightedIndex === index ? 'highlighted' : ''}
+                                                    onMouseDown={() => handleUserSelect(contact)}
+                                                    className={highlightedIndex === startIndex + index ? 'highlighted' : ''}
                                                 >
                                                     {contact.email}
                                                 </div>
@@ -287,5 +334,5 @@ export default function Upload() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
