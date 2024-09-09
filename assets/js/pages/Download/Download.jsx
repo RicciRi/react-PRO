@@ -113,7 +113,7 @@ export default function Download() {
                                                     className="button button-block"
                                                     onClick={() => handleDownload(file.id)}
                                                 >
-                                                    Download
+                                                    {trans('lang.download' | trans)}
                                                 </button>
                                             </li>
                                         ))}
@@ -126,7 +126,7 @@ export default function Download() {
                         <h1>{trans('lang.loginToDownload')}</h1>
                         <div className="auth-form-body mt-4">
                             {error && <p className='error-message m-4 mb-2'>{error}</p>}
-                            <form className="p-4" onSubmit={handleLogin}>
+                            <form className="p-4" onSubmit={handleLogin} autoComplete="off" >
                                 <div className="input-wrap">
                                     <label htmlFor="uploadId">{trans('lang.uploadId')}</label>
                                     <input
@@ -135,22 +135,25 @@ export default function Download() {
                                         type="text"
                                         value={uploadId}
                                         onChange={(e) => setUploadId(e.target.value)}
+                                        autoComplete="shipping address-level3 webauthn"
                                         required
                                     />
                                 </div>
                                 <div className="input-wrap">
 
-                                    <label htmlFor="password">{trans('lang.password')}</label>
+                                    <label htmlFor="secure">{trans('lang.password')}</label>
                                     <input
                                         id="password"
-                                        name="password"
+                                        name="secure"
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
+                                        autoComplete="billing cc-family-name webauthn"
                                     />
                                 </div>
-                                <button className="button button-block button-green" type="submit">{trans('lang.signIn')}</button>
+                                <button className="button button-block button-green"
+                                        type="submit">{trans('lang.signIn')}</button>
                             </form>
                         </div>
                     </div>

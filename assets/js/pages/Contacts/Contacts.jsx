@@ -6,7 +6,7 @@ import { useLoading } from '../../context/LoadingContext';
 import { IoIosCheckmarkCircleOutline, IoIosCloseCircleOutline } from 'react-icons/io';
 
 function Contacts() {
-    const [contacts, setContacts] = useState([]);
+    const [contacts, setContacts] = useState(null);
     const { showLoading, hideLoading } = useLoading();
     const [error, setError] = useState(null);
     const [showAddForm, setShowAddForm] = useState(false);
@@ -79,7 +79,11 @@ function Contacts() {
         }
     };
 
-    const visibleContacts = showAllContacts ? contacts : contacts.slice(0, 4); // если showAllContacts true - показываем все, иначе только первые 4
+    let hasContacts = contacts ? contacts : []
+
+    const visibleContacts = showAllContacts ? hasContacts : hasContacts.slice(0, 4); // если showAllContacts true - показываем все, иначе только первые 4
+
+
 
     if (error) return <p>{error}</p>;
 
@@ -128,6 +132,7 @@ function Contacts() {
                             </form>
                         }
                         {
+                            contacts ?
                             contacts.length > 0 ?
                                 <>
                                     {visibleContacts.map((contact) => (
@@ -154,6 +159,7 @@ function Contacts() {
                                 </>
                                 :
                                 <h4 className="text-center m-3">{trans('lang.contactListEmpty')}</h4>
+                                : <></>
                         }
                     </div>
                 </div>
